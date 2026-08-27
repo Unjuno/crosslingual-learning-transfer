@@ -1,0 +1,20 @@
+{
+  "experiment": "performance_aligned_learning_minimal_gru",
+  "locked_before_results": true,
+  "architecture": "GRU",
+  "families": [0,1,2,3,4],
+  "fresh_seeds_per_family": [3800,3801],
+  "distance": 0.5,
+  "dose": 0.25,
+  "conditions": ["A_nat","target25","wrong25"],
+  "intervention": "restore shared output head exactly to base weights after A-only curriculum",
+  "B_training_steps": 60,
+  "evaluation_every_steps": 2,
+  "primary_metric": "performance-aligned hitting-time span on the common B-NLL interval",
+  "metric_definition": "For each paired condition and seed, take cumulative-best NLL curves. Let top=min(NLL0_a,NLL0_b), bottom=max(NLL60_a,NLL60_b). Define high=bottom+0.8*(top-bottom), low=bottom+0.2*(top-bottom). Linearly interpolate first crossing steps and compute span=t(low)-t(high). Lower span means fewer B steps for the same NLL reduction after performance alignment.",
+  "primary_contrast": "target25_minus_A_nat_span",
+  "primary_direction": "negative",
+  "primary_pass": "all 5 family mean effects negative; exact one-sided family sign-flip p<=0.05",
+  "secondary": ["wrong25_minus_A_nat_span positive", "target25_minus_wrong25_span negative"],
+  "no_seed_expansion": true
+}
