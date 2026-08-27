@@ -1,12 +1,26 @@
 # Crosslingual Learning Transfer
 
-Controlled neural-network experiments on how prior learning in one language-like task changes later learning in another. The repository is an **experimental evidence snapshot**, not a finished curriculum method and not evidence of human-language transfer.
+**Can learning system A make system B easier — or harder — to learn later, even when B is not shown during the A-only curriculum intervention?**
 
-## Research question
+This repository collects controlled neural-network experiments on that question. It is an **experimental evidence snapshot**, not a finished curriculum method and not evidence about human language learning.
 
-Can learning task/language **A** change the later learnability of **B**, even when the curriculum intervention itself contains only A-surface inputs? If so, when is the effect positive, neutral, or negative, and what shared representation structure is required?
+## What this repository shows
 
-The project began from directed language-transfer measurements and structural surrogate experiments, then moved to controlled curriculum interventions and mechanism ablations.
+In the documented synthetic systems, prior A-only learning can move later B learning in either direction:
+
+- **positive transfer:** a target-compatible A curriculum can improve later B learning,
+- **negative transfer:** a target-incompatible A curriculum can make later B learning worse,
+- **neutral control:** repeating the same A curriculum produces exactly zero paired difference in the calibrated harness.
+
+The strongest current mechanism result is that stable sample-efficiency transfer depends on **shared A/B representation coordinates**. The effect weakens as decoder alignment is removed, is strongly reduced by geometry-preserving coordinate rotation, and shifts in a favorable direction as more shared latent rank is preserved.
+
+This does **not** imply a universal scalar language distance or a proven language-teaching recipe.
+
+## Why this matters
+
+The research object is better described as a **signed, directed learning-transfer relation** than as a symmetric language-similarity score. If the phenomenon survives future natural-language and larger-model tests, it would motivate curricula designed not only to teach the current task, but also to avoid harmful internal states and potentially prepare reusable structure for later tasks.
+
+That application remains a hypothesis. The current contribution is the controlled experimental evidence and mechanism constraints.
 
 ## Current evidence
 
@@ -24,39 +38,62 @@ The project began from directed language-transfer measurements and structural su
 
 Lower AUC / fewer B steps means better later-B learning in the reported experiments.
 
-## Interpretation
+The compact cross-phase table is in [`results/evidence_summary.csv`](results/evidence_summary.csv). PASS and FAIL outcomes are kept together rather than filtering to positive findings.
 
-The strongest current interpretation is not that prior learning creates a universal "learn faster" ability. Instead, A-only learning can place the network in a **target-helpful or target-harmful state**, and performance-aligned sample-efficiency effects are reliable when A and B retain enough shared representational/decoder coordinates. Destroying those coordinates can remove the stable effect.
+## Current interpretation
 
-This makes the research object a **signed, directed transfer relation**, not a symmetric language-distance scalar.
+The evidence does not support a universal "learn faster" ability. A more precise interpretation is:
+
+```text
+A-only curriculum
+      |
+      v
+target-helpful / neutral / target-harmful state
+      |
+      v
+later B learning
+      |
+      +-- effect depends on shared A/B representation coordinates
+```
+
+With a retained base coordinate system, target-compatible curricula cross the same B-performance interval in fewer B updates across five kernel families and an independent cohort. When the B decoder is completely fresh/random, that stable cross-family advantage does not replicate.
 
 ## Earlier structural-surrogate result
 
-Character-level six-language experiments showed that exact directed-bigram-preserving surrogates reproduce the natural transfer topology much more strongly and consistently than unigram/degree-margin-preserving controls. For example, BG0 vs BG1 raw Cspec topology rho was 0.928, whereas UNI0 vs UNI1 was 0.454. This supports a role for directed transition coupling, but **does not establish bigram sufficiency** or a complete scalar distance mechanism.
+Character-level six-language experiments showed that exact directed-bigram-preserving surrogates reproduce the natural transfer topology much more strongly and consistently than unigram/degree-margin-preserving controls. For example, BG0 vs BG1 raw Cspec topology rho was 0.928, whereas UNI0 vs UNI1 was 0.454.
+
+The UNI controls preserve exact unigram counts and directed bigram in/out degree margins, so the relevant contrast is more accurately **specific joint source->target transition coupling versus marginal/degree structure**. This supports a role for directed transition structure, but **does not establish bigram sufficiency** or a complete scalar distance mechanism.
 
 ## Natural-language status
 
-A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend was safe for Japanese and did not damage English starting loss on average, and it differed from a Russian-target control, but it **did not establish positive acceleration over ordinary Japanese**. Human learning and large-LLM generality remain untested.
+A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend was safe for Japanese and did not damage English starting loss on average, and it differed from a Russian-target control, but it **did not establish positive acceleration over ordinary Japanese**.
+
+Human learning and large-production-LLM generality remain untested.
 
 ## Repository map
 
-- `docs/CLAIMS_AND_LIMITATIONS.md` — claim ledger: fact / inference / uncertainty.
-- `docs/EXPERIMENT_LOG.md` — chronological experimental phases and decisions.
-- `docs/REPRODUCIBILITY.md` — execution assumptions and what is/is not included.
-- `docs/TEST_HARNESS.md` — controls, exact tests, and a statistical-harness bug that was found and corrected.
-- `docs/milestones/` — contemporaneous milestone notes.
-- `experiments/` — exact snapshots of representative executed experiment scripts.
-- `protocols/` — locked protocol JSON files for selected confirmatory experiments.
-- `results/` — compact summary CSVs only; raw checkpoints/corpora are intentionally excluded.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — claim ledger: supported facts, inference, and uncertainty.
+- `docs/EXPERIMENT_LOG.md` — chronological experiment sequence and decision points.
+- `docs/REPRODUCIBILITY.md` — environment assumptions, determinism, and data boundaries.
+- `docs/TEST_HARNESS.md` — positive/neutral/negative controls and the statistical-harness bug that was found and corrected.
+- `experiments/` — representative executed experiment snapshots across surrogate, curriculum, natural-language, and mechanism phases.
+- `protocols/` — locked confirmatory/mechanism protocol JSON files.
+- `results/` — compact summary CSVs, including positive findings, failures, and replication failures.
+
+## Reproduction
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+The scripts are execution snapshots rather than a polished library. Several retain `/mnt/data/...` paths from the original container; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them. Natural-language experiments require the original external corpus environment, which is not redistributed here.
 
 ## Scope and claim discipline
 
 **Supported:** controlled neural-network existence and mechanism results under the documented synthetic setups.
 
-**Not supported:** a universal language-distance law, a proven Japanese curriculum for faster English acquisition, human-learning effects, or generality to large production LLMs.
+**Not supported:** a universal language-distance law, bigram sufficiency, decoder-independent universal meta-learning, a proven Japanese curriculum for faster English acquisition, human-learning effects, or generality to large production LLMs.
 
 ## Data and licensing
 
-Code in this repository is released under Apache-2.0. External natural-language corpora are **not redistributed** here; they remain subject to their original licenses. The natural-language experiment script is included as an execution snapshot and requires the original corpus/handoff environment.
-
-See `docs/REPRODUCIBILITY.md` for details.
+Code in this repository is released under Apache-2.0. External natural-language corpora are **not redistributed** here; they remain subject to their original licenses.
