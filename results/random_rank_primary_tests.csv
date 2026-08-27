@@ -1,0 +1,6 @@
+contrast,mean_step_diff,n_negative,p_exact,pass_all5
+rank_slope,-0.1703986413149911,5,0.03125,True
+keep0,0.6148916280591166,1,0.9375,False
+keep3,0.13862575342372452,3,0.625,False
+keep6,-0.30393908815914444,3,0.28125,False
+keep12,-1.4297555103588813,3,0.125,False

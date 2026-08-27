@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    "A_nat",
+    "target25"
+  ],
+  "families": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "intervention": "B state embedding orthogonal rotation preserving all norms and pairwise distances",
+  "metric": "80-20 performance-aligned span",
+  "primary": "identity target effect minus rotated target effect <0 in all 5 families, exact p<=.05",
+  "rationale": "rho=.25 has independently replicated baseline target effect; avoids low-signal ambiguity at rho=.125",
+  "rho": 0.25,
+  "secondary": [
+    "identity target effect <0 in all 5",
+    "rotated descriptive"
+  ],
+  "seed": 4900,
+  "status": "PREDECLARED",
+  "stopping": "one seed/family; replicate only if primary passes"
+}

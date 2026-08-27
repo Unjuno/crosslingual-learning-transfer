@@ -1,0 +1,12 @@
+{
+  "basis": "family/seed-specific random permutation of the 12 nonzero right-singular directions of base state embedding; nested preserved sets",
+  "families": [0,1,2,3,4],
+  "keep_dims": [0,3,6,12],
+  "metric": "80-20 performance-aligned span",
+  "primary": "OLS slope of target effect versus keep_dim is negative in all 5 families; exact family sign-flip p<=.05",
+  "rho_decoder": 0.25,
+  "secondary": "effects at each rank descriptive",
+  "seed": 5400,
+  "status": "PREDECLARED",
+  "stopping": "one seed/family; no rank refinement in this cohort"
+}

@@ -1,0 +1,12 @@
+{
+  "status": "LOCKED_BEFORE_EXECUTION",
+  "architecture": "1-layer GRU shared latent-state body, shared state embeddings and language embeddings, separate A/B output heads",
+  "fresh_seeds": [900,901,902,903,904,905,906,907],
+  "distances": [0.25,0.5,0.75,1.0],
+  "curriculum": "100 A-surface-only update steps; A_B25 renders the target B transition kernel entirely in A IDs on exactly 25% of steps; A_wrong25 uses an unrelated transition kernel on the same count. No B surface token occurs during curriculum.",
+  "base": "A and B surfaces exposed under the same uniform transition kernel before curriculum; target structured B kernel remains unseen.",
+  "HGRU1": "At distance 0.25, B AUC(A_B25)-B AUC(A_nat)<0. PASS if mean<0, negative>=7/8, exact 2^8 one-sided sign-flip p<=0.05.",
+  "HGRU2": "At distance 0.25, B AUC(A_B25)-B AUC(A_wrong25)<0 with the same PASS rule.",
+  "HGRU3": "Per seed, mean target-bridge effect over near distances 0.25/0.50 minus mean effect over far distances 0.75/1.00 <0 with the same PASS rule.",
+  "claim_boundary": "Controlled neural-network existence/replication test. Passing does not establish human-language pedagogy or large-model generality."
+}

@@ -1,0 +1,7 @@
+result,mean,families_expected,note
+rho1_target_minus_nat,-5.892889649386657,5,seed4200
+rho0.5_target_minus_nat,-3.3559038339050566,5,seed4200
+rho0.25_target_minus_nat,-1.859113116626841,5,seed4200
+rho0_target_minus_nat,0.0014401592396687478,2,seed4200
+linear_slope,-5.808531707792241,5,family exact p=0.03125
+rho0.25_rep_target_minus_nat,-2.0725287176910867,5,fresh seed4300

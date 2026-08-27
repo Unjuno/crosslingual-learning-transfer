@@ -1,0 +1,6 @@
+cohort,control,mean_delta_B_auc_vs_nat,sd,n_beneficial,n_harmful,p_exact_signflip,expected_direction_pass
+calibration_1000_1007,positive_control_target25,-0.005130354687571503,0.0039440092654177816,8,0,0.00390625,True
+calibration_1000_1007,negative_control_anti25,0.010372303053736709,0.011696516661751625,1,7,0.0234375,True
+replication_1200_1207,positive_control_target25,-0.004699174687266355,0.0022737531315478164,8,0,0.00390625,True
+replication_1200_1207,negative_control_anti25,0.018444254249334296,0.012738973958780781,1,7,0.0078125,True
+calibration_1000_1007,neutral_metamorphic_A_nat_repeat,0.0,0.0,0,0,,True

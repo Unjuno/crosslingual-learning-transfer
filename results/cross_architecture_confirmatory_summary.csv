@@ -1,0 +1,7 @@
+architecture,test,mean_delta,n_directional,n,p_exact,pass
+Transformer,target_vs_nat_d025,-0.005827283114194837,7,8,0.0078125,True
+Transformer,target_vs_wrong_d025,-0.037586445733904905,8,8,0.00390625,True
+Transformer,near_vs_far_interaction,-0.04454040843993433,8,8,0.00390625,True
+GRU,target_vs_nat_d025,-0.007285,8,8,0.00390625,True
+GRU,target_vs_wrong_d025,-0.026712,8,8,0.00390625,True
+GRU,near_vs_far_interaction,-0.004230,5,8,0.230469,False

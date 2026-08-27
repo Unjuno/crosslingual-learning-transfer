@@ -1,0 +1,13 @@
+experiment,contrast,mean_span_diff_steps,n_families_expected,p_family,pass
+base-head cohort A,target25_minus_A_nat,-5.341000227255526,5,0.03125,True
+base-head cohort A,wrong25_minus_A_nat,2.096713487234097,5,0.03125,True
+base-head cohort A,target25_minus_wrong25,-6.946701174371808,5,0.03125,True
+base-head replication,target25_minus_A_nat,-4.897378948656945,5,0.03125,True
+base-head replication,wrong25_minus_A_nat,1.6007049040439916,5,0.03125,True
+base-head replication,target25_minus_wrong25,-6.229016224682005,5,0.03125,True
+fresh-head cohort A,target25_minus_A_nat,-0.4101696091537718,3,0.1875,False
+fresh-head cohort A,wrong25_minus_A_nat,0.8817211570819772,4,0.0625,False
+fresh-head cohort A,target25_minus_wrong25,-1.2984975050248473,5,0.03125,True
+fresh-head replication,target25_minus_wrong25,0.9076101197236816,1,0.90625,False
+fresh-head replication,wrong25_minus_A_nat,-0.5823666684666946,2,0.75,False
+fresh-head replication,target25_minus_A_nat,0.2695090663015989,2,0.65625,False

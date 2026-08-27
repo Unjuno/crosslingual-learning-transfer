@@ -1,0 +1,23 @@
+{
+  "status": "LOCKED_BEFORE_EXECUTION",
+  "seeds": [
+    700,
+    701,
+    702,
+    703,
+    704,
+    705,
+    706,
+    707
+  ],
+  "source": "Japanese Vim TR only during curriculum model updates",
+  "target": "English Vim TR adaptation / English Vim TE evaluation",
+  "wrong_target": "Russian abstract motif",
+  "curriculum": "100 matched Japanese update steps. JA_EN05 replaces exactly 5 of the 100 random-Japanese steps with English-motif-selected Japanese windows; JA_RU05 uses the exact same 5 positions but Russian-motif-selected Japanese windows. JA_nat uses random Japanese at all 100 positions.",
+  "selector": "8-bin within-language character-frequency-rank bigram target-specific score; selector uses TR only; model receives original Japanese windows.",
+  "primary_HN3_learning_gain": "G40=EN_NLL(cp0)-EN_NLL(cp40). JA_EN05-JA_nat predicted >0. PASS mean>0, positive>=7/8, exact sign-flip p<=0.05.",
+  "primary_safety": "Mean EN cp0 penalty JA_EN05-JA_nat <=0.01 NLL and mean Japanese post-NLL increase <=0.5% of JA_nat.",
+  "HN4_specificity": "G40(JA_EN05)-G40(JA_RU05)>0 with same direction/count/p rule.",
+  "secondary": "raw EN AUC and cp40 differences.",
+  "claim_boundary": "Toy character-level multilingual LM; system translation corpora are not a human Japanese curriculum."
+}
