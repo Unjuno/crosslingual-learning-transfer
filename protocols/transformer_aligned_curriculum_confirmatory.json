@@ -1,0 +1,44 @@
+{
+  "status": "LOCKED_BEFORE_FRESH_SEED_EXECUTION",
+  "exploratory_source": "aligned curriculum pilot seeds 0-3",
+  "fresh_seeds": [
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107
+  ],
+  "distances": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "conditions": [
+    "none",
+    "A_nat",
+    "A_B25",
+    "A_wrong25"
+  ],
+  "fixed_training": {
+    "K": 12,
+    "CTX": 24,
+    "D": 32,
+    "BS": 24,
+    "LR": 0.002,
+    "BASE_STEPS": 120,
+    "CURR_STEPS": 100,
+    "ADAPT_STEPS": 40,
+    "CPS": [0,1,2,5,10,20,40]
+  },
+  "primary_metric": "B adaptation NLL AUC over checkpoints 0,1,2,5,10,20,40; lower is faster learning",
+  "H1_near_transfer": "For d=0.25 and d=0.50 separately, A_B25 has lower paired B AUC than A_nat.",
+  "H2_target_specificity": "For d=0.25 and d=0.50 separately, A_B25 has lower paired B AUC than A_wrong25.",
+  "H3_distance_interaction": "Within each seed, mean(A_B25-A_nat) over near distances {0.25,0.50} is lower than mean over far distances {0.75,1.00}.",
+  "decision": "Report exact sign-flip permutation p over 2^8 sign assignments and sign counts. H1/H2 require negative mean, >=7/8 seeds in predicted direction, and one-sided exact sign-flip p<=0.05. H3 same direction/count/p rule.",
+  "secondary": "A-post NLL cost, no-curriculum context, checkpoint-specific B NLL deltas.",
+  "claim_boundary": "Synthetic aligned-state LM mechanism only; not evidence yet that a natural Japanese curriculum improves human English learning."
+}
