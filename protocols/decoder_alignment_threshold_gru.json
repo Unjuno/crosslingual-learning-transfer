@@ -1,0 +1,15 @@
+{
+  "created_before_results": true,
+  "architecture": "GRU shared state/backbone with separate B decoder installed after A-only curriculum",
+  "fresh_seed": 4200,
+  "kernel_families": [0,1,2,3,4],
+  "dose": 0.25,
+  "stage1_decoder_cosine_alignment_rho": [1.0,0.5,0.0],
+  "head_construction": "W_rho = rho*W_base + sqrt(1-rho^2)*W_orth, with W_orth globally orthogonal to W_base and equal Frobenius norm; same W_rho across paired curriculum conditions",
+  "primary_metric": "performance-aligned 80%-to-20% common-NLL hitting-time span difference",
+  "primary_contrasts": ["target25-A_nat", "target25-wrong25"],
+  "stage1_pass_rule_per_rho": "expected negative mean span difference in all 5 families; exact family sign-flip p<=0.05",
+  "alignment_gradient_rule": "(target-A_nat span at rho=1) - (target-A_nat span at rho=0) < 0 in all 5 families",
+  "predeclared_stage2_localization": "if rho=0.5 passes target-vs-A_nat, test rho=0.25; otherwise test rho=0.75. Stage2 is threshold localization, not an independent confirmatory p-value.",
+  "compute_minimization": "one seed per family; base and three A curricula trained once per family then reused across rho values"
+}
