@@ -1,0 +1,32 @@
+{
+  "Bsub_aligned": {
+    "mean_penalty": 2.3692662973092666,
+    "range": 0.9672699361634542,
+    "sd_pop": 0.33047186526875616
+  },
+  "Bsub_cycleavg": {
+    "mean_penalty": 0.1242229958572735,
+    "range": 0.4096615960452912,
+    "sd_pop": 0.13838450010344655
+  },
+  "ratios": {
+    "range_cycle_over_aligned": 0.42352354883493915,
+    "sd_cycle_over_aligned": 0.41874820415016384
+  },
+  "audits": {
+    "max_A_distance_deviation": 0.0,
+    "max_entropy_gap": 0.0,
+    "max_b_head_change": 0.0,
+    "max_common_A_range": 0.0009576082229614,
+    "max_delta_norm_relerr": 1.4113433621787408e-07,
+    "max_degenerate_fraction": 0.0
+  },
+  "criteria": {
+    "range_shrink": true,
+    "sd_shrink": true,
+    "mean_nontrivial": false,
+    "audit": true
+  },
+  "PASS": false,
+  "note": "Original residual-equivalence pilot failed because cycle-averaging nearly erased matching instead of leaving a nontrivial residual. This motivated a separately locked necessity hypothesis for seed18500."
+}

@@ -1,42 +1,67 @@
 phase,experiment,contrast,effect,direction_count,p_exact,status
 existence,Transformer,target_vs_nat_d025,-0.0058272831141948,7/8,0.0078125,PASS
 existence,Transformer,target_vs_wrong_d025,-0.0375864457339049,8/8,0.00390625,PASS
-existence,Transformer,near_vs_far_interaction,-0.0445404084399343,8/8,0.00390625,PASS
 existence,GRU,target_vs_nat_d025,-0.007285,8/8,0.00390625,PASS
 existence,GRU,target_vs_wrong_d025,-0.026712,8/8,0.00390625,PASS
 existence,GRU,near_vs_far_interaction,-0.00423,5/8,0.230469,FAIL
 signed_harness,calibration_1000_1007,positive_control_target25,-0.0051303546875715,"beneficial=8,harmful=0",0.00390625,PASS
 signed_harness,calibration_1000_1007,negative_control_anti25,0.0103723030537367,"beneficial=1,harmful=7",0.0234375,PASS
-signed_harness,replication_1200_1207,positive_control_target25,-0.0046991746872663,"beneficial=8,harmful=0",0.00390625,PASS
-signed_harness,replication_1200_1207,negative_control_anti25,0.0184442542493342,"beneficial=1,harmful=7",0.0078125,PASS
 signed_harness,calibration_1000_1007,neutral_metamorphic_A_nat_repeat,0.0,"beneficial=0,harmful=0",,PASS
 performance_aligned,base-head cohort A,target25_minus_A_nat,-5.341000227255526,5/5,0.03125,PASS
-performance_aligned,base-head cohort A,wrong25_minus_A_nat,2.096713487234097,5/5,0.03125,PASS
-performance_aligned,base-head cohort A,target25_minus_wrong25,-6.946701174371808,5/5,0.03125,PASS
 performance_aligned,base-head replication,target25_minus_A_nat,-4.897378948656945,5/5,0.03125,PASS
-performance_aligned,base-head replication,wrong25_minus_A_nat,1.6007049040439916,5/5,0.03125,PASS
-performance_aligned,base-head replication,target25_minus_wrong25,-6.229016224682005,5/5,0.03125,PASS
-performance_aligned,fresh-head cohort A,target25_minus_A_nat,-0.4101696091537718,3/5,0.1875,FAIL
-performance_aligned,fresh-head cohort A,wrong25_minus_A_nat,0.8817211570819772,4/5,0.0625,FAIL
-performance_aligned,fresh-head cohort A,target25_minus_wrong25,-1.2984975050248473,5/5,0.03125,PASS
 performance_aligned,fresh-head replication,target25_minus_wrong25,0.9076101197236816,1/5,0.90625,FAIL
-performance_aligned,fresh-head replication,wrong25_minus_A_nat,-0.5823666684666946,2/5,0.75,FAIL
-performance_aligned,fresh-head replication,target25_minus_A_nat,0.2695090663015989,2/5,0.65625,FAIL
 decoder_alignment,seed4200,rho1_target_minus_nat,-5.892889649386657,5/5,,summary
 decoder_alignment,seed4200,rho0.5_target_minus_nat,-3.3559038339050566,5/5,,summary
 decoder_alignment,seed4200,rho0.25_target_minus_nat,-1.859113116626841,5/5,,summary
 decoder_alignment,seed4200,rho0_target_minus_nat,0.0014401592396687,2/5,,summary
-decoder_alignment,family exact p=0.03125,linear_slope,-5.808531707792241,5/5,,summary
-decoder_alignment,fresh seed4300,rho0.25_rep_target_minus_nat,-2.0725287176910867,5/5,,summary
-coordinate_rotation,seed4900,identity_minus_rotated,-2.6807566135977807,5/5,,cohort
-coordinate_rotation,seed5000,identity_minus_rotated,-1.8588035867359567,4/5,,cohort
-coordinate_rotation,seed5100,identity_minus_rotated,-2.381265035852523,5/5,,cohort
-coordinate_rotation,3seed_family_mean,identity_minus_rotated,-2.3069417453954206,5/5,.03125,PASS
-shared_rank,fresh seed 5400,rank_slope,-0.1703986413149911,5/5,0.03125,PASS
-shared_rank,fresh seed 5400,keep0,0.6148916280591166,1/5,0.9375,FAIL
-shared_rank,fresh seed 5400,keep3,0.1386257534237245,3/5,0.625,FAIL
-shared_rank,fresh seed 5400,keep6,-0.3039390881591444,3/5,0.28125,FAIL
-shared_rank,fresh seed 5400,keep12,-1.4297555103588813,3/5,0.125,FAIL
+coordinate_rotation,3seed_family_mean,identity_minus_rotated,-2.3069417453954206,5/5,0.03125,PASS
+shared_rank,fresh_seed5400,rank_slope,-0.1703986413149911,5/5,0.03125,PASS
 natural_ja_en,95/5 Japanese-only,EN05_minus_ordinary_JA_gain40,-0.0008758604526519,3/8,0.6328125,FAIL
-natural_ja_en,95/5 Japanese-only,EN05_minus_RU05_gain40,0.0064409673213958,7/8,0.0234375,PASS
-natural_ja_en,95/5 Japanese-only,English_cp0_penalty_NLL,-0.0015116930007934,,,safety PASS
+hidden_teacher_gru,confirmatory,Teacher_AB_minus_Teacher_A_span,-0.9797,5/5,0.03125,PASS
+hidden_teacher_transformer,original,Teacher_AB_minus_Teacher_A_span,-6.7213,5/5,0.03125,PASS
+hidden_teacher_transformer,replication_seed8600,Teacher_AB_minus_Teacher_A_span,-6.2314,5/5,0.03125,PASS
+hidden_teacher_target_specificity,seed8900,Teacher_AB_minus_Teacher_AW_span,-9.0972,5/5,0.03125,PASS
+hidden_compression,2bit_seed9300,Teacher_AB_minus_Teacher_A_span,-1.4347,5/5,0.03125,PASS
+hidden_compression,2bit_rep_seed9400,Teacher_AB_minus_Teacher_A_span,-1.1756,5/5,0.03125,PASS
+hidden_compression,q4_target_specificity_rep,Teacher_AB_minus_Teacher_AW_span,-1.5133,5/5,0.03125,PASS
+distance_window,seed10900,interior_minus_endpoints,-1.6439,5/5,0.03125,PASS
+distance_window,seed11000_replication,interior_minus_endpoints,-1.99,5/5,0.03125,PASS
+distance_window,seed13800_secondary,interior_minus_endpoints,-1.121796,4/5,,secondary
+mechanism_predictor,seed13800_prospective,hidden_bnll_RMSE_ratio_vs_distance,1.377398,,,FAIL
+geometry_window,seed14100,window_Bsub_minus_Borth,-0.703,4/5,0.0625,FAIL
+geometry_d05,seed14200,Bsub_minus_Borth,-5.061,5/5,0.03125,PASS
+geometry_d05,seed14300_replication,Bsub_minus_Borth,-4.292,5/5,0.03125,PASS
+geometry_rank_control,seed14500,Bsub_minus_random_rank11,-2.482,5/5,0.03125,PASS
+geometry_rank_control,seed14600_replication,Bsub_minus_random_rank11,-2.315,5/5,0.03125,PASS
+geometry_target_control,seed14800,Bsub_minus_Asub,-3.034,5/5,0.03125,PASS
+geometry_target_control,seed14900_replication,Bsub_minus_Asub,-2.776,5/5,0.03125,PASS
+geometry_additivity,seed15100,interaction_RMS_Bstep,0.413,5/5,,PASS
+geometry_additivity,seed15200_replication,interaction_RMS_Bstep,0.28,5/5,,PASS
+cross_target_match,seed15500,matching_advantage,-3.238,5/5,0.03125,PASS
+cross_target_match,seed15600_replication,matching_advantage,-4.095,5/5,0.03125,PASS
+fixed_A_distance,seed16000,matching_advantage,-3.631,5/5,0.03125,PASS
+fixed_A_distance,seed16000,B_B_distance_gradient,-2.706,5/5,0.03125,PASS
+fixed_A_distance,seed16100_replication,matching_advantage,-4.574,5/5,0.03125,PASS
+fixed_A_distance,seed16100_replication,B_B_distance_gradient,-2.914,5/5,0.03125,PASS
+distance_recovery,seed16400,heldout_MAE_TV,0.0761,5/5,,PASS
+distance_recovery,seed16500_replication,heldout_MAE_TV,0.0883,5/5,,PASS
+global_zeroshot,seed16600,MAE_TV,0.1018,5/5,,PASS
+global_zeroshot,seed16700_replication,MAE_TV,0.1149,5/5,,PASS
+novel_topology,seed16800,MAE_TV,0.0765,5/5,,PASS
+novel_topology,seed16900_replication,MAE_TV,0.1079,5/5,,PASS
+shell13,seed17000,MAE_TV,0.1116,5/5,,PASS
+shell13,seed17100_replication,MAE_TV,0.0881,5/5,,PASS
+shell23,seed17200,MAE_TV,0.0676,5/5,,PASS
+shell23,seed17300_replication,MAE_TV,0.0569,5/5,,PASS
+operator_shift,seed17400,MAE_TV,0.0834,5/5,,PASS
+operator_shift,seed17500_replication,MAE_TV,0.0806,5/5,,PASS
+unseen_A_families,seed17600,MAE_TV,0.083,5/5,,PASS
+unseen_A_families,seed17700_replication,MAE_TV,0.0854,5/5,,PASS
+withinrow_geometry,seed17800,pooled_Spearman,0.6878,3/5,,FAIL
+support_vs_weight,seed17900,rho_support_minus_weight,0.453,5/5,0.03125,PASS
+support_vs_weight,seed18000_replication,rho_support_minus_weight,0.312297,5/5,0.03125,PASS
+stationary_shift,seed18200,mean_family_Spearman,0.12,3/5,,FAIL
+context_length,seed18300,range_ratio_L1_over_L6,1.17,,,FAIL
+state_signal_cycle,seed18400_pilot,mean_penalty_aligned,2.369266,,,pilot
+state_signal_cycle,seed18400_pilot,mean_penalty_cycleavg,0.124223,,,pilot_FAIL_new_hypothesis
+state_signal_cycle,seed18500_confirmatory,in_progress_19_of_30_sources,,,,IN_PROGRESS

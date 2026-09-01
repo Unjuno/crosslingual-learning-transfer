@@ -1,0 +1,18 @@
+{
+  "updated_at": "2026-09-01 JST",
+  "active_experiment": "state-to-teacher-signal binding confirmatory",
+  "seed": 18500,
+  "status": "IN_PROGRESS",
+  "completed_source_jobs": 19,
+  "total_source_jobs": 30,
+  "completed": {
+    "family0": "6/6",
+    "family1": "6/6",
+    "family2": "6/6",
+    "family3": "1/6",
+    "family4": "0/6"
+  },
+  "aggregation_performed": false,
+  "claim_counted_as_evidence": false,
+  "note": "The five-family primary is intentionally not evaluated until all locked jobs are complete. No threshold or intervention changes are allowed."
+}

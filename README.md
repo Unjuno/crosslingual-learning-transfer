@@ -1,84 +1,117 @@
 # Crosslingual Learning Transfer
 
-**Can learning system A make system B easier — or harder — to learn later, even when B is not shown during the A-only curriculum intervention?**
+**Can learning system A make system B easier — or harder — to learn later, even when B is not shown during the A-only intervention?**
 
 This repository collects controlled neural-network experiments on that question. It is an **experimental evidence snapshot**, not a finished curriculum method and not evidence about human language learning.
 
-## What this repository shows
+## Current headline
 
-In the documented synthetic systems, prior A-only learning can move later B learning in either direction:
+The project has moved beyond an existence test. In the documented synthetic Transformer/GRU systems:
 
-- **positive transfer:** a target-compatible A curriculum can improve later B learning,
-- **negative transfer:** a target-incompatible A curriculum can make later B learning worse,
-- **neutral control:** repeating the same A curriculum produces exactly zero paired difference in the calibrated harness.
+- A-only learning can create **positive, neutral, or negative** later-B transfer.
+- Stable sample-efficiency transfer depends on **shared / B-decodable representation geometry**, not only on starting loss.
+- A teacher-mediated A-side hidden signal can carry target-specific information without exposing B examples to the Student during phase 1.
+- Transfer-derived dissimilarity can recover held-out B-B structural distances across fresh seeds, unseen overlap topologies, changed A-distance shells, a changed transition operator, and unseen A-family templates.
+- That behavioral distance is **not a generic total-variation metric**: it is much more sensitive to transition-support changes than to probability-weight rearrangements on a fixed support.
+- Several simple mechanistic reductions have failed, including scalar distance laws, stationary-distribution shift, fixed row weights, and long-sequence context as the sole explanation.
 
-The strongest current mechanism result is that stable sample-efficiency transfer depends on **shared A/B representation coordinates**. The effect weakens as decoder alignment is removed, is strongly reduced by geometry-preserving coordinate rotation, and shifts in a favorable direction as more shared latent rank is preserved.
+The strongest current interpretation is therefore a **signed, directed, learner-conditioned structural transfer geometry**, not a universal symmetric language-distance scalar.
 
-This does **not** imply a universal scalar language distance or a proven language-teaching recipe.
-
-## Why this matters
-
-The research object is better described as a **signed, directed learning-transfer relation** than as a symmetric language-similarity score. If the phenomenon survives future natural-language and larger-model tests, it would motivate curricula designed not only to teach the current task, but also to avoid harmful internal states and potentially prepare reusable structure for later tasks.
-
-That application remains a hypothesis. The current contribution is the controlled experimental evidence and mechanism constraints.
-
-## Current evidence
+## Selected current evidence
 
 | Result | Status | Main evidence |
 |---|---|---|
-| A-only target-compatible curricula can improve later B learning in a controlled NN system | **Supported** | Transformer: 7/8 fresh seeds at d=.25, p=.0078125; GRU: 8/8, p=.00390625 |
-| A-only target-incompatible curricula can harm later B learning | **Supported** | GRU signed-transfer calibration and independent replication |
-| Target-compatible structure beats a source-distance/entropy/margin-matched wrong structure at moderate distance | **Supported** | d=.125/.25/.50: 8/8 fresh seeds for target vs matched-wrong |
-| Later-B sample efficiency differs after aligning comparisons to the same B-performance interval | **Supported conditionally** | Base-head coordinate retained: 5/5 kernel families in two cohorts |
-| The effect survives a fully fresh/random B decoder | **Not supported** | Fresh-head replication failed |
-| Transfer strength depends on retained A/B decoder alignment | **Supported in synthetic GRU** | rho 1.0 -> .5 -> .25 -> 0 produces monotone weakening in 5/5 families; rho=.25 replicated |
-| Cross-task latent-coordinate orientation matters | **Supported in synthetic GRU** | Geometry-preserving B-state rotation largely removes the effect; 3-seed family adjudication 5/5 |
-| Increasing preserved shared latent rank shifts transfer in a favorable direction | **Supported in synthetic GRU** | random nested rank 0/3/6/12: slope negative in 5/5 families, p=.03125 |
-| A 95% ordinary Japanese + 5% English-motif-selected Japanese curriculum accelerates English over ordinary Japanese | **Not supported** | gain comparison 3/8, p=.6328125 |
+| A-only target-compatible curricula can improve later B learning | **Supported** | Transformer 7/8 fresh seeds at d=.25; GRU 8/8 |
+| Target-incompatible A curricula can harm later B learning | **Supported** | signed-transfer calibration + independent replication |
+| Performance-aligned transfer depends on shared coordinates | **Supported** | base-coordinate cohorts replicated; completely fresh B-head result did not replicate |
+| Teacher hidden(A) from an A+B teacher improves later B learning vs A-only teacher | **Supported** | GRU 5/5; Transformer confirmatory + independent replication |
+| Very low-bandwidth teacher hidden signals retain transfer | **Supported conditionally** | 2D/quantized hidden-signal studies; target-specific q4 later-B contrasts replicated |
+| Entropy-matched distance has an interior transfer window | **Supported in two confirmatory cohorts** | seeds 10900 and 11000: 5/5 families, p=.03125 each; later opportunistic cohort 4/5 |
+| B-decodable hidden subspace causally amplifies transfer | **Supported** | Bsub vs Borth, equal-rank random, and equal-rank A-head controls; confirmatory + replication |
+| A fixed transfer->distance calibration recovers unseen B-B distances | **Supported in the tested synthetic family** | zero-shot cohorts across seeds/topology/shell/operator/unseen A families; MAE roughly .06-.11 TV |
+| Transfer distance is equally sensitive to all TV components | **Not supported** | within-row geometry failed; SUPPORT > WEIGHT replicated 5/5, p=.03125 |
+| Stationary-distribution shift explains fixed-support-count residuals | **Not supported** | fresh seed18200 mean family Spearman=.12, 3/5 positive |
+| Long sequence context is the main source of identity residuals | **Not supported** | L=6 -> L=1 did not reduce residual dispersion |
+| Stable state-to-teacher-signal binding is required for matching transfer | **Promising, not yet confirmed** | seed18400 pilot: cycle-averaging reduced mean matching penalty 2.369 -> .124 B-step; seed18500 confirmatory is in progress |
+| Natural Japanese -> English acceleration over ordinary Japanese | **Not supported** | preregistered 95/5 gain comparison failed |
 
-Lower AUC / fewer B steps means better later-B learning in the reported experiments.
+Lower AUC / fewer B steps means better later-B learning in the reported sample-efficiency experiments.
 
-The compact cross-phase table is in [`results/evidence_summary.csv`](results/evidence_summary.csv). PASS and FAIL outcomes are kept together rather than filtering to positive findings.
+The compact cross-phase ledger is in [`results/evidence_summary.csv`](results/evidence_summary.csv). Positive findings and failures are intentionally kept together.
 
-## Current interpretation
-
-The evidence does not support a universal "learn faster" ability. A more precise interpretation is:
+## Current mechanism picture
 
 ```text
-A-only curriculum
-      |
-      v
-target-helpful / neutral / target-harmful state
-      |
-      v
-later B learning
-      |
-      +-- effect depends on shared A/B representation coordinates
+A-only input
+   |
+   v
+teacher-conditioned hidden signal on A
+   |
+   +--> amount/bandwidth matters somewhat
+   |
+   +--> B-decodable subspace placement matters strongly
+   |
+   +--> persistent state <-> signal-direction binding may matter
+   v
+Student representation after phase 1
+   |
+   v
+later B learning speed
 ```
 
-With a retained base coordinate system, target-compatible curricula cross the same B-performance interval in fewer B updates across five kernel families and an independent cohort. When the B decoder is completely fresh/random, that stable cross-family advantage does not replicate.
+A second, related line treats later-learning behavior as a probe of task structure:
 
-## Earlier structural-surrogate result
+```text
+source teacher B_s
+      |
+      v
+A-side teacher signal -> Student
+      |
+      v
+later target B_t learning
+      |
+      v
+matching synergy / transfer penalty
+      |
+      +--> predicts support-sensitive B_s <-> B_t dissimilarity
+```
 
-Character-level six-language experiments showed that exact directed-bigram-preserving surrogates reproduce the natural transfer topology much more strongly and consistently than unigram/degree-margin-preserving controls. For example, BG0 vs BG1 raw Cspec topology rho was 0.928, whereas UNI0 vs UNI1 was 0.454.
+This behavioral dissimilarity generalizes surprisingly well within the synthetic setup, but it is not yet an exact metric and does not uniformly recover fine probability-weight differences.
 
-The UNI controls preserve exact unigram counts and directed bigram in/out degree margins, so the relevant contrast is more accurately **specific joint source->target transition coupling versus marginal/degree structure**. This supports a role for directed transition structure, but **does not establish bigram sufficiency** or a complete scalar distance mechanism.
+## Important negative results
+
+The project deliberately retains failed hypotheses. Among the more informative failures:
+
+- a simple monotonic scalar distance law,
+- surface-only target-specific teaching as a robust mechanism,
+- boundary-cut / special-row scalar explanations,
+- first-order gradient-alignment prediction,
+- a prospective hidden-MSE + teacher-B-NLL mechanism predictor,
+- full distance-window explanation by Bsub geometry alone,
+- strict monotonic 5x5 TV recovery,
+- general TV recovery when distance comes mostly from within-support probability rearrangement,
+- stationary-distribution shift as the fixed-support-count mechanism,
+- fixed additive row weights,
+- multi-token context as the sole identity-residual mechanism.
+
+These failures narrow the mechanism toward **state/successor-specific representation and optimization interactions**.
 
 ## Natural-language status
 
-A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend was safe for Japanese and did not damage English starting loss on average, and it differed from a Russian-target control, but it **did not establish positive acceleration over ordinary Japanese**.
+A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
 
-Human learning and large-production-LLM generality remain untested.
+Human learning, large production LLMs, and natural-language generality remain untested.
 
 ## Repository map
 
-- `docs/CLAIMS_AND_LIMITATIONS.md` — claim ledger: supported facts, inference, and uncertainty.
-- `docs/EXPERIMENT_LOG.md` — chronological experiment sequence and decision points.
-- `docs/REPRODUCIBILITY.md` — environment assumptions, determinism, and data boundaries.
-- `docs/TEST_HARNESS.md` — positive/neutral/negative controls and the statistical-harness bug that was found and corrected.
-- `experiments/` — representative executed experiment snapshots across surrogate, curriculum, natural-language, and mechanism phases.
-- `protocols/` — locked confirmatory/mechanism protocol JSON files.
-- `results/` — compact summary CSVs, including positive findings, failures, and replication failures.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — current claim ledger.
+- `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
+- `docs/RECENT_RESULTS_2026-09-01.md` — compact update for the hidden-transfer/distance/mechanism sequence.
+- `docs/REPRODUCIBILITY.md` — environment assumptions and data boundaries.
+- `docs/TEST_HARNESS.md` — controls and harness audits.
+- `experiments/` — representative execution snapshots.
+- `protocols/` — selected locked protocols, including current state-signal binding tests.
+- `results/` — compact PASS/FAIL summaries; large raw logs/checkpoints are excluded.
 
 ## Reproduction
 
@@ -86,13 +119,13 @@ Human learning and large-production-LLM generality remain untested.
 python -m pip install -r requirements.txt
 ```
 
-The scripts are execution snapshots rather than a polished library. Several retain `/mnt/data/...` paths from the original container; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them. Natural-language experiments require the original external corpus environment, which is not redistributed here.
+The scripts are execution snapshots rather than a polished library. Several retain `/mnt/data/...` paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
 
 ## Scope and claim discipline
 
-**Supported:** controlled neural-network existence and mechanism results under the documented synthetic setups.
+**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, and support-sensitive behavioral distance recovery under the documented setups.
 
-**Not supported:** a universal language-distance law, bigram sufficiency, decoder-independent universal meta-learning, a proven Japanese curriculum for faster English acquisition, human-learning effects, or generality to large production LLMs.
+**Not supported:** a universal language-distance law, exact metric structure, decoder-independent universal meta-learning, a proven natural-language curriculum, human-learning effects, or generality to large production LLMs.
 
 ## Data and licensing
 

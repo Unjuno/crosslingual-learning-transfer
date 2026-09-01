@@ -1,0 +1,23 @@
+{
+  "seed": 18000,
+  "support_summary": {
+    "pooled_mae": 0.06766350297235518,
+    "pooled_spearman": 0.8852095126845994,
+    "pooled_within_family_order_accuracy": 0.9505376344086022,
+    "primary_pass": true
+  },
+  "weight_summary": {
+    "pooled_mae": 0.06182930697200189,
+    "pooled_spearman": 0.5059103254753414,
+    "pooled_within_family_order_accuracy": 0.7421875,
+    "primary_pass": false
+  },
+  "family_rho_support": [0.9684150215673952,0.8942000386061556,0.9684150215673952,0.9720352646386752,0.9050607678199956],
+  "family_rho_weight": [0.6618973023925165,0.6440081861116377,0.7399466761649756,0.31513094857117907,0.7856581236509218],
+  "family_delta_rho": [0.3065177191748787,0.2501918524945179,0.22846834540241967,0.6569043160674961,0.11940264416907376],
+  "mean_delta_rho": 0.31229697546167723,
+  "positive_delta_families": 5,
+  "exact_one_sided_sign_p": 0.03125,
+  "audits_pass_both": true,
+  "primary_adjudication_pass": true
+}

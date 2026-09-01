@@ -1,0 +1,12 @@
+{
+  "seed": 18200,
+  "primary_pass": false,
+  "positive_rho_families": 3,
+  "mean_family_spearman": 0.12,
+  "mean_family_identity_range": 1.1644770844608179,
+  "pooled_centered_spearman": 0.19615384615384615,
+  "pooled_centered_pearson": 0.24834261837871446,
+  "all_audits_pass": true,
+  "family_spearman_stationary": [0.8,-0.5,-0.6,0.8,0.1],
+  "interpretation": "The exploratory stationary-distribution hypothesis did not replicate across families. No rescue seed was used."
+}
