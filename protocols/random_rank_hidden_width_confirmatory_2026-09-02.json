@@ -1,0 +1,27 @@
+{
+  "experiment": "random_rank_hidden_width_confirmatory",
+  "date_jst": "2026-09-02",
+  "status": "LOCKED_BEFORE_FRESH_OUTCOMES",
+  "motivation": "Exploratory cohorts showed repeated 4/5 family slope signs at H=32 versus 5/5 at H=48. This protocol tests a fresh-seed worst-family stability claim without changing the original random-rank metric.",
+  "fresh_seeds": [20000, 20100, 20200, 20300, 20400],
+  "families": [0, 1, 2, 3, 4],
+  "hidden_widths": [32, 48],
+  "keep_dims": [0, 3, 6, 12],
+  "state_embedding_dim": 32,
+  "decoder_alignment_rho": 0.25,
+  "metric": "For each width/seed/family, compute target25 minus A_nat 80-20 performance-aligned span at each keep_dim, then OLS slope r_{s,H,f} versus keep_dim. More negative is stronger rank-dependent transfer benefit.",
+  "seed_statistic": "M_{s,H}=max_f r_{s,H,f}; D_s=M_{s,32}-M_{s,48}. D_s>0 means the narrow H=32 learner has a worse least-stable family than H=48.",
+  "primary_pass": [
+    "D_s > 0 for all 5 fresh seeds; exact one-sided seed sign p=0.03125",
+    "M_{s,48} < 0 for all 5 fresh seeds",
+    "all intervention audits pass"
+  ],
+  "audit_thresholds": {
+    "max_orth_err": 0.000002,
+    "keep12_retained_energy_abs_error": 0.00001,
+    "keep0_retained_energy_abs": 0.00000001
+  },
+  "stopping": "Exactly the five listed seeds; no rescue seeds, width changes, family exclusions, or threshold changes.",
+  "interpretation_if_pass": "Evidence that learner hidden capacity conditions worst-family stability of the shared-coordinate rank transfer mechanism in this synthetic GRU setup. Does not establish a sharp H=48 threshold, a learner-independent language metric, or natural-language/LLM generality.",
+  "interpretation_if_fail": "Do not claim confirmed hidden-width conditioning from the exploratory boundary pattern; retain the exploratory result as hypothesis-generating only."
+}
