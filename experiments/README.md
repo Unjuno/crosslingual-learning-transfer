@@ -20,7 +20,19 @@ These files are representative snapshots from the executed research sequence. Th
 
 ## Hidden-teacher / state-binding phase
 
-- `state_signal_cycle_adjudication.py` — L=1 Transformer intervention that preserves Bsub signal norm while cycle-averaging state-to-signal-direction assignment. Used for the seed18400 pilot and the locked seed18500 follow-up.
+- `state_signal_cycle_adjudication.py` — L=1 Transformer intervention that preserves Bsub signal norm while cycle-averaging state-to-signal-direction assignment. The default execution is the locked seed18500 follow-up; use explicit environment variables to reproduce the earlier seed18400 pilot.
+- `run_state_signal_cycle_confirmatory.py` — locked 5-family × 6-source seed18500 launcher. It forces all six targets, validates resumable 12-row source outputs, and runs the confirmatory adjudicator after all jobs finish.
+- `state_signal_cycle_confirmatory_adjudicator.py` — standard-library-only implementation of every locked seed18500 PASS/audit gate. Complete negative outcomes return `FAIL`; incomplete or malformed data return `UNCERTAIN` rather than being interpreted scientifically.
+
+### Reproducibility blocker for the representative hidden-teacher snapshot
+
+`state_signal_cycle_adjudication.py` depends on three archived helper snapshots that are not currently published in this repository:
+
+- `teacher_hidden_entropy_matched_distance_transformer.py`
+- `teacher_hidden_geometry_intervention.py`
+- `support_stationary_matrix.py`
+
+The confirmatory runner fails before launching jobs when these files are absent. This is deliberate: reconstructed or behaviorally similar replacements must not be substituted into a locked confirmatory rerun. Restore the exact executed helper snapshots first; only then rerun seed18500.
 
 The broader hidden-teacher and distance-recovery sequence contains many execution variants; rather than publish every near-duplicate script, the repository keeps the current representative implementation plus compact protocols/results and a chronological log in `docs/EXPERIMENT_LOG.md`.
 
