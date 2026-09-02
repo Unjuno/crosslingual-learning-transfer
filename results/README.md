@@ -19,6 +19,9 @@ Compact CSV summaries used by the repository claim ledger. Positive, negative, n
 - `coordinate_alignment_cross_cohort_summary.csv` — identity versus geometry-preserving coordinate rotation.
 - `shared_coordinate_mechanism_summary.csv` — subspace, partial-rank, top/bottom, and random-rank mechanism tests.
 - `random_rank_primary_tests.csv` — preregistered random-rank primary slope and per-rank descriptive tests.
+- `random_rank_hidden_width_summary.csv` — exploratory cohort-level rank slopes across GRU hidden widths and seeds.
+- `random_rank_hidden_width_family_slopes.csv` — family-level slopes and per-rank effects for the width sweep.
+- `random_rank_hidden_width_audit_summary.csv` — orthogonality and retained-state-energy audits for the width sweep.
 
 ## Structural surrogate phase
 
