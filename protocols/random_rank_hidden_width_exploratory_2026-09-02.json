@@ -1,0 +1,42 @@
+{
+  "experiment": "random_rank_hidden_width_exploratory",
+  "date_jst": "2026-09-02",
+  "status": "EXPLORATORY_WITH_ADAPTIVE_FOLLOWUPS",
+  "locked_before_all_results": false,
+  "base_experiment": "random_rank_state_alignment_gru",
+  "unchanged_settings": {
+    "state_embedding_dim": 32,
+    "keep_dims": [0, 3, 6, 12],
+    "decoder_alignment_rho": 0.25,
+    "metric": "80-20 performance-aligned target25 minus A_nat span",
+    "family_slope": "OLS slope of target effect versus keep_dim; more negative means preserved shared rank increasingly improves later-B sample efficiency"
+  },
+  "sequence": [
+    {
+      "stage": 1,
+      "seed": 5400,
+      "hidden_widths": [32, 64, 128],
+      "note": "Width perturbation around the original H=64 preregistered cohort. H=64 reproduces the published baseline; H=32 and H=128 are exploratory."
+    },
+    {
+      "stage": 2,
+      "seed": 5500,
+      "hidden_widths": [32, 64, 128],
+      "note": "Fresh-seed exploratory replication selected before observing seed5500 outcomes."
+    },
+    {
+      "stage": 3,
+      "seed": 5500,
+      "hidden_widths": [48, 96],
+      "note": "Adaptive width refinement added after H=32 showed a 4/5-family sign result. Not confirmatory."
+    },
+    {
+      "stage": 4,
+      "seed": 5600,
+      "hidden_widths": [32, 48],
+      "note": "Fresh diagnostic comparison fixed after the seed5500 boundary observation: test whether H=32 remains less familywise stable than H=48."
+    }
+  ],
+  "interpretation_rule": "Do not claim a sharp universal threshold. Treat repeated 4/5 at H=32 versus repeated 5/5 at H>=48 in tested cohorts as evidence that the shared-coordinate rank effect is learner-capacity-conditioned at low hidden width.",
+  "no_rescue_claim": true
+}
