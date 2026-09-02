@@ -64,4 +64,8 @@ stationary_shift,seed18200,mean_family_Spearman,0.12,3/5,,FAIL
 context_length,seed18300,range_ratio_L1_over_L6,1.17,,,FAIL
 state_signal_cycle,seed18400_pilot,mean_penalty_aligned,2.369266,,,pilot
 state_signal_cycle,seed18400_pilot,mean_penalty_cycleavg,0.124223,,,pilot_FAIL_new_hypothesis
-state_signal_cycle,seed18500_confirmatory,in_progress_19_of_30_sources,,,,IN_PROGRESS
+state_signal_cycle,seed18500_confirmatory,blocked_missing_exact_helper_snapshots,,,,BLOCKED_NOT_COUNTED
+learner_width,seed20000_20400,H32_worst_minus_H48_worst_D_gt_0,,1/5,,FAIL
+prestate_predictor,seed21000_21400,pooled_centered_state_effective_rank_Spearman,0.036350540216086434,"seed_rho_negative=3/5",,FAIL
+shared_rank_transformer,seed22000,rank_slope,-0.3821295692347705,5/5,0.03125,PASS
+shared_rank_transformer,seed22100,rank_slope,-0.25271927803737776,5/5,0.03125,PASS
