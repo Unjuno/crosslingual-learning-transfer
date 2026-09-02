@@ -1,0 +1,28 @@
+name: State-signal adjudicator tests
+
+on:
+  pull_request:
+    paths:
+      - "experiments/state_signal_cycle_confirmatory_adjudicator.py"
+      - "experiments/test_state_signal_cycle_confirmatory*.py"
+      - ".github/workflows/state-signal-adjudicator-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "experiments/state_signal_cycle_confirmatory_adjudicator.py"
+      - "experiments/test_state_signal_cycle_confirmatory*.py"
+      - ".github/workflows/state-signal-adjudicator-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run locked-protocol adjudicator tests
+        run: python -m unittest discover -s experiments -p 'test_state_signal_cycle_confirmatory*.py' -v
