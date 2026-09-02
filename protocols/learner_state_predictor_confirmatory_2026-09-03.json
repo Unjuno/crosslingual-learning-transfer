@@ -1,0 +1,46 @@
+{
+  "experiment": "learner_state_predictor_confirmatory",
+  "date_jst": "2026-09-03",
+  "status": "LOCKED_BEFORE_FRESH_OUTCOMES",
+  "question": "Can a quantity measured before the A-only curriculum predict familywise variation in the later random-rank transfer slope, including seed-dependent sign instability?",
+  "architecture": "GRU",
+  "historical_selector_data": {
+    "seeds": [5400, 5500, 5600, 20000, 20100, 20200, 20300, 20400],
+    "widths": "all H=32/48/64/96/128 cells already observed before this protocol; no post-2026-09-03 outcomes",
+    "role": "candidate selection only; not confirmatory evidence"
+  },
+  "fresh_seeds": [21000, 21100, 21200, 21300, 21400],
+  "fresh_hidden_widths": [32, 48],
+  "families": [0, 1, 2, 3, 4],
+  "keep_dims": [0, 3, 6, 12],
+  "fixed_model_settings": {
+    "state_embedding_dim": 32,
+    "decoder_alignment_rho": 0.25,
+    "base_steps": 120,
+    "curriculum_steps": 100,
+    "B_steps": 60,
+    "batch_size": 24,
+    "context": 24,
+    "optimizer": "AdamW lr=2e-3 weight_decay=0",
+    "deterministic": true
+  },
+  "outcome": "r_{s,H,f}: OLS slope of target25-minus-A_nat 80-20 performance-aligned span versus keep_dim. More negative means stronger rank-dependent transfer benefit.",
+  "candidate_predictors": {
+    "pre_rotation_gap": "Before any A-only curriculum, install the same rho=.25 aligned B head used by the rank experiment. On the fixed target-B evaluation batch, compute B_NLL(keep0 full state-coordinate rotation) - B_NLL(keep12 identity).",
+    "state_effective_rank": "Effective rank exp(-sum_i p_i log p_i), p_i=s_i^2/sum_j s_j^2, from singular values of the 12x32 base state-embedding matrix before curriculum.",
+    "B_hidden_effective_rank": "Effective rank of centered token-level GRU hidden states on the fixed target-B evaluation batch before curriculum, using identity B coordinates and the aligned B head; p_i from squared singular values.",
+    "initial_B_state_grad_norm": "L2 norm of gradient of target-B NLL with respect to the base state-embedding weight on the fixed target-B evaluation batch before curriculum, identity B coordinates, aligned B head."
+  },
+  "candidate_selection": "Within every historical (seed,width) block, center each candidate and r across its five families. Pool the centered cells and compute Spearman rho(candidate,r). Select the candidate with largest absolute rho; ties within 1e-12 use the listed candidate order. Freeze prediction direction to sign of that historical rho. No multivariate model or additional feature engineering is allowed.",
+  "fresh_primary_statistic": "On the 50 fresh cells, center selected predictor and r within each of the 10 (seed,width) five-family blocks. Compute pooled Spearman rho. Direction-adjusted rho = historical_sign * fresh_rho.",
+  "fresh_permutation_test": "Within each fresh (seed,width) block independently permute the five centered predictor values, recompute pooled direction-adjusted Spearman rho, and estimate a one-sided p-value with exactly 100000 Monte Carlo permutations using NumPy PCG64 seed 20260903; p=(1+#perm_stat>=observed)/(100001).",
+  "primary_pass": [
+    "direction-adjusted pooled fresh Spearman rho >= 0.30",
+    "one-sided block-permutation p <= 0.05",
+    "at least 7 of the 10 fresh (seed,width) blocks have within-block Spearman sign matching the frozen historical direction",
+    "all random-rank intervention audits pass"
+  ],
+  "stopping": "Exactly the five listed fresh seeds and two widths; no rescue seeds, candidate additions, multivariate combinations, threshold changes, or family exclusions.",
+  "interpretation_if_pass": "Evidence that a pre-curriculum learner-state quantity predicts part of the learner-conditioned variation in shared-coordinate transfer geometry in this synthetic GRU family.",
+  "interpretation_if_fail": "Do not claim a simple one-number pre-state predictor from these four candidates; retain learner dependence as established descriptively but mechanistically unresolved at this reduction level."
+}
