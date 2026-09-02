@@ -17,6 +17,17 @@ These files are representative snapshots from the executed research sequence. Th
 - `decoder_alignment_threshold_gru.py` — decoder cosine-alignment dose response.
 - `embedding_rotation_ablation_rho025_gru.py` — geometry-preserving B-state coordinate rotation.
 - `random_rank_state_alignment_gru.py` — shared latent-coordinate rank intervention.
+- `run_random_rank_hidden_width.py` — exploratory hidden-width wrapper that reuses the random-rank implementation while varying GRU width and seed.
+- `analyze_random_rank_hidden_width.py` — recomputes the locked 80-20 performance-aligned span, family rank slopes, and descriptive sign tests from width-sweep curve CSVs.
+
+Example width run:
+
+```bash
+HIDDEN_WIDTH=48 SEED=5600 FAMILY_ONLY=0 OUTDIR=/tmp/random_rank_width \
+python experiments/run_random_rank_hidden_width.py
+```
+
+The 2026-09-02 width sweep is explicitly exploratory/adaptive; see `protocols/random_rank_hidden_width_exploratory_2026-09-02.json` and `docs/RECENT_RESULTS_2026-09-02_WIDTH.md`.
 
 ## Hidden-teacher / state-binding phase
 
