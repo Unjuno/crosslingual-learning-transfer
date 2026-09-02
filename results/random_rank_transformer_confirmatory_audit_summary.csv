@@ -1,3 +1,0 @@
-seed,n_audit_rows,max_orth_err,max_keep12_retained_energy_abs_error,max_keep0_retained_energy_abs,pass
-22000,20,7.152557373046875e-07,4.383982443734169e-08,0.0,True
-22100,20,8.344650268554688e-07,7.824441317083597e-08,0.0,True
