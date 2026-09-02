@@ -92,6 +92,8 @@ def run_source(fam,seed,sidx,outdir):
     core.seed_all(seed+fam*1000)
     PA=core.shift_kernel(fam,0)
     changed=sm.changed_rows(fam)
+    if len(changed) != 6:
+        raise RuntimeError(f'locked CYCLEAVG protocol requires exactly 6 changed states, got {len(changed)}')
     PBs=[sm.B_from_code(PA,fam,c) for c in CODES]
     base_template=core.TinyT(); base_b_head=copy.deepcopy(base_template.heads[1].state_dict())
     base=copy.deepcopy(base_template)
@@ -124,5 +126,8 @@ def run_source(fam,seed,sidx,outdir):
     print(json.dumps({'family':fam,'source':sidx,'path':str(p),'rows':len(rows)}),flush=True)
 
 if __name__=='__main__':
-    fam=int(os.environ.get('FAMILY','0')); seed=int(os.environ.get('SEED','18400')); sidx=int(os.environ.get('SOURCE','0')); out=os.environ.get('OUTDIR','/mnt/data/teacher_hidden_state_signal_cycle_pilot_seed18400')
+    fam=int(os.environ.get('FAMILY','0'))
+    seed=int(os.environ.get('SEED','18500'))
+    sidx=int(os.environ.get('SOURCE','0'))
+    out=os.environ.get('OUTDIR',str(HERE.parent/'results'/'raw'/'state_signal_cycle_seed18500'))
     run_source(fam,seed,sidx,out)
