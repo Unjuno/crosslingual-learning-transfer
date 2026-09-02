@@ -6,16 +6,19 @@ This repository collects controlled neural-network experiments on that question.
 
 ## Current headline
 
-The project has moved beyond an existence test. In the documented synthetic Transformer/GRU systems:
+The synthetic mechanism-search phase is **frozen as of 2026-09-03**. The strongest supported interpretation is a **signed, directed, learner-conditioned, support-sensitive structural transfer geometry**, not a universal symmetric language-distance scalar.
+
+In the documented synthetic Transformer/GRU systems:
 
 - A-only learning can create **positive, neutral, or negative** later-B transfer.
 - Stable sample-efficiency transfer depends on **shared / B-decodable representation geometry**, not only on starting loss.
 - A teacher-mediated A-side hidden signal can carry target-specific information without exposing B examples to the Student during phase 1.
 - Transfer-derived dissimilarity can recover held-out B-B structural distances across fresh seeds, unseen overlap topologies, changed A-distance shells, a changed transition operator, and unseen A-family templates.
-- That behavioral distance is **not a generic total-variation metric**: it is much more sensitive to transition-support changes than to probability-weight rearrangements on a fixed support.
-- Several simple mechanistic reductions have failed, including scalar distance laws, stationary-distribution shift, fixed row weights, and long-sequence context as the sole explanation.
+- That behavioral distance is **not generic total variation**: it is much more sensitive to transition-support changes than to probability-weight rearrangements on a fixed support.
+- Shared-coordinate rank dependence replicated in two fresh **causal Transformer** cohorts, reducing concern that this mechanism is GRU-specific.
+- A proposed H=32 vs H=48 stability boundary **failed** fresh confirmation, and a simple pre-curriculum state-embedding effective-rank predictor also **failed** fresh confirmation.
 
-The strongest current interpretation is therefore a **signed, directed, learner-conditioned structural transfer geometry**, not a universal symmetric language-distance scalar.
+For the final synthetic-phase adjudication, see [`docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md`](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md).
 
 ## Selected current evidence
 
@@ -24,6 +27,9 @@ The strongest current interpretation is therefore a **signed, directed, learner-
 | A-only target-compatible curricula can improve later B learning | **Supported** | Transformer 7/8 fresh seeds at d=.25; GRU 8/8 |
 | Target-incompatible A curricula can harm later B learning | **Supported** | signed-transfer calibration + independent replication |
 | Performance-aligned transfer depends on shared coordinates | **Supported** | base-coordinate cohorts replicated; completely fresh B-head result did not replicate |
+| Random-rank shared-coordinate dependence generalizes beyond GRU | **Supported** | causal Transformer seeds 22000 and 22100: 5/5 families each, exact p=.03125 each |
+| A sharp H=48 hidden-width stability boundary exists | **Not supported** | fresh seeds 20000–20400: prespecified D>0 only 1/5 seeds |
+| State-embedding effective rank predicts rank-transfer variation | **Not supported** | fresh seeds 21000–21400; pooled centered Spearman = +.036 |
 | Teacher hidden(A) from an A+B teacher improves later B learning vs A-only teacher | **Supported** | GRU 5/5; Transformer confirmatory + independent replication |
 | Very low-bandwidth teacher hidden signals retain transfer | **Supported conditionally** | 2D/quantized hidden-signal studies; target-specific q4 later-B contrasts replicated |
 | Entropy-matched distance has an interior transfer window | **Supported in two confirmatory cohorts** | seeds 10900 and 11000: 5/5 families, p=.03125 each; later opportunistic cohort 4/5 |
@@ -32,7 +38,7 @@ The strongest current interpretation is therefore a **signed, directed, learner-
 | Transfer distance is equally sensitive to all TV components | **Not supported** | within-row geometry failed; SUPPORT > WEIGHT replicated 5/5, p=.03125 |
 | Stationary-distribution shift explains fixed-support-count residuals | **Not supported** | fresh seed18200 mean family Spearman=.12, 3/5 positive |
 | Long sequence context is the main source of identity residuals | **Not supported** | L=6 -> L=1 did not reduce residual dispersion |
-| Stable state-to-teacher-signal binding is required for matching transfer | **Promising, not yet confirmed** | seed18400 pilot: cycle-averaging reduced mean matching penalty 2.369 -> .124 B-step; seed18500 confirmatory is in progress |
+| Stable state-to-teacher-signal binding is confirmed | **Blocked / not counted** | seed18400 pilot is promising; locked seed18500 rerun requires three missing exact archived helper snapshots |
 | Natural Japanese -> English acceleration over ordinary Japanese | **Not supported** | preregistered 95/5 gain comparison failed |
 
 Lower AUC / fewer B steps means better later-B learning in the reported sample-efficiency experiments.
@@ -45,13 +51,11 @@ The compact cross-phase ledger is in [`results/evidence_summary.csv`](results/ev
 A-only input
    |
    v
-teacher-conditioned hidden signal on A
+representation written during phase 1
    |
-   +--> amount/bandwidth matters somewhat
-   |
+   +--> decoder/shared-coordinate accessibility matters
    +--> B-decodable subspace placement matters strongly
-   |
-   +--> persistent state <-> signal-direction binding may matter
+   +--> learner architecture / initialization modulates the realized effect
    v
 Student representation after phase 1
    |
@@ -59,7 +63,7 @@ Student representation after phase 1
 later B learning speed
 ```
 
-A second, related line treats later-learning behavior as a probe of task structure:
+A second line treats later-learning behavior as a probe of task structure:
 
 ```text
 source teacher B_s
@@ -76,11 +80,11 @@ matching synergy / transfer penalty
       +--> predicts support-sensitive B_s <-> B_t dissimilarity
 ```
 
-This behavioral dissimilarity generalizes surprisingly well within the synthetic setup, but it is not yet an exact metric and does not uniformly recover fine probability-weight differences.
+This behavioral dissimilarity generalizes surprisingly well within the synthetic setup, but it is not an exact metric and does not uniformly recover fine probability-weight differences.
 
 ## Important negative results
 
-The project deliberately retains failed hypotheses. Among the more informative failures:
+The project deliberately retains failed hypotheses, including:
 
 - a simple monotonic scalar distance law,
 - surface-only target-specific teaching as a robust mechanism,
@@ -92,25 +96,28 @@ The project deliberately retains failed hypotheses. Among the more informative f
 - general TV recovery when distance comes mostly from within-support probability rearrangement,
 - stationary-distribution shift as the fixed-support-count mechanism,
 - fixed additive row weights,
-- multi-token context as the sole identity-residual mechanism.
+- multi-token context as the sole identity-residual mechanism,
+- a sharp H=48 hidden-width stability boundary,
+- state-embedding effective rank as a robust scalar predictor of rank-transfer variation.
 
-These failures narrow the mechanism toward **state/successor-specific representation and optimization interactions**.
+These failures narrow the mechanism toward **learner-conditioned, state/successor-specific representation and optimization interactions**.
 
 ## Natural-language status
 
 A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
 
-Human learning, large production LLMs, and natural-language generality remain untested.
+Human learning, large production LLMs, and natural-language generality remain untested. If this project continues, natural-language / pretrained-model transfer should be treated as a separate phase rather than extending the synthetic ablation grid.
 
 ## Repository map
 
-- `docs/CLAIMS_AND_LIMITATIONS.md` — current claim ledger.
+- `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — claim ledger.
 - `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
-- `docs/RECENT_RESULTS_2026-09-01.md` — compact update for the hidden-transfer/distance/mechanism sequence.
+- `docs/RECENT_RESULTS_2026-09-01.md` — earlier hidden-transfer/distance/mechanism snapshot.
 - `docs/REPRODUCIBILITY.md` — environment assumptions and data boundaries.
 - `docs/TEST_HARNESS.md` — controls and harness audits.
 - `experiments/` — representative execution snapshots.
-- `protocols/` — selected locked protocols, including current state-signal binding tests.
+- `protocols/` — locked protocols, including final width/predictor/Transformer tests.
 - `results/` — compact PASS/FAIL summaries; large raw logs/checkpoints are excluded.
 
 ## Reproduction
@@ -119,13 +126,13 @@ Human learning, large production LLMs, and natural-language generality remain un
 python -m pip install -r requirements.txt
 ```
 
-The scripts are execution snapshots rather than a polished library. Several retain `/mnt/data/...` paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
+The scripts are execution snapshots rather than a polished library. Several retain paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
 
 ## Scope and claim discipline
 
-**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, and support-sensitive behavioral distance recovery under the documented setups.
+**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, cross-architecture shared-coordinate rank dependence, and support-sensitive behavioral distance recovery under the documented setups.
 
-**Not supported:** a universal language-distance law, exact metric structure, decoder-independent universal meta-learning, a proven natural-language curriculum, human-learning effects, or generality to large production LLMs.
+**Not supported:** a universal language-distance law, exact metric structure, a simple hidden-width threshold, a robust scalar pre-state mechanism predictor, decoder-independent universal meta-learning, a proven natural-language curriculum, human-learning effects, or generality to large production LLMs.
 
 ## Data and licensing
 

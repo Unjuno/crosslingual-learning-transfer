@@ -18,7 +18,20 @@ Compact CSV summaries used by the repository claim ledger. Positive, negative, n
 - `decoder_alignment_summary.csv` — transfer effect versus retained decoder cosine alignment.
 - `coordinate_alignment_cross_cohort_summary.csv` — identity versus geometry-preserving coordinate rotation.
 - `shared_coordinate_mechanism_summary.csv` — subspace, partial-rank, top/bottom, and random-rank mechanism tests.
-- `random_rank_primary_tests.csv` — preregistered random-rank primary slope and per-rank descriptive tests.
+- `random_rank_primary_tests.csv` — preregistered GRU random-rank primary slope and per-rank descriptive tests.
+
+### Final learner-conditioning / architecture closure
+
+- `random_rank_hidden_width_summary.csv` — exploratory cohort-level rank slopes across GRU hidden widths and seeds.
+- `random_rank_hidden_width_family_slopes.csv` — family-level exploratory slopes and per-rank effects for the width sweep.
+- `random_rank_hidden_width_audit_summary.csv` — orthogonality and retained-state-energy audits for the exploratory width sweep.
+- `random_rank_hidden_width_confirmatory_summary.csv` — locked H32-vs-H48 boundary test; **FAIL**.
+- `random_rank_hidden_width_confirmatory_family_slopes.csv` — family-level data for that fresh confirmation.
+- `prestate_predictor_exploratory_selection.csv` — constrained four-feature pre-state scalar screen; state effective rank selected for one fresh test.
+- `prestate_state_rank_predictor_confirmatory_summary.csv` — locked effective-rank predictor confirmation; **FAIL**.
+- `prestate_state_rank_predictor_confirmatory_family.csv` — family-level predictor/outcome cells.
+- `random_rank_transformer_replication_summary.csv` — fresh causal-Transformer rank replication; **PASS** in seeds 22000 and 22100 (5/5 each).
+- `random_rank_transformer_replication_family.csv` — family-level Transformer effects and slopes.
 
 ## Structural surrogate phase
 

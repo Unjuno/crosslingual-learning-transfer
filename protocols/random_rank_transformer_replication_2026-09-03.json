@@ -1,0 +1,20 @@
+{
+  "experiment": "random_rank_transformer_replication",
+  "date_jst": "2026-09-03",
+  "status": "LOCKED_BEFORE_FRESH_OUTCOMES",
+  "architecture": "one-layer causal TransformerEncoder, d_model=32, 4 heads, feedforward=64, dropout=0, learned position/state/language embeddings",
+  "fresh_seeds": [22000, 22100],
+  "families": [0, 1, 2, 3, 4],
+  "keep_dims": [0, 3, 6, 12],
+  "decoder_alignment_rho": 0.25,
+  "task_and_metric": "Same synthetic Markov families, A-only target25 curriculum, random nested state-coordinate preservation intervention, and 80-20 performance-aligned target25-minus-A_nat rank slope as the GRU random-rank experiment.",
+  "pilot_disclosure": "The implementation was sanity-checked only on previously used seed5400 family0 before locking; losses were finite, audits passed, and the observed pilot slope was negative. The pilot is not confirmatory evidence.",
+  "primary_pass": [
+    "rank_slope < 0 in all 5 families for seed22000; exact one-sided family sign p=0.03125",
+    "rank_slope < 0 in all 5 families for independent seed22100; exact one-sided family sign p=0.03125",
+    "all rotation audits pass"
+  ],
+  "stopping": "Exactly the two listed fresh seeds; no rescue seeds, architecture tuning, family exclusions, rank changes, or threshold changes.",
+  "interpretation_if_pass": "The shared-coordinate rank dependence of later-B transfer replicates in a causal Transformer learner under this controlled synthetic setup, reducing concern that the mechanism is GRU-specific.",
+  "interpretation_if_fail": "Do not claim architecture-general random-rank transfer. Retain the stronger cross-architecture evidence from other interventions, but mark this specific shared-coordinate rank law as learner/architecture conditioned. This is the final synthetic architecture probe in the current project sequence."
+}

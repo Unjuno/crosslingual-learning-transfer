@@ -1,0 +1,44 @@
+name: Synthetic closure checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - experiment/random-rank-hidden-width
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile final experiment scripts
+        run: |
+          python -m py_compile \
+            experiments/random_rank_state_alignment_gru.py \
+            experiments/run_random_rank_hidden_width.py \
+            experiments/analyze_random_rank_hidden_width.py \
+            experiments/prestate_random_rank_features.py \
+            experiments/analyze_prestate_state_rank_predictor.py \
+            experiments/random_rank_state_alignment_transformer.py \
+            experiments/analyze_random_rank_transformer.py
+      - name: Validate locked protocol JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for p in [
+              Path('protocols/random_rank_hidden_width_confirmatory_2026-09-02.json'),
+              Path('protocols/prestate_state_rank_predictor_confirmatory_2026-09-03.json'),
+              Path('protocols/random_rank_transformer_replication_2026-09-03.json'),
+          ]:
+              with p.open() as f:
+                  obj=json.load(f)
+              assert obj['status']=='LOCKED_BEFORE_FRESH_OUTCOMES', p
+              print('ok',p)
+          PY

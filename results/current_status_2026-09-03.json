@@ -1,0 +1,13 @@
+{
+  "date_jst": "2026-09-03",
+  "synthetic_phase": "FROZEN",
+  "headline": "signed directed learner-conditioned support-sensitive transfer geometry",
+  "final_closure_tests": {
+    "hidden_width_boundary": "FAIL",
+    "prestate_state_effective_rank_predictor": "FAIL",
+    "transformer_random_rank_replication": "PASS"
+  },
+  "state_signal_seed18500": "BLOCKED_NOT_COUNTED_MISSING_EXACT_HELPERS",
+  "natural_ja_en_acceleration_over_ordinary_ja": "NOT_ESTABLISHED",
+  "next_phase_if_any": "natural_language_pretrained_model_transfer"
+}

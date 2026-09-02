@@ -1,0 +1,22 @@
+{
+  "experiment": "prestate_state_rank_predictor_confirmatory",
+  "date_jst": "2026-09-03",
+  "status": "LOCKED_BEFORE_FRESH_OUTCOMES",
+  "selection_history": "Exactly four pre-phase1 scalar candidates were compared on the completed seed20000-20400 H32/H48 cohort. state_effective_rank had the largest absolute overall Spearman (-0.2557) and is the only predictor carried forward. No multivariate model or additional feature search is permitted in this confirmatory test.",
+  "fresh_seeds": [21000, 21100, 21200, 21300, 21400],
+  "families": [0, 1, 2, 3, 4],
+  "hidden_widths": [32, 48],
+  "keep_dims": [0, 3, 6, 12],
+  "predictor": "state_effective_rank = exp(entropy(normalized squared singular values of the phase1-pretraining state embedding matrix)), measured after the common uniform A/B base training and before the A-only curriculum",
+  "outcome": "rank_slope = OLS slope of target25-minus-A_nat 80-20 performance-aligned span versus keep_dim",
+  "seed_statistic": "Within each seed and hidden width, center predictor and outcome by their five-family means. Pool the 10 centered cells and compute Spearman rho_s between centered state_effective_rank and centered rank_slope.",
+  "pooled_statistic": "Pool all 50 cells after seed x hidden-width centering and compute Spearman rho_pool.",
+  "primary_pass": [
+    "rho_s < 0 for all 5 fresh seeds; exact one-sided seed sign p=0.03125",
+    "rho_pool <= -0.20",
+    "all original random-rank rotation audits pass"
+  ],
+  "stopping": "Exactly the five listed seeds; no rescue seeds, predictor changes, extra features, nonlinear fits, family exclusions, or threshold changes.",
+  "interpretation_if_pass": "Evidence that a simple pre-curriculum representation-capacity statistic predicts part of learner-conditioned variation in the shared-coordinate transfer effect in this synthetic GRU setup.",
+  "interpretation_if_fail": "Stop simple prestate scalar predictor search for this synthetic mechanism sequence. Report that learner-conditioned variability is real but is not captured robustly by the constrained low-dimensional predictors tested here."
+}
