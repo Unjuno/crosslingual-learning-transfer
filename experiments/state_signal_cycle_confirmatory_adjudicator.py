@@ -62,7 +62,7 @@ class FamilySummary:
     M_aligned: float
     M_cycleavg: float
     D: float
-    ratio: float
+    ratio: float | None
     aligned_nontrivial: bool
     ratio_le_0_60: bool
 
@@ -202,7 +202,7 @@ def summarize_families(effects: Mapping[Tuple[int, str, int, int], float]) -> Li
         m_aligned = mean(matching_penalties(effects, family, "Bsub_aligned"))
         m_cycle = mean(matching_penalties(effects, family, "Bsub_cycleavg"))
         if m_aligned <= 0.0:
-            ratio = math.inf
+            ratio = None
         else:
             ratio = m_cycle / m_aligned
         out.append(
@@ -213,7 +213,7 @@ def summarize_families(effects: Mapping[Tuple[int, str, int, int], float]) -> Li
                 D=m_cycle - m_aligned,
                 ratio=ratio,
                 aligned_nontrivial=m_aligned >= 1.0,
-                ratio_le_0_60=ratio <= 0.60,
+                ratio_le_0_60=ratio is not None and ratio <= 0.60,
             )
         )
     return out
@@ -273,14 +273,14 @@ def adjudicate_rows(rows: Sequence[Mapping[str, str]], seed: int = DEFAULT_SEED)
 
         mean_aligned = mean(f.M_aligned for f in families)
         mean_cycle = mean(f.M_cycleavg for f in families)
-        pooled_ratio = math.inf if mean_aligned <= 0.0 else mean_cycle / mean_aligned
+        pooled_ratio = None if mean_aligned <= 0.0 else mean_cycle / mean_aligned
         n_negative = sum(f.D < 0.0 for f in families)
         n_ratio = sum(f.ratio_le_0_60 for f in families)
         n_nontrivial = sum(f.aligned_nontrivial for f in families)
 
         criteria = {
             "1_D_negative_5of5": n_negative == 5,
-            "2_pooled_ratio_le_0_50": pooled_ratio <= 0.50,
+            "2_pooled_ratio_le_0_50": pooled_ratio is not None and pooled_ratio <= 0.50,
             "3_family_ratio_le_0_60_at_least_4of5": n_ratio >= 4,
             "4_M_aligned_ge_1_at_least_4of5": n_nontrivial >= 4,
             "5_audits_pass": audit_result["pass"],
