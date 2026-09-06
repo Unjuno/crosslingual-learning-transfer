@@ -1,0 +1,118 @@
+{
+  "experiment": "natural_ja_en_s2_hidden_teacher_r1",
+  "date_jst": "2026-09-06",
+  "status": "DESIGN_LOCKED_BEFORE_NEW_OUTCOMES",
+  "roadmap_stage": "R1",
+  "scientific_question": "Can an English-aware teacher, acting only through hidden targets on Japanese Student inputs, place an English-naive Student into a state that later learns English more efficiently than an otherwise matched Japanese-only teacher?",
+  "information_boundary": {
+    "level": "S2",
+    "student_phase0_visible_language": "Japanese only",
+    "student_phase1_visible_language": "Japanese only",
+    "teacher_target_knowledge_allowed": true,
+    "hidden_teacher_signal_allowed": true,
+    "english_or_russian_tokens_visible_to_student_before_phase2": false,
+    "claim_if_pass": "Target-aware hidden teaching through Japanese inputs improves later English learning in this controlled natural-text model.",
+    "explicit_nonclaim": "This does not show that Japanese text alone, with a target-unaware teacher/curriculum, improves English learning."
+  },
+  "tokenization": {
+    "type": "fixed byte-level",
+    "vocab": 256,
+    "language_trained_tokenizer": false,
+    "reason": "Avoid English leakage through tokenizer training and guarantee representability of unseen English bytes."
+  },
+  "model": {
+    "type": "causal Transformer",
+    "d_model": 64,
+    "n_layers": 2,
+    "n_heads": 4,
+    "dim_feedforward": 256,
+    "dropout": 0.0,
+    "context_bytes": 128,
+    "batch_size": 16,
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "gradient_clip_norm": 1.0
+  },
+  "data_contract": {
+    "required_files": [
+      "ja_train.txt",
+      "ja_eval.txt",
+      "en_train.txt",
+      "en_eval.txt",
+      "ru_train.txt",
+      "ru_eval.txt"
+    ],
+    "encoding": "UTF-8 read as raw bytes after file load",
+    "minimum_train_bytes_per_language": 200000,
+    "minimum_eval_bytes_per_language": 20000,
+    "hashing": "Record SHA256 of every input file in every run output.",
+    "corpus_policy": "No corpus content is committed if its license forbids redistribution. The exact corpus manifest/hashes must be archived with results."
+  },
+  "training_schedule": {
+    "common_student_base": "400 Japanese-only LM updates from identical seed-specific initialization",
+    "teacher_specialization_updates": 400,
+    "teacher_conditions": {
+      "T_JA": "400 Japanese updates",
+      "T_EN": "200 Japanese + 200 English updates on a fixed alternating schedule",
+      "T_RU": "200 Japanese + 200 Russian updates on the same schedule positions as T_EN"
+    },
+    "student_phase1_updates": 200,
+    "student_phase1_conditions": {
+      "JA_nat": "Japanese LM cross-entropy only",
+      "JA_TJA": "Japanese LM cross-entropy + hidden distillation from T_JA",
+      "JA_TEN": "Japanese LM cross-entropy + hidden distillation from T_EN",
+      "JA_TRU": "Japanese LM cross-entropy + hidden distillation from T_RU"
+    },
+    "student_phase1_hidden_loss": "tokenwise 1 - cosine_similarity between final-LayerNorm hidden states on the same Japanese batch",
+    "student_phase1_hidden_loss_weight": 1.0,
+    "student_phase2": "English LM cross-entropy only; no teacher signal",
+    "student_phase2_max_updates": 600,
+    "phase2_eval_every_updates": 10,
+    "common_random_numbers": "Within a seed, Japanese phase1 batches and English phase2 batches are identical across Student conditions."
+  },
+  "metric": {
+    "reference_curve": "For each seed, clone the common Japanese-only Student base and run English phase2 directly without the extra 200-update phase1 curriculum. Use this predeclared reference curve only to define a common seed-specific performance interval.",
+    "reference_high": "bottom + 0.8 * (top - bottom)",
+    "reference_low": "bottom + 0.2 * (top - bottom)",
+    "top": "reference English eval NLL at phase2 step 0",
+    "bottom": "reference cumulative-best English eval NLL at phase2 step 600",
+    "condition_span": "linearly interpolated English update count from first crossing reference_high to first crossing reference_low on the condition cumulative-best curve",
+    "primary_effect": "span(JA_TEN) - span(JA_TJA); negative is better",
+    "practical_effect": "span(JA_TEN) - span(JA_nat); negative is better",
+    "specificity_effect": "span(JA_TEN) - span(JA_TRU); negative is English-target-specific",
+    "starting_performance": "Report English eval NLL at phase2 step 0 separately; do not call a pure cp0 advantage learning-efficiency improvement."
+  },
+  "confirmatory_plan": {
+    "fresh_seeds": [31000, 31001, 31002, 31003, 31004, 31005, 31006, 31007, 31008, 31009],
+    "primary_pass": [
+      "primary_effect < 0 in at least 9/10 seeds; exact one-sided sign p <= 0.05",
+      "mean token/update saving 1 - span(JA_TEN)/span(JA_TJA) >= 0.05 across the ten fixed seeds",
+      "all information-boundary and common-random-number audits pass",
+      "mean Japanese eval NLL after phase1 for JA_TEN is no more than 1% worse than JA_TJA"
+    ],
+    "secondary_not_required_for_primary": [
+      "JA_TEN vs JA_nat practical effect",
+      "JA_TEN vs JA_TRU target specificity",
+      "phase2 step-0 English NLL differences",
+      "English cumulative-best AUC over the fixed 0..600 update grid"
+    ],
+    "censoring": "If any primary condition in a seed does not reach reference_low by update 600, that seed cannot be counted as a favorable primary sign. Report the censoring explicitly; do not extend BMAX after outcomes.",
+    "stopping": "Exactly the ten listed confirmatory seeds. No rescue seeds, model-width changes, hidden-loss-weight changes, threshold changes, teacher-budget changes, or corpus substitutions after confirmatory outcomes are observed."
+  },
+  "implementation_pilot_policy": {
+    "allowed": "Smoke tests on synthetic/non-natural byte strings or non-confirmatory seed 30999 solely for finite-loss, file-contract, determinism, and audit validation.",
+    "forbidden": "Using pilot English outcome magnitude/sign to change the locked model, loss weight, budgets, metric, or confirmatory seeds.",
+    "pilot_outcomes_are_evidence": false
+  },
+  "required_audits": [
+    "Student phase0 and phase1 update-source labels are Japanese only",
+    "T_JA, T_EN, and T_RU have identical teacher update counts",
+    "T_EN and T_RU use identical target-language schedule positions",
+    "Student Japanese phase1 minibatch indices are identical across all four Student conditions within seed",
+    "Student English phase2 minibatch indices are identical across all Student conditions and the no-extra-phase1 reference within seed",
+    "All corpus SHA256 hashes are saved",
+    "No confirmatory seed appears in any prior result file before execution",
+    "All fixed byte values remain representable without language-specific tokenizer fitting"
+  ]
+}
