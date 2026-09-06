@@ -1,0 +1,31 @@
+{
+  "experiment": "natural_ja_en_s2_halfweight_tradeoff",
+  "date_jst": "2026-09-06",
+  "status": "LOCKED_BEFORE_FRESH_OUTCOMES",
+  "parent_experiment": "natural_ja_en_s2_hidden_teacher_r1",
+  "parent_locked_verdict": "FAIL",
+  "motivation": "The parent fixed cohort passed every English efficacy/audit/censoring gate but failed the locked Japanese-safety gate: JA_TEN mean Japanese NLL was 1.1355% worse than JA_TJA versus a 1% maximum. This prospective one-shot test asks whether halving hidden-teaching strength preserves the original efficacy requirement while satisfying the original safety requirement. It is not a reinterpretation or rescue of the parent verdict.",
+  "information_boundary": "S2",
+  "fresh_seeds": [32000, 32001, 32002, 32003, 32004, 32005, 32006, 32007, 32008, 32009],
+  "frozen_corpus_manifest": "protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json",
+  "model_and_schedule": "Identical to protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json except hidden distillation loss weight is 0.5 instead of 1.0.",
+  "hidden_distillation_weight": 0.5,
+  "conditions": ["JA_nat", "JA_TJA", "JA_TEN", "JA_TRU"],
+  "metric": "Identical seed-specific no-extra-phase1 reference-defined 80-20 English performance interval and interpolated condition span used in the parent protocol.",
+  "primary_pass": [
+    "span(JA_TEN) - span(JA_TJA) < 0 in at least 9/10 fixed fresh seeds; exact one-sided sign p <= 0.05",
+    "mean saving 1 - span(JA_TEN)/span(JA_TJA) >= 0.05 across all ten fixed seeds",
+    "mean Japanese eval NLL after phase1 for JA_TEN <= 1.01 * mean Japanese eval NLL after phase1 for JA_TJA",
+    "all frozen-corpus, source-language, fixed-byte-tokenizer, fresh-seed, common-random-number, and execution audits pass",
+    "no primary seed is censored at the fixed 600 English-update limit"
+  ],
+  "secondary_not_required_for_primary": [
+    "JA_TEN vs JA_nat performance-aligned span",
+    "JA_TEN vs JA_TRU target specificity",
+    "phase2 step-0 English NLL",
+    "post-phase1 Japanese NLL relative to ordinary JA_nat"
+  ],
+  "stopping": "Exactly these ten seeds and hidden weight 0.5. No rescue seeds, no additional hidden-loss weights, no threshold relaxation, no model or teacher-budget change, and no corpus substitution after fresh outcomes. If this test fails, stop S2 hidden-weight tuning in the current project sequence.",
+  "interpretation_if_pass": "A lower-strength target-aware S2 hidden-teaching intervention can satisfy the same predeclared English-efficiency and Japanese-retention utility criterion in this domain-limited corpus. The parent weight1.0 study remains FAIL and target-unaware S0/S1 generality remains unestablished.",
+  "interpretation_if_fail": "Do not continue tuning hidden-teaching strength in this project sequence. Retain the parent result as evidence for a target-aware English benefit with a Japanese-specialist tradeoff, not as a deployable safe curriculum."
+}
