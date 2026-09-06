@@ -7,6 +7,14 @@ from pathlib import Path
 
 SEEDS = list(range(31000, 31010))
 CONDS = ["JA_nat", "JA_TJA", "JA_TEN", "JA_TRU"]
+EXPECTED_CORPUS_HASHES = {
+    "en_train": "74f59db34b5b8334cf463cf0bcf5f355e54cc7de98cc4eb35ef379ecb42e8258",
+    "en_eval": "15221408b2c4c2fffee8a5f16feb651f2de5947e85906867f119fdf7210797da",
+    "ja_train": "5a0d86cebeb5e9f71c86ea1bcf619c8a42bb21d04ed2d37ce35f5aee58bffd58",
+    "ja_eval": "5a44582a08d6e3c48c610d663b22642c8b8612dc19f25a326b2ce906a504e7e4",
+    "ru_train": "12a53e456480b56977c548021231c9adf9b4cee97902f6d1acb67e6cbb0d46ed",
+    "ru_eval": "52a1cd50a20645577e988f6023dcf1853e856f5babd180a0e1d620029c689800",
+}
 
 
 def read_csv(path):
@@ -37,7 +45,10 @@ def expected_audit(audit):
     return (
         audit["scientific_evidence"] is True
         and audit["smoke_only"] is False
+        and audit.get("validation_only") is False
         and audit["prior_result_seed_hits"] == []
+        and audit.get("corpus_hashes_match_frozen_manifest") is True
+        and audit["corpus_sha256"] == EXPECTED_CORPUS_HASHES
         and audit["student_phase0_sources"] == {"ja": 400, "en": 0, "ru": 0}
         and audit["student_phase1_sources"] == {"ja": 200, "en": 0, "ru": 0}
         and audit["teacher_source_counts"]["T_JA"]
@@ -88,6 +99,10 @@ def main():
             raise ValueError(f"seed {seed}: malformed summary conditions")
         if any(as_bool(row["smoke_only"]) for row in rows):
             raise ValueError(f"seed {seed}: smoke result cannot enter adjudication")
+        if "validation_only" in rows[0] and any(
+            as_bool(row["validation_only"]) for row in rows
+        ):
+            raise ValueError(f"seed {seed}: validation-only result cannot enter adjudication")
 
         audit = json.loads(audit_path.read_text(encoding="utf-8"))
         seed_audit_pass = expected_audit(audit)
