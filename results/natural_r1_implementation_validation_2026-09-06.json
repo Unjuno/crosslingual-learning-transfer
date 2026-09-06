@@ -1,0 +1,26 @@
+{
+  "date_jst": "2026-09-06",
+  "status": "IMPLEMENTATION_VALIDATION_PASS_NOT_SCIENTIFIC_EVIDENCE",
+  "seed": 30999,
+  "mode": "reduced-schedule natural-corpus validation",
+  "scientific_evidence": false,
+  "confirmatory_seeds_executed": [],
+  "checks": {
+    "frozen_corpus_hashes_match": true,
+    "all_observed_training_and_eval_losses_finite": true,
+    "teacher_source_schedule_matches_reduced_validation_contract": true,
+    "student_phase1_source_is_japanese_only": true,
+    "fixed_byte_tokenization_works_on_all_three_corpora": true,
+    "deterministic_corpus_preparation_completed": true
+  },
+  "outcome_policy": "No seed30999 transfer-effect magnitude or sign is retained as evidence or used to modify the locked model/loss/metric/confirmatory seed design.",
+  "corpus_manifest": "protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json",
+  "protocol": "protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json",
+  "environment": {
+    "torch": "2.10.0+cpu",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "deterministic_algorithms": true,
+    "torch_threads": 1
+  }
+}
