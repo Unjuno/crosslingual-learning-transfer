@@ -39,8 +39,26 @@ Compact CSV summaries used by the repository claim ledger. Positive, negative, n
 - `surrogate_exact_seed_resampling_256_summary.csv` — exact 4^4 seed-resampling summaries.
 - `surrogate_unigram_degree_margin_checks.csv` — proof-by-audit that UNI controls preserve unigram counts and directed in/out bigram margins.
 
-## Natural-language pilot
+## Natural-language phase
+
+### Earlier target-aware Japanese curriculum pilot
 
 - `natural_ja_en_blended5_confirmatory_tests.csv` — Japanese -> English 95/5 pilot; the primary comparison against ordinary Japanese failed.
 
-These are summary artifacts, not raw data dumps. Large checkpoints, raw per-step logs, duplicated intermediate CSVs, and third-party corpora are intentionally excluded.
+### R1/R2 S2 hidden-teacher confirmatory — locked overall FAIL
+
+- `natural_r1_implementation_validation_2026-09-06.json` — seed30999 implementation validation only; not scientific evidence.
+- `natural_r1_confirmatory_seed_summary.csv` — 10 fixed seeds × 4 Student conditions with Japanese post-phase1 NLL, English phase2 step-0 NLL, common-interval span, and censoring flag.
+- `natural_r1_confirmatory_audit_summary.csv` — frozen-corpus, source-budget, fresh-seed, fixed-byte-vocab, and common-batch audit summary; **10/10 pass**.
+- `natural_r1_confirmatory_adjudication.json` — exact locked adjudication. English efficacy gates pass (10/10 favorable signs, p=.0009765625, mean span saving 6.3521%) but Japanese safety fails; **overall FAIL**.
+- `natural_r1_confirmatory_posthoc_diagnostics.json` — clearly labeled post-adjudication descriptive diagnostics; not part of the locked PASS/FAIL gate.
+
+Recompute the compact adjudication with:
+
+```bash
+python experiments/verify_natural_r1_confirmatory.py
+```
+
+The R1/R2 corpus is domain-limited Vim/TeX software translation text and the experiment is S2: the Student uses Japanese-sourced pre-English updates, but the English-aware teacher may contain English-derived information. It is not evidence for target-unaware Japanese-text-only acceleration.
+
+These are summary artifacts, not raw data dumps. Large checkpoints, many raw per-step logs, duplicated intermediate CSVs, and third-party corpora are intentionally excluded.

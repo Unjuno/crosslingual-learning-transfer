@@ -69,3 +69,7 @@ learner_width,seed20000_20400,H32_worst_minus_H48_worst_D_gt_0,,1/5,,FAIL
 prestate_predictor,seed21000_21400,pooled_centered_state_effective_rank_Spearman,0.036350540216086434,"seed_rho_negative=3/5",,FAIL
 shared_rank_transformer,seed22000,rank_slope,-0.3821295692347705,5/5,0.03125,PASS
 shared_rank_transformer,seed22100,rank_slope,-0.25271927803737776,5/5,0.03125,PASS
+natural_r1_s2,seed31000_31009,TEN_minus_TJA_span_mean_updates,-9.340604309097696,10/10,0.0009765625,PASS_GATE
+natural_r1_s2,seed31000_31009,mean_span_saving_vs_TJA,0.06352128330495839,10/10,,PASS_GATE
+natural_r1_s2,seed31000_31009,JA_TEN_relative_to_TJA_mean_NLL,0.011355182533729025,,,FAIL_GATE
+natural_r1_s2,seed31000_31009,locked_overall_utility_safety_verdict,,,,FAIL

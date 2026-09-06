@@ -20,7 +20,8 @@ jobs:
             experiments/prepare_natural_r1_system_translations.py \
             experiments/natural_ja_en_s2_hidden_teacher.py \
             experiments/run_natural_ja_en_s2_confirmatory.py \
-            experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py
+            experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py \
+            experiments/verify_natural_r1_confirmatory.py
       - name: Validate locked design and corpus manifest
         run: |
           python - <<'PY'
@@ -49,3 +50,5 @@ jobs:
           assert result['missing_seeds']==list(range(31000,31010))
           print('incomplete-cohort guard OK')
           PY
+      - name: Recompute committed R1 confirmatory adjudication
+        run: python experiments/verify_natural_r1_confirmatory.py

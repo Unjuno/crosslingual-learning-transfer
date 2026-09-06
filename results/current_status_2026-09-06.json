@@ -1,0 +1,32 @@
+{
+  "date_jst": "2026-09-06",
+  "synthetic_phase": "FROZEN",
+  "synthetic_headline": "signed directed learner-conditioned support-sensitive transfer geometry",
+  "natural_phase": {
+    "experiment": "natural_ja_en_s2_hidden_teacher_r1",
+    "information_boundary": "S2_TARGET_AWARE_TEACHER_JAPANESE_SOURCED_STUDENT_INPUT",
+    "fixed_seeds": [31000, 31001, 31002, 31003, 31004, 31005, 31006, 31007, 31008, 31009],
+    "overall_locked_verdict": "FAIL",
+    "efficacy": {
+      "TEN_vs_TJA_favorable_seeds": "10/10",
+      "exact_one_sided_sign_p": 0.0009765625,
+      "mean_span_saving_vs_TJA": 0.06352128330495839,
+      "gate": "PASS"
+    },
+    "audits": {
+      "all_pass": true,
+      "primary_censoring": false
+    },
+    "japanese_safety": {
+      "mean_JA_TEN_nll": 1.9509552046656609,
+      "mean_JA_TJA_nll": 1.9290504842996596,
+      "relative_degradation": 0.011355182533729025,
+      "locked_max_relative_degradation": 0.01,
+      "gate": "FAIL"
+    },
+    "interpretation": "English-aware hidden teaching through Japanese-sourced Student inputs produced a strong target-specific English benefit but did not satisfy the locked Japanese-specialist retention criterion. The overall FAIL is retained without threshold relaxation.",
+    "explicit_nonclaim": "Target-unaware Japanese text alone has not been shown to accelerate English learning."
+  },
+  "state_signal_seed18500": "BLOCKED_NOT_COUNTED_MISSING_EXACT_HELPERS",
+  "next_decision": "Either stop the natural S2 line as a constrained FAIL or preregister one fresh-seed hidden-teaching-strength tradeoff test. Do not advance the result to target-unaware S0/S1 claims by reinterpretation."
+}
