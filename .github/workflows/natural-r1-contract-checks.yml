@@ -1,0 +1,51 @@
+name: Natural R1 contract checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-r1-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile R1 scripts
+        run: |
+          python -m py_compile \
+            experiments/prepare_natural_r1_system_translations.py \
+            experiments/natural_ja_en_s2_hidden_teacher.py \
+            experiments/run_natural_ja_en_s2_confirmatory.py \
+            experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py
+      - name: Validate locked design and corpus manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          protocol = json.loads(Path('protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json').read_text())
+          manifest = json.loads(Path('protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json').read_text())
+          assert protocol['status'] == 'DESIGN_LOCKED_BEFORE_NEW_OUTCOMES'
+          assert protocol['confirmatory_plan']['fresh_seeds'] == list(range(31000, 31010))
+          assert protocol['information_boundary']['level'] == 'S2'
+          assert protocol['tokenization']['type'] == 'fixed byte-level'
+          assert manifest['status'] == 'HASHES_RECORDED_BEFORE_NATURAL_MODEL_OUTCOMES'
+          assert set(manifest['outputs']) == {'ja_train','ja_eval','en_train','en_eval','ru_train','ru_eval'}
+          assert all(len(meta['sha256']) == 64 for meta in manifest['outputs'].values())
+          print('R1 protocol/manifest contract OK')
+          PY
+      - name: Incomplete cohort must adjudicate UNCERTAIN
+        run: |
+          mkdir -p /tmp/empty-r1
+          python experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py /tmp/empty-r1 --json-out /tmp/empty-r1/result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('/tmp/empty-r1/result.json').read_text())
+          assert result['verdict']=='UNCERTAIN'
+          assert result['missing_seeds']==list(range(31000,31010))
+          print('incomplete-cohort guard OK')
+          PY

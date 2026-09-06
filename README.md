@@ -106,23 +106,26 @@ These failures narrow the mechanism toward **learner-conditioned, state/successo
 
 ## Natural-language status
 
-A Japanese -> English pilot selected Japanese-only windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
+The earlier Japanese -> English pilot selected Japanese-sourced windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
 
-Human learning, large production LLMs, and natural-language generality remain untested. If this project continues, natural-language / pretrained-model transfer should be treated as a separate phase rather than extending the synthetic ablation grid.
+A separate R1 experiment is now **design locked and implementation validated, but its confirmatory cohort has not started**. R1 tests an S2 condition: an English-aware teacher may supply hidden targets while the Student's pre-English update source remains Japanese only. The fixed design, frozen corpus hashes, ten confirmatory seeds, cohort runner, and adjudicator are documented in [`docs/NATURAL_R1_STATUS_2026-09-06.md`](docs/NATURAL_R1_STATUS_2026-09-06.md).
+
+Therefore natural Japanese -> English acceleration remains **unestablished**. Human learning, broad natural-language generality, and large production LLM generality also remain untested.
 
 ## Repository map
 
 - `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
-- `docs/CLAIMS_AND_LIMITATIONS.md` — frozen claim ledger.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — frozen synthetic claim ledger.
 - `docs/CLAIM_EVIDENCE_MATRIX.md` — claim-by-claim public evidence/reproducibility level.
 - `docs/INFORMATION_BOUNDARIES.md` — target-information paths and A-only/S0–S3 distinctions.
+- `docs/NATURAL_R1_STATUS_2026-09-06.md` — locked R1 natural-language design/readiness status; no confirmatory outcomes yet.
 - `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
 - `docs/RECENT_RESULTS_2026-09-01.md` — earlier hidden-transfer/distance/mechanism snapshot.
 - `docs/REPRODUCIBILITY.md` — environment assumptions, exact final-closure package record, and data boundaries.
 - `docs/TEST_HARNESS.md` — controls and harness audits.
-- `experiments/` — representative execution snapshots plus the public closure verifier.
-- `protocols/` — locked protocols, including final width/predictor/Transformer tests.
-- `results/` — compact PASS/FAIL summaries; large raw logs/checkpoints are excluded.
+- `experiments/` — representative execution snapshots, public closure verifier, and locked R1 preparation/runner/adjudicator scripts.
+- `protocols/` — locked protocols and the frozen R1 corpus hash manifest.
+- `results/` — compact PASS/FAIL summaries and non-scientific implementation-validation status; large raw logs/checkpoints are excluded.
 
 ## Public verification
 
@@ -142,7 +145,7 @@ For the closest recorded package versions of the final closure runs:
 python -m pip install -r requirements-final-synthetic.txt
 ```
 
-For broader historical scripts:
+For broader historical scripts and the R1 implementation:
 
 ```bash
 python -m pip install -r requirements.txt

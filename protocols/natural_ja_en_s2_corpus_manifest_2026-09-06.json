@@ -1,0 +1,69 @@
+{
+  "dataset_label": "system_translation_strings_vim_texlive_ja_en_ru",
+  "status": "HASHES_RECORDED_BEFORE_NATURAL_MODEL_OUTCOMES",
+  "claim_boundary": "Domain-limited software UI/help translation strings; not a broad natural-language corpus.",
+  "preparation_script": "experiments/prepare_natural_r1_system_translations.py",
+  "sources": {
+    "/usr/share/texlive/tlpkg/translations/ja.po": {
+      "bytes": 63056,
+      "sha256": "08dc379149bf04c26eeeffb16b5f08fd05ee18894c7bd38ae5a4e427f6e999f1"
+    },
+    "/usr/share/texlive/tlpkg/translations/ru.po": {
+      "bytes": 108443,
+      "sha256": "9626a8ad34ff8b43226257b638dd5d19b8330762dab965a8de3278ec74c2c7b6"
+    },
+    "/usr/share/vim/vim91/lang/ja/LC_MESSAGES/vim.mo": {
+      "bytes": 326845,
+      "sha256": "6f7c0728cce56e438f06fbf5c5ed756fc7e9572d17de4143636240d0c94e987a"
+    },
+    "/usr/share/vim/vim91/lang/ru/LC_MESSAGES/vim.mo": {
+      "bytes": 440015,
+      "sha256": "e8a272553161515cfbaaf67a0051ddce724c2b8d14ffeeb8df4a4fb31158d3fd"
+    }
+  },
+  "parallel_key_counts": {
+    "tex_common_ja_ru": 396,
+    "vim_common_ja_ru": 2941,
+    "vim_train": 2645,
+    "vim_eval": 296
+  },
+  "split_rule": "Vim msgid md5 first32bits % 10 == 0 -> eval; other Vim + all common TeX -> train.",
+  "normalization": "NUL/newline to space; collapse whitespace; decimal digit runs -> 0.",
+  "outputs": {
+    "en_train": {
+      "bytes": 100843,
+      "lines": 3041,
+      "sha256": "74f59db34b5b8334cf463cf0bcf5f355e54cc7de98cc4eb35ef379ecb42e8258"
+    },
+    "en_eval": {
+      "bytes": 10110,
+      "lines": 296,
+      "sha256": "15221408b2c4c2fffee8a5f16feb651f2de5947e85906867f119fdf7210797da"
+    },
+    "ja_train": {
+      "bytes": 150451,
+      "lines": 3041,
+      "sha256": "5a0d86cebeb5e9f71c86ea1bcf619c8a42bb21d04ed2d37ce35f5aee58bffd58"
+    },
+    "ja_eval": {
+      "bytes": 14919,
+      "lines": 296,
+      "sha256": "5a44582a08d6e3c48c610d663b22642c8b8612dc19f25a326b2ce906a504e7e4"
+    },
+    "ru_train": {
+      "bytes": 252142,
+      "lines": 3039,
+      "sha256": "12a53e456480b56977c548021231c9adf9b4cee97902f6d1acb67e6cbb0d46ed"
+    },
+    "ru_eval": {
+      "bytes": 26681,
+      "lines": 296,
+      "sha256": "52a1cd50a20645577e988f6023dcf1853e856f5babd180a0e1d620029c689800"
+    }
+  },
+  "minimum_bytes": {
+    "train": 80000,
+    "eval": 8000
+  },
+  "redistribution": "Generated text files are intentionally not committed; source-package licenses remain controlling. Only hashes and preparation code are public."
+}
