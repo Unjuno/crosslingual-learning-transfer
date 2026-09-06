@@ -3,22 +3,26 @@
   "date_jst": "2026-09-06",
   "status": "DESIGN_LOCKED_BEFORE_NEW_OUTCOMES",
   "roadmap_stage": "R1",
+  "design_revision_history": [
+    "2026-09-06 pre-natural-data implementation clarification: replaced the overly strong phrase 'no English/Russian tokens visible' with 'no samples sourced from English/Russian corpora'. Natural Japanese text can legitimately contain shared ASCII, punctuation, loanwords, or Latin-script fragments. Only synthetic/non-natural smoke data had been run; no scientific natural-language outcome had been observed."
+  ],
   "scientific_question": "Can an English-aware teacher, acting only through hidden targets on Japanese Student inputs, place an English-naive Student into a state that later learns English more efficiently than an otherwise matched Japanese-only teacher?",
   "information_boundary": {
     "level": "S2",
-    "student_phase0_visible_language": "Japanese only",
-    "student_phase1_visible_language": "Japanese only",
+    "student_phase0_update_source": "Japanese corpus only",
+    "student_phase1_update_source": "Japanese corpus only",
     "teacher_target_knowledge_allowed": true,
     "hidden_teacher_signal_allowed": true,
-    "english_or_russian_tokens_visible_to_student_before_phase2": false,
-    "claim_if_pass": "Target-aware hidden teaching through Japanese inputs improves later English learning in this controlled natural-text model.",
+    "english_or_russian_corpus_samples_visible_to_student_before_phase2": false,
+    "shared_character_note": "Japanese source text may naturally contain bytes/characters also present in English or Russian; the restriction is on corpus provenance, not byte identity.",
+    "claim_if_pass": "Target-aware hidden teaching through Japanese-sourced Student inputs improves later English learning in this controlled natural-text model.",
     "explicit_nonclaim": "This does not show that Japanese text alone, with a target-unaware teacher/curriculum, improves English learning."
   },
   "tokenization": {
     "type": "fixed byte-level",
     "vocab": 256,
     "language_trained_tokenizer": false,
-    "reason": "Avoid English leakage through tokenizer training and guarantee representability of unseen English bytes."
+    "reason": "Avoid target-corpus tokenizer fitting and guarantee representability of bytes not previously sampled from the English corpus."
   },
   "model": {
     "type": "causal Transformer",
@@ -43,7 +47,7 @@
       "ru_train.txt",
       "ru_eval.txt"
     ],
-    "encoding": "UTF-8 read as raw bytes after file load",
+    "encoding": "Files must decode as UTF-8; model input is then the exact UTF-8 byte sequence.",
     "minimum_train_bytes_per_language": 200000,
     "minimum_eval_bytes_per_language": 20000,
     "hashing": "Record SHA256 of every input file in every run output.",
@@ -102,7 +106,7 @@
   },
   "implementation_pilot_policy": {
     "allowed": "Smoke tests on synthetic/non-natural byte strings or non-confirmatory seed 30999 solely for finite-loss, file-contract, determinism, and audit validation.",
-    "forbidden": "Using pilot English outcome magnitude/sign to change the locked model, loss weight, budgets, metric, or confirmatory seeds.",
+    "forbidden": "Using smoke English outcome magnitude/sign to change the locked model, loss weight, budgets, metric, or confirmatory seeds.",
     "pilot_outcomes_are_evidence": false
   },
   "required_audits": [
@@ -112,7 +116,7 @@
     "Student Japanese phase1 minibatch indices are identical across all four Student conditions within seed",
     "Student English phase2 minibatch indices are identical across all Student conditions and the no-extra-phase1 reference within seed",
     "All corpus SHA256 hashes are saved",
-    "No confirmatory seed appears in any prior result file before execution",
-    "All fixed byte values remain representable without language-specific tokenizer fitting"
+    "No confirmatory seed appears as a seed-valued field in any prior committed result file before execution",
+    "The tokenizer is fixed byte-level and is not fit on any language corpus"
   ]
 }
