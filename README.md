@@ -20,6 +20,8 @@ In the documented synthetic Transformer/GRU systems:
 
 For the final synthetic-phase adjudication, see [`docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md`](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md).
 
+For public verification scope, see [`docs/CLAIM_EVIDENCE_MATRIX.md`](docs/CLAIM_EVIDENCE_MATRIX.md). For the distinction between “Student sees only A” and “the whole system is target-unaware”, see [`docs/INFORMATION_BOUNDARIES.md`](docs/INFORMATION_BOUNDARIES.md).
+
 ## Selected current evidence
 
 | Result | Status | Main evidence |
@@ -111,22 +113,42 @@ Human learning, large production LLMs, and natural-language generality remain un
 ## Repository map
 
 - `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
-- `docs/CLAIMS_AND_LIMITATIONS.md` — claim ledger.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — frozen claim ledger.
+- `docs/CLAIM_EVIDENCE_MATRIX.md` — claim-by-claim public evidence/reproducibility level.
+- `docs/INFORMATION_BOUNDARIES.md` — target-information paths and A-only/S0–S3 distinctions.
 - `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
 - `docs/RECENT_RESULTS_2026-09-01.md` — earlier hidden-transfer/distance/mechanism snapshot.
-- `docs/REPRODUCIBILITY.md` — environment assumptions and data boundaries.
+- `docs/REPRODUCIBILITY.md` — environment assumptions, exact final-closure package record, and data boundaries.
 - `docs/TEST_HARNESS.md` — controls and harness audits.
-- `experiments/` — representative execution snapshots.
+- `experiments/` — representative execution snapshots plus the public closure verifier.
 - `protocols/` — locked protocols, including final width/predictor/Transformer tests.
 - `results/` — compact PASS/FAIL summaries; large raw logs/checkpoints are excluded.
 
-## Reproduction
+## Public verification
+
+Recompute the final three synthetic closure adjudications directly from the committed family/cell-level CSVs:
+
+```bash
+python experiments/verify_final_synthetic_closure.py
+```
+
+The verifier uses only the Python standard library. It checks family-level statistics against summary CSVs, locked fresh-seed protocols, and `results/current_status_2026-09-03.json`.
+
+This is an **adjudication reproduction**, not a training rerun: omitted checkpoints, historical raw curves, and uncommitted raw audit logs are not reconstructed.
+
+For the closest recorded package versions of the final closure runs:
+
+```bash
+python -m pip install -r requirements-final-synthetic.txt
+```
+
+For broader historical scripts:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-The scripts are execution snapshots rather than a polished library. Several retain paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
+The scripts are execution snapshots rather than a polished library. Several older files retain paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
 
 ## Scope and claim discipline
 
