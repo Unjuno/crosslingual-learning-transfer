@@ -35,6 +35,14 @@ EVAL_BS = 32
 EVAL_BATCHES = 8
 CONFIRMATORY_SEEDS = list(range(31000, 31010))
 PILOT_SEED = 30999
+EXPECTED_CORPUS_HASHES = {
+    "en_train": "74f59db34b5b8334cf463cf0bcf5f355e54cc7de98cc4eb35ef379ecb42e8258",
+    "en_eval": "15221408b2c4c2fffee8a5f16feb651f2de5947e85906867f119fdf7210797da",
+    "ja_train": "5a0d86cebeb5e9f71c86ea1bcf619c8a42bb21d04ed2d37ce35f5aee58bffd58",
+    "ja_eval": "5a44582a08d6e3c48c610d663b22642c8b8612dc19f25a326b2ce906a504e7e4",
+    "ru_train": "12a53e456480b56977c548021231c9adf9b4cee97902f6d1acb67e6cbb0d46ed",
+    "ru_eval": "52a1cd50a20645577e988f6023dcf1853e856f5babd180a0e1d620029c689800",
+}
 
 
 @dataclass(frozen=True)
@@ -91,7 +99,7 @@ def sha256_bytes(data: bytes):
 
 def load_file(path: Path, minimum: int):
     data = path.read_bytes()
-    data.decode("utf-8")  # fail fast if the declared corpus contract is violated
+    data.decode("utf-8")
     if len(data) < minimum:
         raise ValueError(f"{path} has {len(data)} bytes, need >= {minimum}")
     return torch.tensor(list(data), dtype=torch.long), sha256_bytes(data)
@@ -112,17 +120,25 @@ def synthetic_corpora():
     return corp, hashes
 
 
-def load_corpora(data_dir: Path, smoke: bool):
-    if smoke:
-        return synthetic_corpora()
+def load_corpora(data_dir: Path, synthetic_smoke: bool):
+    if synthetic_smoke:
+        return synthetic_corpora(), False
     names = ["ja_train", "ja_eval", "en_train", "en_eval", "ru_train", "ru_eval"]
     corp, hashes = {}, {}
     for name in names:
-        minimum = 200_000 if name.endswith("train") else 20_000
+        minimum = 80_000 if name.endswith("train") else 8_000
         tensor, digest = load_file(data_dir / f"{name}.txt", minimum)
         corp[name] = tensor
         hashes[name] = digest
-    return corp, hashes
+    hashes_match = hashes == EXPECTED_CORPUS_HASHES
+    if not hashes_match:
+        bad = {
+            name: {"expected": EXPECTED_CORPUS_HASHES[name], "observed": hashes[name]}
+            for name in names
+            if hashes[name] != EXPECTED_CORPUS_HASHES[name]
+        }
+        raise RuntimeError(f"frozen corpus hash mismatch: {bad}")
+    return (corp, hashes), True
 
 
 def batch_from(corpus, batch_size, seed):
@@ -234,7 +250,6 @@ def train_phase1(base, teachers, seed, corp, schedule):
     }
     losses = {k: {"ce": [], "hidden": []} for k in models}
     for st in range(schedule.phase1_steps):
-        # Same Japanese-source minibatch for every Student condition.
         z = batch_from(corp["ja_train"], BS, 5130000 + seed * 1000 + st)
         for cond in ["JA_nat", "JA_TJA", "JA_TEN", "JA_TRU"]:
             ce, hidden = optimize_step(
@@ -289,8 +304,6 @@ def performance_span(curve, high, low):
 
 
 def audit_prior_results(repo_root: Path, seed: int):
-    # Only seed-valued columns in committed results count; numeric RNG constants
-    # elsewhere in code are not prior outcomes.
     hits = []
     results = repo_root / "results"
     if not results.exists():
@@ -307,14 +320,18 @@ def audit_prior_results(repo_root: Path, seed: int):
     return hits
 
 
-def run(seed, data_dir: Path, outdir: Path, smoke: bool):
-    if smoke and seed != PILOT_SEED:
-        raise ValueError(f"smoke mode must use seed {PILOT_SEED}")
-    if not smoke and seed not in CONFIRMATORY_SEEDS:
+def run(seed, data_dir: Path, outdir: Path, smoke: bool, validation_natural: bool):
+    if smoke and validation_natural:
+        raise ValueError("choose at most one of --smoke and --validation-natural")
+    validation_only = smoke or validation_natural
+    scientific = not validation_only
+    if validation_only and seed != PILOT_SEED:
+        raise ValueError(f"validation modes must use seed {PILOT_SEED}")
+    if scientific and seed not in CONFIRMATORY_SEEDS:
         raise ValueError(f"scientific R1 runs are locked to {CONFIRMATORY_SEEDS}")
 
     schedule = Schedule()
-    if smoke:
+    if validation_only:
         schedule = Schedule(
             base_steps=2,
             teacher_steps=4,
@@ -324,11 +341,11 @@ def run(seed, data_dir: Path, outdir: Path, smoke: bool):
         )
 
     repo_root = Path(__file__).resolve().parents[1]
-    prior_hits = audit_prior_results(repo_root, seed)
-    if not smoke and prior_hits:
+    prior_hits = audit_prior_results(repo_root, seed) if scientific else []
+    if scientific and prior_hits:
         raise RuntimeError(f"fresh-seed audit failed for {seed}: {prior_hits}")
 
-    corp, hashes = load_corpora(data_dir, smoke)
+    (corp, hashes), hashes_match = load_corpora(data_dir, synthetic_smoke=smoke)
     base = train_common_base(seed, corp, schedule)
     teachers, teacher_counts = train_teachers(base, seed, corp, schedule)
     phase1_models, phase1_losses = train_phase1(base, teachers, seed, corp, schedule)
@@ -365,6 +382,7 @@ def run(seed, data_dir: Path, outdir: Path, smoke: bool):
                 "reference_high": high,
                 "reference_low": low,
                 "smoke_only": smoke,
+                "validation_only": validation_only,
             }
         )
 
@@ -408,6 +426,7 @@ def run(seed, data_dir: Path, outdir: Path, smoke: bool):
                     "B_step": step,
                     "EN_nll": nll,
                     "smoke_only": smoke,
+                    "validation_only": validation_only,
                 }
             )
     pd.DataFrame(curve_rows).to_csv(
@@ -418,9 +437,12 @@ def run(seed, data_dir: Path, outdir: Path, smoke: bool):
     audit = {
         "seed": seed,
         "smoke_only": smoke,
-        "scientific_evidence": not smoke,
+        "validation_only": validation_only,
+        "scientific_evidence": scientific,
         "protocol": "protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json",
+        "corpus_manifest": "protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json",
         "corpus_sha256": hashes,
+        "corpus_hashes_match_frozen_manifest": hashes_match if not smoke else None,
         "prior_result_seed_hits": prior_hits,
         "student_phase0_sources": {"ja": schedule.base_steps, "en": 0, "ru": 0},
         "student_phase1_sources": {"ja": schedule.phase1_steps, "en": 0, "ru": 0},
@@ -456,7 +478,13 @@ def run(seed, data_dir: Path, outdir: Path, smoke: bool):
     )
     print(
         json.dumps(
-            {"seed": seed, "smoke_only": smoke, "effects": effects, "audit": "PASS"},
+            {
+                "seed": seed,
+                "smoke_only": smoke,
+                "validation_only": validation_only,
+                "scientific_evidence": scientific,
+                "audit": "PASS",
+            },
             indent=2,
         )
     )
@@ -468,8 +496,15 @@ def main():
     ap.add_argument("--data-dir", type=Path, default=Path("data/natural_r1"))
     ap.add_argument("--outdir", type=Path, default=Path("results/raw_natural_r1"))
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--validation-natural", action="store_true")
     args = ap.parse_args()
-    run(args.seed, args.data_dir, args.outdir, args.smoke)
+    run(
+        args.seed,
+        args.data_dir,
+        args.outdir,
+        smoke=args.smoke,
+        validation_natural=args.validation_natural,
+    )
 
 
 if __name__ == "__main__":
