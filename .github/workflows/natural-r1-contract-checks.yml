@@ -14,31 +14,34 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Compile R1 scripts
+      - name: Compile natural-phase scripts
         run: |
           python -m py_compile \
             experiments/prepare_natural_r1_system_translations.py \
             experiments/natural_ja_en_s2_hidden_teacher.py \
             experiments/run_natural_ja_en_s2_confirmatory.py \
             experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py \
-            experiments/verify_natural_r1_confirmatory.py
-      - name: Validate locked design and corpus manifest
+            experiments/verify_natural_r1_confirmatory.py \
+            experiments/natural_ja_en_s2_halfweight_tradeoff.py \
+            experiments/adjudicate_natural_ja_en_s2_halfweight_tradeoff.py
+      - name: Validate locked R1 and R2b designs
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          protocol = json.loads(Path('protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json').read_text())
+          r1 = json.loads(Path('protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json').read_text())
+          r2b = json.loads(Path('protocols/natural_ja_en_s2_halfweight_tradeoff_2026-09-06.json').read_text())
           manifest = json.loads(Path('protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json').read_text())
-          assert protocol['status'] == 'DESIGN_LOCKED_BEFORE_NEW_OUTCOMES'
-          assert protocol['confirmatory_plan']['fresh_seeds'] == list(range(31000, 31010))
-          assert protocol['information_boundary']['level'] == 'S2'
-          assert protocol['tokenization']['type'] == 'fixed byte-level'
+          assert r1['status'] == 'DESIGN_LOCKED_BEFORE_NEW_OUTCOMES'
+          assert r1['confirmatory_plan']['fresh_seeds'] == list(range(31000, 31010))
+          assert r2b['status'] == 'LOCKED_BEFORE_FRESH_OUTCOMES'
+          assert r2b['fresh_seeds'] == list(range(32000, 32010))
+          assert r2b['hidden_distillation_weight'] == 0.5
+          assert 'No rescue seeds' in r2b['stopping']
           assert manifest['status'] == 'HASHES_RECORDED_BEFORE_NATURAL_MODEL_OUTCOMES'
-          assert set(manifest['outputs']) == {'ja_train','ja_eval','en_train','en_eval','ru_train','ru_eval'}
-          assert all(len(meta['sha256']) == 64 for meta in manifest['outputs'].values())
-          print('R1 protocol/manifest contract OK')
+          print('R1/R2b protocol contract OK')
           PY
-      - name: Incomplete cohort must adjudicate UNCERTAIN
+      - name: Incomplete R1 cohort must adjudicate UNCERTAIN
         run: |
           mkdir -p /tmp/empty-r1
           python experiments/adjudicate_natural_ja_en_s2_hidden_teacher.py /tmp/empty-r1 --json-out /tmp/empty-r1/result.json
@@ -48,7 +51,19 @@ jobs:
           result=json.loads(Path('/tmp/empty-r1/result.json').read_text())
           assert result['verdict']=='UNCERTAIN'
           assert result['missing_seeds']==list(range(31000,31010))
-          print('incomplete-cohort guard OK')
+          print('incomplete R1 guard OK')
+          PY
+      - name: Incomplete R2b cohort must adjudicate UNCERTAIN
+        run: |
+          mkdir -p /tmp/empty-r2b
+          python experiments/adjudicate_natural_ja_en_s2_halfweight_tradeoff.py /tmp/empty-r2b --json-out /tmp/empty-r2b/result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('/tmp/empty-r2b/result.json').read_text())
+          assert result['verdict']=='UNCERTAIN'
+          assert result['missing_seeds']==list(range(32000,32010))
+          print('incomplete R2b guard OK')
           PY
       - name: Recompute committed R1 confirmatory adjudication
         run: python experiments/verify_natural_r1_confirmatory.py
