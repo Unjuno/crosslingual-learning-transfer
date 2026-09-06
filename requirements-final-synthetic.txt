@@ -1,0 +1,10 @@
+# Versions recorded for the final 2026-09-03 synthetic closure runs.
+# This is intentionally narrower than requirements.txt and covers the final
+# GRU-width / pre-state / Transformer closure sequence, not every historical script.
+#
+# The executed PyTorch build reported 2.10.0+cpu. The local-build suffix is not
+# encoded here because wheel selection is platform/index specific; use a CPU wheel
+# for the closest environment match.
+numpy==2.3.5
+pandas==2.2.3
+torch==2.10.0
