@@ -1,0 +1,45 @@
+{
+  "JA_TEN_relative_to_JA_nat_percent": -0.9105137066791724,
+  "JA_TEN_relative_to_TJA_percent": 1.1355182533729025,
+  "TEN_better_cumulative_best_auc_seeds": 8,
+  "TEN_starts_below_reference_high_seeds": 1,
+  "TJA_starts_below_reference_high_seeds": 0,
+  "mean_EN_step0_nll": {
+    "JA_TEN": 3.162255883216858,
+    "JA_TJA": 3.2605530321598053,
+    "JA_TRU": 3.259466016292572,
+    "JA_nat": 3.2702283680438997
+  },
+  "mean_JA_post_nll": {
+    "JA_TEN": 1.9509552046656609,
+    "JA_TJA": 1.9290504842996596,
+    "JA_TRU": 1.9559207394719125,
+    "JA_nat": 1.9688821464776993
+  },
+  "mean_cumulative_best_auc_0_600": {
+    "JA_TEN": 2.425429115444422,
+    "JA_TJA": 2.428506742864847
+  },
+  "mean_high_cross_updates": {
+    "JA_TEN": 1.1757444122720149,
+    "JA_TJA": 3.153660406481575
+  },
+  "mean_low_cross_updates": {
+    "JA_TEN": 134.17084680973707,
+    "JA_TJA": 145.4893671130442
+  },
+  "mean_primary_effect_updates_TEN_minus_TJA": -9.340604309097696,
+  "mean_span_updates": {
+    "JA_TEN": 132.99510239746493,
+    "JA_TJA": 142.33570670656263,
+    "JA_TRU": 154.22262727308845,
+    "JA_nat": 158.22972046463278
+  },
+  "practical_TEN_minus_nat_negative_seeds": 10,
+  "primary_failure_reason": "Japanese safety gate failed; efficacy/sign/audit/censoring gates passed.",
+  "primary_verdict": "FAIL",
+  "safety_threshold_allowed_mean_JA_TEN": 1.9483409891426562,
+  "safety_threshold_excess_nll": 0.0026142155230046704,
+  "specificity_TEN_minus_TRU_negative_seeds": 10,
+  "status": "POST_ADJUDICATION_DESCRIPTIVE_ONLY"
+}
