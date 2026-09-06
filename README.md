@@ -6,7 +6,7 @@ This repository collects controlled neural-network experiments on that question.
 
 ## Current headline
 
-The synthetic mechanism-search phase is **frozen as of 2026-09-03**. The strongest supported interpretation is a **signed, directed, learner-conditioned, support-sensitive structural transfer geometry**, not a universal symmetric language-distance scalar.
+The synthetic mechanism-search phase is **frozen as of 2026-09-03**. The strongest supported synthetic interpretation is a **signed, directed, learner-conditioned, support-sensitive structural transfer geometry**, not a universal symmetric language-distance scalar.
 
 In the documented synthetic Transformer/GRU systems:
 
@@ -18,7 +18,9 @@ In the documented synthetic Transformer/GRU systems:
 - Shared-coordinate rank dependence replicated in two fresh **causal Transformer** cohorts, reducing concern that this mechanism is GRU-specific.
 - A proposed H=32 vs H=48 stability boundary **failed** fresh confirmation, and a simple pre-curriculum state-embedding effective-rank predictor also **failed** fresh confirmation.
 
-For the final synthetic-phase adjudication, see [`docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md`](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md).
+A first prospective natural-text S2 hidden-teacher cohort has also been completed. An English-aware teacher improved the Student's later English performance-aligned span against a matched Japanese-only teacher in **10/10 fixed seeds**, with **6.35% mean span saving**, but the preregistered Japanese-safety gate narrowly failed. The locked natural study verdict is therefore **FAIL**, not PASS.
+
+For the final synthetic-phase adjudication, see [`docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md`](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md). For the natural S2 result, see [`docs/NATURAL_R1_STATUS_2026-09-06.md`](docs/NATURAL_R1_STATUS_2026-09-06.md).
 
 For public verification scope, see [`docs/CLAIM_EVIDENCE_MATRIX.md`](docs/CLAIM_EVIDENCE_MATRIX.md). For the distinction between “Student sees only A” and “the whole system is target-unaware”, see [`docs/INFORMATION_BOUNDARIES.md`](docs/INFORMATION_BOUNDARIES.md).
 
@@ -32,7 +34,7 @@ For public verification scope, see [`docs/CLAIM_EVIDENCE_MATRIX.md`](docs/CLAIM_
 | Random-rank shared-coordinate dependence generalizes beyond GRU | **Supported** | causal Transformer seeds 22000 and 22100: 5/5 families each, exact p=.03125 each |
 | A sharp H=48 hidden-width stability boundary exists | **Not supported** | fresh seeds 20000–20400: prespecified D>0 only 1/5 seeds |
 | State-embedding effective rank predicts rank-transfer variation | **Not supported** | fresh seeds 21000–21400; pooled centered Spearman = +.036 |
-| Teacher hidden(A) from an A+B teacher improves later B learning vs A-only teacher | **Supported** | GRU 5/5; Transformer confirmatory + independent replication |
+| Teacher hidden(A) from an A+B teacher improves later B learning vs A-only teacher | **Supported in synthetic systems** | GRU 5/5; Transformer confirmatory + independent replication |
 | Very low-bandwidth teacher hidden signals retain transfer | **Supported conditionally** | 2D/quantized hidden-signal studies; target-specific q4 later-B contrasts replicated |
 | Entropy-matched distance has an interior transfer window | **Supported in two confirmatory cohorts** | seeds 10900 and 11000: 5/5 families, p=.03125 each; later opportunistic cohort 4/5 |
 | B-decodable hidden subspace causally amplifies transfer | **Supported** | Bsub vs Borth, equal-rank random, and equal-rank A-head controls; confirmatory + replication |
@@ -41,7 +43,9 @@ For public verification scope, see [`docs/CLAIM_EVIDENCE_MATRIX.md`](docs/CLAIM_
 | Stationary-distribution shift explains fixed-support-count residuals | **Not supported** | fresh seed18200 mean family Spearman=.12, 3/5 positive |
 | Long sequence context is the main source of identity residuals | **Not supported** | L=6 -> L=1 did not reduce residual dispersion |
 | Stable state-to-teacher-signal binding is confirmed | **Blocked / not counted** | seed18400 pilot is promising; locked seed18500 rerun requires three missing exact archived helper snapshots |
-| Natural Japanese -> English acceleration over ordinary Japanese | **Not supported** | preregistered 95/5 gain comparison failed |
+| Earlier target-aware Japanese-window pilot accelerates English over ordinary Japanese | **Not supported** | preregistered 95/5 gain comparison failed |
+| Natural S2 English-aware hidden teacher improves TEN-vs-TJA English span | **Strong constrained sub-result** | seeds 31000–31009: 10/10 favorable, exact p=.0009765625, mean span saving 6.3521% |
+| Natural S2 study passes its full utility/safety criterion | **Not supported / locked FAIL** | mean JA_TEN NLL was 1.1355% worse than JA_TJA; locked safety maximum was 1% |
 
 Lower AUC / fewer B steps means better later-B learning in the reported sample-efficiency experiments.
 
@@ -100,32 +104,45 @@ The project deliberately retains failed hypotheses, including:
 - fixed additive row weights,
 - multi-token context as the sole identity-residual mechanism,
 - a sharp H=48 hidden-width stability boundary,
-- state-embedding effective rank as a robust scalar predictor of rank-transfer variation.
+- state-embedding effective rank as a robust scalar predictor of rank-transfer variation,
+- the first natural S2 study's full preregistered utility/safety PASS criterion.
 
-These failures narrow the mechanism toward **learner-conditioned, state/successor-specific representation and optimization interactions**.
+These failures constrain the synthetic mechanism toward **learner-conditioned, state/successor-specific representation and optimization interactions** and constrain the natural result to a **target-aware transfer channel with a small Japanese-specialist tradeoff**, not a finished safe curriculum.
 
 ## Natural-language status
 
 The earlier Japanese -> English pilot selected Japanese-sourced windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
 
-A separate R1 experiment is now **design locked and implementation validated, but its confirmatory cohort has not started**. R1 tests an S2 condition: an English-aware teacher may supply hidden targets while the Student's pre-English update source remains Japanese only. The fixed design, frozen corpus hashes, ten confirmatory seeds, cohort runner, and adjudicator are documented in [`docs/NATURAL_R1_STATUS_2026-09-06.md`](docs/NATURAL_R1_STATUS_2026-09-06.md).
+The prospective R1/R2 S2 cohort is now complete. It uses a fixed byte tokenizer and a domain-limited Vim/TeX software-translation corpus. Before English phase 2, the Student is updated only on Japanese-sourced samples; however, the T_EN teacher is explicitly trained with English and may transmit English-derived information through hidden targets.
 
-Therefore natural Japanese -> English acceleration remains **unestablished**. Human learning, broad natural-language generality, and large production LLM generality also remain untested.
+Locked result:
+
+- TEN vs TJA span favorable in **10/10** fixed seeds;
+- exact one-sided sign p = **.0009765625**;
+- mean span saving = **6.3521%**;
+- all audits pass; no censoring;
+- Japanese safety vs TJA teacher: **FAIL** (TEN mean NLL 1.1355% worse; allowed maximum 1%).
+
+Overall locked verdict: **FAIL**.
+
+This is evidence for an S2 target-aware hidden-teaching channel, not for target-unaware Japanese-text-only acceleration. The English-aware Student also starts phase 2 with better English NLL, so knowledge prepositioning and subsequent learning dynamics both contribute.
+
+Human learning, broad natural-language generality, target-unaware S0/S1 curriculum effects, and large production LLM generality remain unestablished.
 
 ## Repository map
 
 - `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
-- `docs/CLAIMS_AND_LIMITATIONS.md` — frozen synthetic claim ledger.
+- `docs/CLAIMS_AND_LIMITATIONS.md` — public claim ledger including the natural S2 result and its failed safety gate.
 - `docs/CLAIM_EVIDENCE_MATRIX.md` — claim-by-claim public evidence/reproducibility level.
 - `docs/INFORMATION_BOUNDARIES.md` — target-information paths and A-only/S0–S3 distinctions.
-- `docs/NATURAL_R1_STATUS_2026-09-06.md` — locked R1 natural-language design/readiness status; no confirmatory outcomes yet.
+- `docs/NATURAL_R1_STATUS_2026-09-06.md` — locked natural S2 design, execution, verdict, and interpretation boundary.
 - `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
 - `docs/RECENT_RESULTS_2026-09-01.md` — earlier hidden-transfer/distance/mechanism snapshot.
 - `docs/REPRODUCIBILITY.md` — environment assumptions, exact final-closure package record, and data boundaries.
 - `docs/TEST_HARNESS.md` — controls and harness audits.
-- `experiments/` — representative execution snapshots, public closure verifier, and locked R1 preparation/runner/adjudicator scripts.
+- `experiments/` — representative execution snapshots, public closure verifiers, and natural R1 preparation/runner/adjudicator scripts.
 - `protocols/` — locked protocols and the frozen R1 corpus hash manifest.
-- `results/` — compact PASS/FAIL summaries and non-scientific implementation-validation status; large raw logs/checkpoints are excluded.
+- `results/` — compact PASS/FAIL summaries and natural R1 seed/audit/adjudication evidence; large raw logs/checkpoints are excluded.
 
 ## Public verification
 
@@ -135,11 +152,15 @@ Recompute the final three synthetic closure adjudications directly from the comm
 python experiments/verify_final_synthetic_closure.py
 ```
 
-The verifier uses only the Python standard library. It checks family-level statistics against summary CSVs, locked fresh-seed protocols, and `results/current_status_2026-09-03.json`.
+Recompute the compact locked natural R1/R2 adjudication from the committed seed summaries/audits:
 
-This is an **adjudication reproduction**, not a training rerun: omitted checkpoints, historical raw curves, and uncommitted raw audit logs are not reconstructed.
+```bash
+python experiments/verify_natural_r1_confirmatory.py
+```
 
-For the closest recorded package versions of the final closure runs:
+The verifiers use only the Python standard library and check the committed evidence against locked protocols/adjudications. These are **adjudication reproductions**, not full training reruns: omitted checkpoints, many historical raw curves, and third-party corpus contents are not reconstructed.
+
+For the closest recorded package versions of the final synthetic closure runs:
 
 ```bash
 python -m pip install -r requirements-final-synthetic.txt
@@ -155,9 +176,9 @@ The scripts are execution snapshots rather than a polished library. Several olde
 
 ## Scope and claim discipline
 
-**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, cross-architecture shared-coordinate rank dependence, and support-sensitive behavioral distance recovery under the documented setups.
+**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, cross-architecture shared-coordinate rank dependence, support-sensitive behavioral distance recovery under the documented synthetic setups, and a strong target-aware S2 English-side hidden-teacher effect in one domain-limited natural-text cohort.
 
-**Not supported:** a universal language-distance law, exact metric structure, a simple hidden-width threshold, a robust scalar pre-state mechanism predictor, decoder-independent universal meta-learning, a proven natural-language curriculum, human-learning effects, or generality to large production LLMs.
+**Not supported:** a universal language-distance law, exact metric structure, a simple hidden-width threshold, a robust scalar pre-state mechanism predictor, decoder-independent universal meta-learning, a target-unaware Japanese-only curriculum, a fully passed natural utility/safety criterion, broad natural-language or large-production-LLM generality, or human-learning effects.
 
 ## Data and licensing
 
