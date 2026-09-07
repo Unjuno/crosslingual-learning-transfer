@@ -1,0 +1,14 @@
+{
+  "experiment": "r2_byte_class_loss_decomposition",
+  "date_jst": "2026-09-08",
+  "status": "POSTHOC_DESCRIPTIVE_PLAN_FIXED_BEFORE_CLASS_MASS_MEASUREMENTS",
+  "motivation": "The fixed head-only diagnostic found that more than 100 percent of the Japanese loss increase can be assigned to non-ASCII target bytes because ASCII prediction improved. This follow-up separates byte-class probability mass from within-class prediction to avoid describing every UTF-8 softmax shift as semantic forgetting.",
+  "seeds": [31000,31001,31002,31003,31004,31005,31006,31007,31008,31009],
+  "arms": ["JA_TJA", "JA_TEN"],
+  "states": ["phase1", "english600", "english600_with_phase1_head"],
+  "data": "Exactly the same frozen-corpus exact-line-filtered Japanese and English evaluation documents and 128-byte per-document masking convention used in the head-only diagnostic.",
+  "identity": "For each observed target byte y in class c, -log p(y|x) = -log sum_{z in c} p(z|x) - log[p(y|x)/sum_{z in c}p(z|x)]. Classes partition the 256 fixed bytes: ASCII 0..127; UTF8 continuation 128..191; leading-or-other 192..255. Compute all terms by float64 logsumexp from fixed float32 logits.",
+  "audits": "Class terms must sum to the byte NLL within 1e-10 in float64; float64 recomputed total must match the original float32 evaluation within 1e-6; class counts must match original exact-line-filtered target counts. No training, renormalized inference method, new checkpoint, or gate is introduced.",
+  "analysis": "Report loss increase from phase1 to english600 as additive class-mass and within-class components, and their changes under the already specified head restoration. Descriptive mean/median/range across archived seeds only. A byte class is not a language or semantic concept.",
+  "stopping": "Exactly 10 archived seeds, 2 arms, 3 previously specified states, 2 evaluation languages; zero optimizer updates. No additional byte partitions or layer interventions."
+}
