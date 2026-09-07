@@ -1,0 +1,20 @@
+{
+  "status": "SEALED_BEFORE_R2B_FRESH_OUTCOMES",
+  "protocol": "protocols/natural_ja_en_s2_halfweight_tradeoff_2026-09-06.json",
+  "pinned_main": "efbcc3f2fe5e809f539a95eff3d120c21ec98826",
+  "fresh_seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+  "hidden_distillation_weight": 0.5,
+  "training_core_git_blob": "aab161824538e29f71f2a5f00fd44364f2de9bd4",
+  "halfweight_wrapper_git_blob": "9dcc9f5a4c4c76ed62e173ffb99b9f911de84996",
+  "adjudicator_git_blob": "6a873e6de0a20ef57a72b61c8fde30a0ae284054",
+  "observer_sha256": "c3e18ebe534b6c0787367fd60e8a498622ee6c11e4d6173eca7c840cec40a112",
+  "r2b_observer_entry_sha256": "2b0edd567cf8de0cecd692fbf7d11ebfa67840371655a60ab19e010cb15749c5",
+  "training_or_metric_modifications": false,
+  "freshness_audit": {"workflow_run":34142957353,"artifact_id":10026583444,"historical_result_csvs_checked":25,"seed_field_hits":[],"status":"PASS","local_repeat_check":"All pinned-main CSVs restored; original audit_prior_results rejects old31000 and finds no32000-32009."},
+  "corpus_validation": "Four source and six generated hashes exactly match the frozen manifest; no text replacement or split change.",
+  "observation_validation": "Original and instrumented reduced-schedule validation outputs were byte-identical; no validation transfer outcome used for tuning.",
+  "runtime": {"torch":"2.10.0+cpu","numpy":"2.3.5","pandas":"2.2.3","python":"3.13.5","cpu":"AMD EPYC 7763","threads_per_seed":1,"maximum_parallel_seeds":4,"backend":"CPU float32; deterministic algorithms; no quantization"},
+  "scope_warning": "The frozen corpus has 5/296 English eval lines and 8/296 Japanese eval lines exactly duplicated in train after normalization. No full129-byte eval windows match train in either language. No corpus change is made; exact-line and broader-domain limitations must be disclosed.",
+  "stale_branch_correction": "Initial old31000-31002 reproduction jobs were stopped after discovery of merged PR7/8. They are quarantined and are not fresh evidence. This R2b protocol and its32000-32009 seeds were already locked in merged PR8 before this session.",
+  "stopping": "Exactly ten seeds at weight0.5. No rescue, extra weight, changed threshold, changed budget or changed corpus. If FAIL, end hidden-weight tuning as predeclared."
+}
