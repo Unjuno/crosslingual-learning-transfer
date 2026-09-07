@@ -1,0 +1,11 @@
+{
+  "kind": "pre-outcome supplementary corpus audit; no corpus change",
+  "source_files_match_frozen_manifest": true,
+  "outputs_match_frozen_manifest": true,
+  "languages": {
+    "ja": {"train_bytes":150451,"eval_bytes":14919,"eval_lines":296,"eval_lines_exactly_present_in_train_after_locked_normalization":8,"matching_129byte_eval_windows":0,"total_129byte_eval_windows":14791,"entirely_ascii_train_lines":56,"train_lines":3041},
+    "en": {"train_bytes":100843,"eval_bytes":10110,"eval_lines":296,"eval_lines_exactly_present_in_train_after_locked_normalization":5,"matching_129byte_eval_windows":0,"total_129byte_eval_windows":9982},
+    "ru": {"train_bytes":252142,"eval_bytes":26681,"eval_lines":296,"eval_lines_exactly_present_in_train_after_locked_normalization":9,"matching_129byte_eval_windows":55,"total_129byte_eval_windows":26553}
+  },
+  "scope": "Exact-match audit only; does not establish absence of semantic or near-duplicate overlap. These frozen data were not altered after outcomes."
+}
