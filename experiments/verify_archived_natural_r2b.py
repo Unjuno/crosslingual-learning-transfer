@@ -32,7 +32,7 @@ def extract_verified(archive: Path, manifest: dict, destination: Path):
     require(hashlib.sha256(archive.read_bytes()).hexdigest() == manifest['archive_sha256'],
             'archive SHA256 mismatch')
     require(set(manifest['members']) == expected_names(), 'archive manifest file set mismatch')
-    with tarfile.open(archive, 'r:gz') as tar:
+    with tarfile.open(archive, 'r:*') as tar:
         members = tar.getmembers()
         require(len(members) == 40 and {m.name for m in members} == expected_names(),
                 'archive member set mismatch')
@@ -63,13 +63,20 @@ def compare_adjudicators(raw_report: dict, original_report: dict):
         require(left is None and right is None or left is not None and right is not None
                 and abs(left-right) <= 1e-9, 'adjudicator numeric disagreement: ' + a)
 
+    for raw_gate, original_gate in [('audits', 'all_audits_pass'),
+                                    ('Japanese_retention', 'japanese_safety_pass'),
+                                    ('no_censoring', 'no_primary_censoring')]:
+        require(raw_report['gates'][raw_gate] == original_report[original_gate],
+                'adjudicator gate disagreement: ' + raw_gate)
+
 
 def main():
     repo = Path(__file__).resolve().parents[1]
     ap = argparse.ArgumentParser()
-    ap.add_argument('--archive', type=Path, default=repo/'results/natural_r2b_raw.tar.gz')
+    ap.add_argument('--archive', type=Path, default=repo/'results/natural_r2b_raw.tar.xz')
     ap.add_argument('--manifest', type=Path, default=repo/'results/natural_r2b_raw_manifest.json')
     ap.add_argument('--json-out', type=Path)
+    ap.add_argument('--expected-result', type=Path, default=repo/'results/natural_r2b_adjudication.json')
     args = ap.parse_args()
     try:
         manifest = json.loads(args.manifest.read_text(encoding='utf-8'))
@@ -82,6 +89,8 @@ def main():
                             str(root), '--json-out', str(original_out)],
                            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             compare_adjudicators(report, json.loads(original_out.read_text()))
+            compare_adjudicators(report, json.loads(args.expected_result.read_text(encoding='utf-8')))
+            report['committed_adjudication_agrees'] = True
             report['archive_and_member_hashes_verified'] = True
             report['original_locked_adjudicator_agrees'] = True
             report['verification_success'] = True
