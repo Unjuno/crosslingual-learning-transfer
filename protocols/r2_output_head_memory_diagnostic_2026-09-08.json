@@ -1,0 +1,15 @@
+{
+  "experiment": "r2_output_head_memory_diagnostic",
+  "date_jst": "2026-09-08",
+  "status": "EXPLORATORY_POSTHOC_DIAGNOSTIC_FIXED_BEFORE_INTERVENTION",
+  "motivation": "The completed checkpoint study found large Japanese NLL increases after 600 English-only updates, in every measured arm. The original Japanese-retention gate applies before English adaptation, not after it. This diagnostic tests whether restoring only the phase1 output projection recovers some Japanese prediction performance and what English cost it causes. It does not change the original retention gate or claim a deployable method.",
+  "seeds": [31000,31001,31002,31003,31004,31005,31006,31007,31008,31009],
+  "arms": ["JA_TJA","JA_TEN"],
+  "states": ["phase1","phase2_update600","phase2_update600_with_phase1_head"],
+  "intervention": "Restore head.weight only from the same seed/arm phase1 state. Keep every other phase2 parameter and buffer unchanged. No model selection, optimizer updates, coefficient sweep or additional layer restoration.",
+  "evaluation": "Same exact-line-filtered per-document Japanese and English byte likelihood evaluator from the checkpoint study. Additionally split Japanese target-byte NLL into ASCII (<128), UTF8 continuation (128..191), and UTF8 leading (>=192). Report loss sums and target counts, so byte strata recombine exactly to overall NLL.",
+  "controls": "Check that only head.weight differs. Copying the final head into the final model must leave state tensors identical. Recomputed phase1/final NLL must match the completed checkpoint study within 1e-6.",
+  "analysis": "Descriptive paired seed means, medians and ranges of Japanese loss recovered and English loss cost. A stratum decomposition is not an identification of a semantic memory mechanism. No p-value or post-hoc PASS gate.",
+  "stopping": "Exactly 10 archived seeds, 2 teacher conditions, one output-head restoration. No other layer or retention method is tried within this diagnostic.",
+  "historical_verdicts": "R1 FAIL and midpoint candidate FAIL remain unchanged."
+}

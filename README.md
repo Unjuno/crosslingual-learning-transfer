@@ -1,185 +1,78 @@
 # Crosslingual Learning Transfer
 
-**Can learning system A make system B easier — or harder — to learn later, even when B is not shown during the A-only intervention?**
+**Can learning A prepare a model to learn B more efficiently later?**
 
-This repository collects controlled neural-network experiments on that question. It is an **experimental evidence snapshot**, not a finished curriculum method and not evidence about human language learning.
+This repository is an experimental research record, not a finished curriculum product, a universal language-distance law, or evidence about human learning. Successes, failed criteria, measurement limitations and unresolved reproducibility problems are retained together.
 
-## Current headline
+## Latest result — 2026-09-08
 
-The synthetic mechanism-search phase is **frozen as of 2026-09-03**. The strongest supported synthetic interpretation is a **signed, directed, learner-conditioned, support-sensitive structural transfer geometry**, not a universal symmetric language-distance scalar.
+**A previously locked lower-strength hidden-teaching configuration passed its registered criterion, but its “at least 5%” margin is sensitive to measurement resolution.**
 
-In the documented synthetic Transformer/GRU systems:
+| Study or measurement | English interval saving | Japanese phase1 penalty vs Japanese-teacher control | Status |
+|---|---:|---:|---|
+| Original R1, hidden-loss weight 1.0, seeds 31000–31009 | Mean 6.3521% | 1.1355%, above the 1% limit | **Registered FAIL, unchanged** |
+| Registered halfweight follow-up, seeds 32000–32009 | Mean **5.1881%**, favorable in **10/10** | **0.6293%**, within the 1% limit | **Registered PASS** |
+| Same halfweight checkpoints, every-update timing | Mean **4.5692%** interpolated; **4.7066%** first-observed | Same already-measured phase1 states | **Diagnostic: favorable in 10/10, but below 5%** |
+| Single 50:50 Student-parameter midpoint, archival seeds | Original exploratory metric 3.6862% | 0.5226% | **Exploratory FAIL; no coefficient sweep** |
 
-- A-only learning can create **positive, neutral, or negative** later-B transfer.
-- Stable sample-efficiency transfer depends on **shared / B-decodable representation geometry**, not only on starting loss.
-- A teacher-mediated A-side hidden signal can carry target-specific information without exposing B examples to the Student during phase 1.
-- Transfer-derived dissimilarity can recover held-out B-B structural distances across fresh seeds, unseen overlap topologies, changed A-distance shells, a changed transition operator, and unseen A-family templates.
-- That behavioral distance is **not generic total variation**: it is much more sensitive to transition-support changes than to probability-weight rearrangements on a fixed support.
-- Shared-coordinate rank dependence replicated in two fresh **causal Transformer** cohorts, reducing concern that this mechanism is GRU-specific.
-- A proposed H=32 vs H=48 stability boundary **failed** fresh confirmation, and a simple pre-curriculum state-embedding effective-rank predictor also **failed** fresh confirmation.
+The registered halfweight mean is computed from the original **10-update evaluation grid**. Its median is 5.8849%, range 0.7798–10.5482%, and one-sided sign probability .0009765625. A descriptive paired-seed 95% bootstrap interval for that mean is **3.08–7.37%**. Neither this interval nor the denser timing establishes a robust population saving of at least 5%.
 
-A first prospective natural-text S2 hidden-teacher cohort has also been completed. An English-aware teacher improved the Student's later English performance-aligned span against a matched Japanese-only teacher in **10/10 fixed seeds**, with **6.35% mean span saving**, but the preregistered Japanese-safety gate narrowly failed. The locked natural study verdict is therefore **FAIL**, not PASS.
+The new configuration used the **already published weight-0.5 protocol**, not a retrospective relaxation of R1. Different weight studies use different seed cohorts, so their difference is not a paired causal dose-response estimate. Replayed checkpoints do not enlarge the independent seed count.
 
-For the final synthetic-phase adjudication, see [`docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md`](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md). For the natural S2 result, see [`docs/NATURAL_R1_STATUS_2026-09-06.md`](docs/NATURAL_R1_STATUS_2026-09-06.md).
+Read [the registered halfweight report](docs/NATURAL_R2_HALFWEIGHT_2026-09-08.md), [all measurement diagnostics](docs/R2_DIAGNOSTICS_2026-09-08.md), [the locked halfweight protocol](protocols/natural_ja_en_s2_halfweight_tradeoff_2026-09-06.json), and [the original R1 FAIL](docs/NATURAL_R1_STATUS_2026-09-06.md).
 
-For public verification scope, see [`docs/CLAIM_EVIDENCE_MATRIX.md`](docs/CLAIM_EVIDENCE_MATRIX.md). For the distinction between “Student sees only A” and “the whole system is target-unaware”, see [`docs/INFORMATION_BOUNDARIES.md`](docs/INFORMATION_BOUNDARIES.md).
+## What “Japanese-only” means here
 
-## Selected current evidence
+Before English adaptation, Student updates use **Japanese-sourced corpus samples**. However, an English-aware teacher may transmit English-derived information through hidden-state targets. Japanese software text can include ASCII and Latin fragments.
 
-| Result | Status | Main evidence |
-|---|---|---|
-| A-only target-compatible curricula can improve later B learning | **Supported** | Transformer 7/8 fresh seeds at d=.25; GRU 8/8 |
-| Target-incompatible A curricula can harm later B learning | **Supported** | signed-transfer calibration + independent replication |
-| Performance-aligned transfer depends on shared coordinates | **Supported** | base-coordinate cohorts replicated; completely fresh B-head result did not replicate |
-| Random-rank shared-coordinate dependence generalizes beyond GRU | **Supported** | causal Transformer seeds 22000 and 22100: 5/5 families each, exact p=.03125 each |
-| A sharp H=48 hidden-width stability boundary exists | **Not supported** | fresh seeds 20000–20400: prespecified D>0 only 1/5 seeds |
-| State-embedding effective rank predicts rank-transfer variation | **Not supported** | fresh seeds 21000–21400; pooled centered Spearman = +.036 |
-| Teacher hidden(A) from an A+B teacher improves later B learning vs A-only teacher | **Supported in synthetic systems** | GRU 5/5; Transformer confirmatory + independent replication |
-| Very low-bandwidth teacher hidden signals retain transfer | **Supported conditionally** | 2D/quantized hidden-signal studies; target-specific q4 later-B contrasts replicated |
-| Entropy-matched distance has an interior transfer window | **Supported in two confirmatory cohorts** | seeds 10900 and 11000: 5/5 families, p=.03125 each; later opportunistic cohort 4/5 |
-| B-decodable hidden subspace causally amplifies transfer | **Supported** | Bsub vs Borth, equal-rank random, and equal-rank A-head controls; confirmatory + replication |
-| A fixed transfer->distance calibration recovers unseen B-B distances | **Supported in the tested synthetic family** | zero-shot cohorts across seeds/topology/shell/operator/unseen A families; MAE roughly .06-.11 TV |
-| Transfer distance is equally sensitive to all TV components | **Not supported** | within-row geometry failed; SUPPORT > WEIGHT replicated 5/5, p=.03125 |
-| Stationary-distribution shift explains fixed-support-count residuals | **Not supported** | fresh seed18200 mean family Spearman=.12, 3/5 positive |
-| Long sequence context is the main source of identity residuals | **Not supported** | L=6 -> L=1 did not reduce residual dispersion |
-| Stable state-to-teacher-signal binding is confirmed | **Blocked / not counted** | seed18400 pilot is promising; locked seed18500 rerun requires three missing exact archived helper snapshots |
-| Earlier target-aware Japanese-window pilot accelerates English over ordinary Japanese | **Not supported** | preregistered 95/5 gain comparison failed |
-| Natural S2 English-aware hidden teacher improves TEN-vs-TJA English span | **Strong constrained sub-result** | seeds 31000–31009: 10/10 favorable, exact p=.0009765625, mean span saving 6.3521% |
-| Natural S2 study passes its full utility/safety criterion | **Not supported / locked FAIL** | mean JA_TEN NLL was 1.1355% worse than JA_TJA; locked safety maximum was 1% |
+This is **S2: target-aware hidden teaching through Japanese inputs**, not target-unaware Japanese-text-only learning. Models are small fixed-byte causal Transformers trained on frozen Vim/TeX software translation strings. Broad natural language, human learning and production LLMs are not established.
 
-Lower AUC / fewer B steps means better later-B learning in the reported sample-efficiency experiments.
+The Japanese-retention gate is tested **after Japanese phase1, before English adaptation**. It is not a guarantee against later forgetting. In the halfweight diagnostic, filtered-document Japanese NLL rose from 1.89675 after phase1 to 2.64420 after 250 English-only updates. Savings exclude teacher preparation, earlier Japanese training and wall-clock costs.
 
-The compact cross-phase ledger is in [`results/evidence_summary.csv`](results/evidence_summary.csv). Positive findings and failures are intentionally kept together.
+[Information boundaries](docs/INFORMATION_BOUNDARIES.md) distinguish source-language input restrictions from restrictions on target-derived information.
 
-## Current mechanism picture
+## What the additional diagnostics found
 
-```text
-A-only input
-   |
-   v
-representation written during phase 1
-   |
-   +--> decoder/shared-coordinate accessibility matters
-   +--> B-decodable subspace placement matters strongly
-   +--> learner architecture / initialization modulates the realized effect
-   v
-Student representation after phase 1
-   |
-   v
-later B learning speed
-```
+Original-grid NLL values matched exactly when trajectories were replayed with denser evaluation. The changed timing estimates are therefore a measurement issue, not different training.
 
-A second line treats later-learning behavior as a probe of task structure:
+Exact-line-filtered document evaluation still showed a favorable transfer pattern, but it changes document boundaries and the evaluated population. It does not remove every template/semantic overlap and is not substituted for the registered metric.
 
-```text
-source teacher B_s
-      |
-      v
-A-side teacher signal -> Student
-      |
-      v
-later target B_t learning
-      |
-      v
-matching synergy / transfer penalty
-      |
-      +--> predicts support-sensitive B_s <-> B_t dissimilarity
-```
+On archival weight-1.0 checkpoints, restoring **only the phase1 output head** recovered about 70% of the later Japanese byte-NLL increase while worsening English NLL. An exact loss decomposition attributed about 86% of the Japanese increase to changes in probability assigned to byte classes. These are not percentages of semantic knowledge forgotten or recovered. Full scope and numerical details are in the diagnostic report.
 
-This behavioral dissimilarity generalizes surprisingly well within the synthetic setup, but it is not an exact metric and does not uniformly recover fine probability-weight differences.
+## Synthetic phase — frozen
 
-## Important negative results
+The synthetic mechanism-search phase was frozen on 2026-09-03. Within the documented setups:
 
-The project deliberately retains failed hypotheses, including:
+- A-side interventions can help or harm subsequent B learning.
+- Shared/target-decodable representation geometry and coordinate interventions affect transfer.
+- Shared-coordinate rank dependence was observed in GRU and two fresh causal-Transformer cohorts. A negative fitted slope does not imply strictly monotonic benefit at every rank increment.
+- Transfer behavior recovers some held-out synthetic structural differences but does not uniformly recover fixed-support probability-weight changes.
 
-- a simple monotonic scalar distance law,
-- surface-only target-specific teaching as a robust mechanism,
-- boundary-cut / special-row scalar explanations,
-- first-order gradient-alignment prediction,
-- a prospective hidden-MSE + teacher-B-NLL mechanism predictor,
-- full distance-window explanation by Bsub geometry alone,
-- strict monotonic 5x5 TV recovery,
-- general TV recovery when distance comes mostly from within-support probability rearrangement,
-- stationary-distribution shift as the fixed-support-count mechanism,
-- fixed additive row weights,
-- multi-token context as the sole identity-residual mechanism,
-- a sharp H=48 hidden-width stability boundary,
-- state-embedding effective rank as a robust scalar predictor of rank-transfer variation,
-- the first natural S2 study's full preregistered utility/safety PASS criterion.
+Tested simple distance, width-boundary and effective-rank-predictor hypotheses failed. This does not prove that every scalar description is impossible or that a particular alternative mechanism has been identified. The state–signal binding confirmation at seed18500 remains **BLOCKED / NOT COUNTED**, pending exact helper snapshots; a reconstructed implementation would be a separate study.
 
-These failures constrain the synthetic mechanism toward **learner-conditioned, state/successor-specific representation and optimization interactions** and constrain the natural result to a **target-aware transfer channel with a small Japanese-specialist tradeoff**, not a finished safe curriculum.
-
-## Natural-language status
-
-The earlier Japanese -> English pilot selected Japanese-sourced windows using an offline English transition motif. A 95/5 blend passed safety checks and differed from a Russian-target control on one contrast, but it **did not establish positive acceleration over ordinary Japanese**.
-
-The prospective R1/R2 S2 cohort is now complete. It uses a fixed byte tokenizer and a domain-limited Vim/TeX software-translation corpus. Before English phase 2, the Student is updated only on Japanese-sourced samples; however, the T_EN teacher is explicitly trained with English and may transmit English-derived information through hidden targets.
-
-Locked result:
-
-- TEN vs TJA span favorable in **10/10** fixed seeds;
-- exact one-sided sign p = **.0009765625**;
-- mean span saving = **6.3521%**;
-- all audits pass; no censoring;
-- Japanese safety vs TJA teacher: **FAIL** (TEN mean NLL 1.1355% worse; allowed maximum 1%).
-
-Overall locked verdict: **FAIL**.
-
-This is evidence for an S2 target-aware hidden-teaching channel, not for target-unaware Japanese-text-only acceleration. The English-aware Student also starts phase 2 with better English NLL, so knowledge prepositioning and subsequent learning dynamics both contribute.
-
-Human learning, broad natural-language generality, target-unaware S0/S1 curriculum effects, and large production LLM generality remain unestablished.
-
-## Repository map
-
-- `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
-- `docs/CLAIMS_AND_LIMITATIONS.md` — public claim ledger including the natural S2 result and its failed safety gate.
-- `docs/CLAIM_EVIDENCE_MATRIX.md` — claim-by-claim public evidence/reproducibility level.
-- `docs/INFORMATION_BOUNDARIES.md` — target-information paths and A-only/S0–S3 distinctions.
-- `docs/NATURAL_R1_STATUS_2026-09-06.md` — locked natural S2 design, execution, verdict, and interpretation boundary.
-- `docs/EXPERIMENT_LOG.md` — chronological experiment phases and decision points.
-- `docs/RECENT_RESULTS_2026-09-01.md` — earlier hidden-transfer/distance/mechanism snapshot.
-- `docs/REPRODUCIBILITY.md` — environment assumptions, exact final-closure package record, and data boundaries.
-- `docs/TEST_HARNESS.md` — controls and harness audits.
-- `experiments/` — representative execution snapshots, public closure verifiers, and natural R1 preparation/runner/adjudicator scripts.
-- `protocols/` — locked protocols and the frozen R1 corpus hash manifest.
-- `results/` — compact PASS/FAIL summaries and natural R1 seed/audit/adjudication evidence; large raw logs/checkpoints are excluded.
+See the [synthetic closure report](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md), [historical evidence ledger](results/evidence_summary.csv), and [claim/evidence matrix](docs/CLAIM_EVIDENCE_MATRIX.md). Historical documents retain their stated snapshot dates; Sep-8 reports add results without rewriting prior adjudications.
 
 ## Public verification
 
-Recompute the final three synthetic closure adjudications directly from the committed family/cell-level CSVs:
-
 ```bash
+python experiments/verify_halfweight_public_2026_09_08.py
+python -m unittest discover -s experiments -p 'test_halfweight_public_2026_09_08.py' -v
 python experiments/verify_final_synthetic_closure.py
-```
-
-Recompute the compact locked natural R1/R2 adjudication from the committed seed summaries/audits:
-
-```bash
 python experiments/verify_natural_r1_confirmatory.py
 ```
 
-The verifiers use only the Python standard library and check the committed evidence against locked protocols/adjudications. These are **adjudication reproductions**, not full training reruns: omitted checkpoints, many historical raw curves, and third-party corpus contents are not reconstructed.
+These standard-library commands verify **committed record arithmetic**, not end-to-end training. In the Sep-8 halfweight execution, independent raw-curve recomputation and reevaluation of all 40 phase1 checkpoints had zero discrepancy. Full execution traces/checkpoints are separate artifacts; compact verification must not be confused with those stronger checks.
 
-For the closest recorded package versions of the final synthetic closure runs:
+Fresh-seed guards intentionally reject reuse of registered outcomes as new trials. Future same-seed replays must be labeled reproduction and do not add independent evidence.
 
-```bash
-python -m pip install -r requirements-final-synthetic.txt
-```
+## Repository and implementation boundaries
 
-For broader historical scripts and the R1 implementation:
+`protocols/` contains locked definitions and labeled exploratory plans. `experiments/` contains execution snapshots, runners and verifiers. `results/` contains compact seed summaries, audits and decisions. `docs/REPRODUCIBILITY.md` explains omitted artifacts and data boundaries.
 
-```bash
-python -m pip install -r requirements.txt
-```
+The Sep-8 environment was Python 3.13.5, PyTorch 2.10.0+cpu, NumPy 2.3.5 and pandas 2.2.3; float32, deterministic algorithms, one PyTorch thread/job. Model: 141,056 parameters, two width-64 causal Transformer layers, four heads, context 128 bytes, batch 16. CPU clocks were not fixed. Cross-platform bitwise identity and hardware-speed gains are not claimed.
 
-The scripts are execution snapshots rather than a polished library. Several older files retain paths from the original execution environment; see [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) before rerunning them.
+Source corpus versions must match the frozen SHA256 manifest. Another corpus is a new experiment. Some older scripts retain original execution paths. No additional loss-weight or midpoint-coefficient search is part of this completed sequence; independent data and preregistered dense/fixed-threshold measurements are the next validity questions.
 
-## Scope and claim discipline
+## Licensing
 
-**Supported:** controlled synthetic neural-network existence results, several representation-geometry mechanisms, cross-architecture shared-coordinate rank dependence, support-sensitive behavioral distance recovery under the documented synthetic setups, and a strong target-aware S2 English-side hidden-teacher effect in one domain-limited natural-text cohort.
-
-**Not supported:** a universal language-distance law, exact metric structure, a simple hidden-width threshold, a robust scalar pre-state mechanism predictor, decoder-independent universal meta-learning, a target-unaware Japanese-only curriculum, a fully passed natural utility/safety criterion, broad natural-language or large-production-LLM generality, or human-learning effects.
-
-## Data and licensing
-
-Code in this repository is released under Apache-2.0. External natural-language corpora are **not redistributed** here; they remain subject to their original licenses.
+Code is Apache-2.0. Third-party corpus text is not redistributed here and retains its original licenses.
