@@ -1,0 +1,51 @@
+name: Natural R2b executed-evidence checks
+on:
+  pull_request:
+  push:
+    branches: [main, results/r2b-halfweight-executed]
+    paths:
+      - 'experiments/*r2b*'
+      - 'experiments/observe_natural_r1_execution.py'
+      - 'results/natural_r2b*'
+      - 'protocols/natural_r2b_execution_seal_2026-09-08.json'
+      - '.github/workflows/natural-r2b-execution-checks.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and test independent verification guards
+        run: |
+          python -m py_compile experiments/observe_natural_r1_execution.py experiments/observe_natural_r2b_execution.py experiments/verify_natural_r2b_raw.py experiments/verify_archived_natural_r2b.py
+          python -m unittest discover -s experiments -p 'test_*r2b*.py' -v
+      - name: Check sealed executed source identities
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          seal=json.loads(Path('protocols/natural_r2b_execution_seal_2026-09-08.json').read_text())
+          for name,key in [('observe_natural_r1_execution.py','observer_sha256'),('observe_natural_r2b_execution.py','r2b_observer_entry_sha256')]:
+              assert hashlib.sha256((Path('experiments')/name).read_bytes()).hexdigest()==seal[key],name
+          for name,key in [('natural_ja_en_s2_hidden_teacher.py','training_core_git_blob'),('natural_ja_en_s2_halfweight_tradeoff.py','halfweight_wrapper_git_blob'),('adjudicate_natural_ja_en_s2_halfweight_tradeoff.py','adjudicator_git_blob')]:
+              b=(Path('experiments')/name).read_bytes()
+              assert hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()==seal[key],name
+          print('Executed core, wrapper, adjudicator, and observational instrumentation match sealed identities.')
+          PY
+      - name: Recompute R2b from raw curves and measured execution traces
+        run: python experiments/verify_archived_natural_r2b.py --json-out verification/natural_r2b.json
+      - name: Retain the parent FAIL and frozen synthetic adjudications
+        run: |
+          python experiments/verify_natural_r1_confirmatory.py
+          python experiments/verify_final_synthetic_closure.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: natural-r2b-raw-verification
+          path: verification/
+          if-no-files-found: ignore
+          retention-days: 90
