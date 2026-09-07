@@ -1,0 +1,53 @@
+name: R2b prerun provenance
+on:
+  push:
+    branches: [results/r2b-halfweight-executed]
+    paths: [.github/workflows/r2b-prerun-provenance.yml]
+  pull_request:
+    paths: [.github/workflows/r2b-prerun-provenance.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify historical result seed fields and archive pinned inputs
+        run: |
+          mkdir -p provenance
+          python - <<'PY'
+          import csv, hashlib, io, json, subprocess
+          from pathlib import Path
+          ref='efbcc3f2fe5e809f539a95eff3d120c21ec98826'
+          seeds=set(range(32000,32010))
+          paths=subprocess.check_output(['git','ls-tree','-r','--name-only',ref],text=True).splitlines()
+          inspected=[]; hits=[]
+          for path in paths:
+              if not (path.startswith('results/') and path.endswith('.csv')):
+                  continue
+              data=subprocess.check_output(['git','show',ref+':'+path])
+              rows=list(csv.DictReader(io.StringIO(data.decode('utf-8'))))
+              found=[]
+              for row in rows:
+                  raw=row.get('seed','')
+                  if raw and float(raw) in seeds:
+                      found.append(int(float(raw)))
+              inspected.append({'path':path,'sha256':hashlib.sha256(data).hexdigest(),'rows':len(rows),'seed_hits':found})
+              if found: hits.append({'path':path,'seeds':found})
+          report={'pinned_main':ref,'seeds':sorted(seeds),'files':inspected,'hits':hits,'pass':not hits}
+          Path('provenance/prior_result_seed_audit.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          assert inspected and not hits
+          PY
+          git archive --format=tar --output=provenance/pinned_main_source.tar efbcc3f2fe5e809f539a95eff3d120c21ec98826
+          sha256sum provenance/pinned_main_source.tar > provenance/pinned_main_source.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r2b-pinned-input-provenance
+          path: provenance/
+          retention-days: 90
