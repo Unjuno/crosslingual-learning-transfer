@@ -20,5 +20,7 @@ jobs:
           python-version: '3.13'
       - name: Recompute compact halfweight result
         run: python experiments/verify_halfweight_public_2026_09_08.py
+      - name: Recompute dense-measurement sensitivity
+        run: python experiments/verify_halfweight_dense_2026_09_08.py
       - name: Exercise malformed and negative record guards
-        run: python -m unittest discover -s experiments -p 'test_halfweight_public_2026_09_08.py' -v
+        run: python -m unittest discover -s experiments -p 'test_halfweight*.py' -v
