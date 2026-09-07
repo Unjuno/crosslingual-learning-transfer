@@ -1,0 +1,29 @@
+{
+  "date_jst": "2026-09-08",
+  "synthetic_phase": "FROZEN",
+  "natural_R1_weight1_registered_verdict": "FAIL_UNCHANGED",
+  "natural_R2_halfweight": {
+    "registered_verdict": "PASS",
+    "fresh_seed_count": 10,
+    "seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+    "registered_mean_saving": 0.05188078665296712,
+    "registered_favorable_seeds": 10,
+    "registered_JA_phase1_penalty": 0.006292635449885786,
+    "dense_diagnostic_mean_saving": 0.04569166589291429,
+    "dense_first_observed_mean_saving": 0.04706647984414516,
+    "dense_diagnostic_favorable_seeds": 10,
+    "robust_at_least_five_percent_claim": "NOT_ESTABLISHED",
+    "post_English_Japanese_retention_guarantee": "NOT_ESTABLISHED",
+    "interpretation": "Target-aware hidden teaching has a consistent favorable direction in this domain-limited cohort. The registered point-estimate criterion passes, but the numerical 5-percent margin is measurement-resolution-sensitive."
+  },
+  "archival_midpoint_candidate": "FAIL_EXPLORATORY_NO_COEFFICIENT_SWEEP",
+  "all_fixed_execution_jobs": "COMPLETED",
+  "optimizer_updates_this_execution_sequence": 83000,
+  "new_independent_seeds": 10,
+  "replayed_diagnostic_seeds_are_additional_evidence": false,
+  "state_signal_seed18500": "BLOCKED_NOT_COUNTED_MISSING_EXACT_HELPERS",
+  "target_unaware_Japanese_text_only": "NOT_ESTABLISHED",
+  "human_or_large_LLM_generality": "NOT_ESTABLISHED",
+  "further_hidden_weight_or_midpoint_search": "NOT_PLANNED_IN_THIS_SEQUENCE",
+  "next_validity_question": "Independent corpus, prespecified dense/fixed-threshold metric, and Japanese retention after English training as well as before. Do not choose a favorable post-hoc metric."
+}
