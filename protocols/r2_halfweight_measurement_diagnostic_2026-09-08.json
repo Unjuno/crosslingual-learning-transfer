@@ -1,0 +1,20 @@
+{
+  "experiment": "r2_halfweight_measurement_diagnostic",
+  "date_jst": "2026-09-08",
+  "status": "POST_ADJUDICATION_DIAGNOSTIC_FIXED_BEFORE_NEW_MEASUREMENTS",
+  "motivation": "The completed locked halfweight cohort passed: mean English span saving 5.1881 percent with Japanese penalty 0.6293 percent. Because the efficacy point estimate is close to its 5-percent threshold and historical evaluation spacing is 10 updates, assess measurement sensitivity without changing the registered decision.",
+  "completed_primary_verdict": "PASS_UNCHANGED",
+  "original_weight1_R1_verdict": "FAIL_UNCHANGED",
+  "seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+  "seed_status": "Reuse newly completed halfweight checkpoints; these replays are not additional independent trials",
+  "arms": ["JA_TJA","JA_TEN"],
+  "training": "Replay exactly 250 original English updates from each archived halfweight phase1 checkpoint, with original AdamW, float32 and original minibatch seeds. Fixed horizon covers the observed primary low-threshold crossings; no extension after outcomes.",
+  "evaluation": {
+    "historical": "Original seed-specific 8x32 English evaluation batches at every update 0..250; use the original fixed reference high/low. Report both linearly interpolated and integer first-observed interval spans.",
+    "clean": "Same exact-line-filtered per-document byte evaluation from the earlier diagnostic, every 5 English updates; historical numeric thresholds applied identically to both arms, explicitly as a changed descriptive metric. Japanese clean-document loss is measured before and after the 250 English updates.",
+    "byte_class": "At phase1, decompose full clean Japanese and English losses into ASCII/UTF8-continuation/leading-or-other class-mass and within-class terms, using the predeclared exact log-probability identity. No inference renormalization or training modification."
+  },
+  "audits": "Hash-check archived checkpoints, verify exact corpus outputs, compare all original-grid English checkpoint values to completed halfweight run within 1e-6, verify identical actual phase2 batch digests across paired arms, finite losses and exact expected grids. Preserve zero/unreached spans as invalid rather than favorable.",
+  "analysis": "Descriptive means/medians/ranges and per-seed comparisons only. No new p-value, threshold or PASS/FAIL replacement. Report any disagreement as a measurement limitation of the fixed result.",
+  "stopping": "Exactly 20 English replay trajectories, each 250 updates. No new seeds, loss weights, model changes, corpus changes or horizon extension."
+}
