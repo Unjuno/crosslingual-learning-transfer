@@ -1,0 +1,18 @@
+{
+  "experiment": "r2_dense_crossing_diagnostic",
+  "date_jst": "2026-09-08",
+  "status": "POSTHOC_DIAGNOSTIC_PLAN_FIXED_BEFORE_DENSE_LOW_CROSSINGS",
+  "motivation": "The completed archival midpoint probe changed only the early 0..10 evaluation resolution: TEN saving was 6.3521% on the historical grid and 7.3196% with dense early evaluation. Low-threshold crossings still used 10-update interpolation. This diagnostic checks both thresholds at one-update resolution and measures the same trajectories on exact-line-filtered English documents. It is not a new efficacy confirmation and cannot rescue either prior FAIL.",
+  "seeds": [31000,31001,31002,31003,31004,31005,31006,31007,31008,31009],
+  "arms": ["JA_TJA","JA_TEN","MID50"],
+  "initial_weights": "Same archived phase1 Students and the single fixed MID50 from r2_measurement_midpoint_exploratory. No new mixing coefficient or method.",
+  "training": "Replay exactly original English batches/AdamW from phase1 for updates 1..200, fixed before this diagnostic. This horizon covers every historical low-threshold crossing; never extend it based on new observations.",
+  "evaluation": {
+    "historical_sampled": "Evaluate the original 8x32 seed-specific English batches at every update 0..200. Compare original-grid NLL values to completed archival probe within 1e-6.",
+    "clean_document": "Evaluate all exact-line-filtered English documents with the fixed per-document 128-byte masked evaluator every five updates 0..200. Apply the already fixed historical reference high/low numerical thresholds to both arms, explicitly labeling this a changed descriptive evaluation.",
+    "statistics": "Report interpolated and discrete first-observed threshold crossings separately. Do not equate fractional update interpolation with physically executed fractional optimizer steps. Report per-seed differences, median/range, and censoring; do not pool these reused seeds as new independent evidence."
+  },
+  "stopping": "Exactly 30 replay curves, each 200 English updates. No additional model parameters, seeds, coefficients, hypotheses, thresholds or horizons are selected from these outcomes.",
+  "historical_R1_verdict": "FAIL_UNCHANGED",
+  "midpoint_candidate_gate": "The already reported exploratory FAIL is retained; the denser measurement is a diagnostic, not a retrospective replacement."
+}
