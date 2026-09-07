@@ -1,0 +1,30 @@
+{
+  "experiment": "r2_measurement_midpoint_exploratory",
+  "date_jst": "2026-09-08",
+  "status": "EXPLORATORY_PLAN_FIXED_BEFORE_NEW_OUTCOMES",
+  "upstream_commit": "efbcc3f2fe5e809f539a95eff3d120c21ec98826",
+  "historical_verdict_unchanged": "R1_FAIL_JAPANESE_RETENTION",
+  "seed_status": "Previously used checkpoints; not independent confirmatory evidence",
+  "seeds": [31000,31001,31002,31003,31004,31005,31006,31007,31008,31009],
+  "hypotheses": {
+    "measurement": "The historical TEN-vs-TJA English interval benefit survives measurement of updates 1 through 10, instead of interpolating only between updates 0 and 10.",
+    "evaluation": "The Japanese retention tradeoff is not solely a consequence of exact normalized train/eval duplicate lines or the sampled evaluation windows.",
+    "midpoint": "The arithmetic parameter midpoint of same-seed TJA and TEN phase1 Students reduces the Japanese retention penalty while retaining at least 5 percent mean English interval saving relative to TJA. This is a new model-combination candidate, not a change to R1."
+  },
+  "arms": ["JA_TJA", "JA_TEN", "MID50"],
+  "midpoint_rule": "For every floating parameter, 0.5*TJA + 0.5*TEN in float32; no coefficient search, no model selection. Nonfloating buffers must agree. Inputs before English adaptation remain Japanese-sourced but TEN contains target-aware hidden-teacher information. Preparing both endpoint Students costs more than preparing one; savings exclude that extra cost.",
+  "english_training": "Reuse original model, AdamW, learning rate, batch size, corpus hashes and batch seeds. 600 updates per arm per seed. No changes to phase2 training. Start from archived phase1 checkpoints; no phase0/phase1 retraining.",
+  "english_evaluation": {
+    "historical": "Original seed-specific 8x32 evaluation batches and original reference_high/reference_low; evaluate steps 0..10 every update, then 20..600 every 10 updates. Original-grid endpoint NLL values must match archives within 1e-6.",
+    "exact_line_filtered": "Deduplicate eval lines within each language and exclude lines exactly matching that language training lines. Evaluate all remaining UTF-8 bytes per document, teacher forcing in 128-position blocks, no cross-document context, padded targets masked. Score byte positions 1..end exactly once. First byte of a document is not scored. This is a changed descriptive evaluation, not a replacement for R1.",
+    "checkpoint_retention": "Evaluate phase1 JA_TJA, JA_TEN, JA_TRU, JA_nat and MID50 on original Japanese batches and on full unique/all and exact-line-filtered Japanese eval. Full line-level losses are retained. Also measure phase1 English NLL for the three training arms on filtered English eval.",
+    "end_evaluation": "Evaluate all three arms after English update 600 on filtered English and Japanese eval; log final weights."
+  },
+  "analysis": {
+    "midpoint_exploratory_gate": "All 10 seeds complete, at least 9/10 MID50-vs-TJA negative interval differences, mean per-seed saving >=0.05, ratio of mean historical Japanese phase1 NLL(MID50)/NLL(TJA) <=1.01, no censoring, audits pass. PASS here means exploratory candidate gate only, not confirmatory support.",
+    "retention_uncertainty": "Report paired seed bootstrap and two-way seed-by-document bootstrap, 10000 draws with fixed analysis seed 98008. Bootstrap describes uncertainty conditional on this limited corpus, not universal languages.",
+    "negative_control": "Same-state midpoint must recover identical tensors; mismatched checkpoint keys/shapes, missing seeds, nonfinite metrics or corpus mismatch must be rejected.",
+    "censoring": "Unreached or nonpositive spans remain missing/invalid, never imputed as favorable. No extension after outcomes."
+  },
+  "stopping": "Exactly the 10 archived seeds and one midpoint coefficient. Complete regardless of effect direction. No coefficient sweep or rescue seed. Infrastructure errors permit documented same-run repair. Any fresh-seed claim requires a separate subsequent protocol."
+}
