@@ -1,0 +1,16 @@
+{
+  "status": "EXECUTION_SEALED_BEFORE_CONFIRMATORY_OUTCOMES",
+  "design_commit": "21775d9529c4a65cf4283ff03df2f489482e91ba",
+  "design_protocol": "protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json",
+  "corpus_manifest": "protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json",
+  "confirmatory_seeds": [31000,31001,31002,31003,31004,31005,31006,31007,31008,31009],
+  "training_core_git_blob": "aab161824538e29f71f2a5f00fd44364f2de9bd4",
+  "training_core_sha256": "2e68b1f47d2828e9c30ee9541af63f911f43890feb9f7af8e6302a0cecaab77c",
+  "observer_sha256": "c3e18ebe534b6c0787367fd60e8a498622ee6c11e4d6173eca7c840cec40a112",
+  "observer_scope": "Progress, actual update-source and batch hashes, finite checks and stage-end checkpoints only. No change to model, loss, update order, schedule, seeds, corpus, or metric.",
+  "observer_validation": "Reduced natural-corpus seed30999 run with and without observer produced byte-identical curves, summary and core audit. Validation is not scientific evidence.",
+  "corpus_validation": "All four source-package hashes and all six generated corpus hashes match the frozen manifest.",
+  "runtime": {"python":"3.13.5","torch":"2.10.0+cpu","numpy":"2.3.5","pandas":"2.2.3","cpu":"AMD EPYC 7763","cpu_quota_cores":4,"ram_limit_bytes":4294967296,"torch_threads_per_job":1,"maximum_parallel_seeds":3,"backend":"CPU float32; deterministic algorithms enabled; no quantization"},
+  "test_fixture_exclusion": "Existing natural_r1_fake summaries are manually constructed adjudicator test fixtures, not executed confirmatory runs. They are excluded from the scientific output directory, evidence and seed-execution accounting.",
+  "stopping": "Run the ten fixed seeds; no efficacy-based early stop, rescue seeds, threshold changes or corpus changes. Technical failures must be preserved and reported, never counted as efficacy results."
+}
