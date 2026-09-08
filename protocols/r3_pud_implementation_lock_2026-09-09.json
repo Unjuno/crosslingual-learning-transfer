@@ -1,0 +1,13 @@
+{
+  "protocol_commit": "afd7e82180ee856a4e4fc3b48b51f490721d41e1",
+  "data_manifest_sha256": "a70abd42d4ca57a9f27a6a784388559dc7ebb4366ced28d4aef7285a08e41236",
+  "files": {
+    "experiments/prepare_pud_r3.py": "59160355597139cbc870977d2bdcd0b4c251fe469b5c8371b0f2c65f42db6ca2",
+    "experiments/natural_ja_en_s2_hidden_teacher.py": "2e68b1f47d2828e9c30ee9541af63f911f43890feb9f7af8e6302a0cecaab77c",
+    "experiments/run_pud_r3.py": "2e565f5e79ef24f6df9033c4b0bdec1e415440b4e20c6191cb61a2bc56070789",
+    "experiments/test_pud_r3.py": "300f0d899bda2ece180791cb3842855c81b4eeb89f38f681da4b65e80c51f9be"
+  },
+  "model_outcomes_seen": false,
+  "technical_tests": {"passed":12,"input":"synthetic strings, no R3 training"},
+  "locked_utc": "2026-09-08T16:46:20Z"
+}
