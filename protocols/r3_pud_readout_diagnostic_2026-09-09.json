@@ -1,0 +1,16 @@
+{
+  "experiment":"r3_pud_readout_checkpoint_diagnostic",
+  "status":"POSTHOC_DIAGNOSTIC_PLAN_BEFORE_NEW_INTERVENTION_MEASUREMENTS",
+  "date_jst":"2026-09-09",
+  "motivation_observed":"The first three completed R3 seeds reached the fixed English target earlier in TEN than TJA, but Japanese NLL at that target increased relative to phase1. Earlier R2 work also suggested an output-probability component. These observations motivate this diagnostic and are explicitly not prospective evidence for its hypothesis.",
+  "question":"How much Japanese byte-NLL increase at the R3 fixed English target and at update600 is recoverable by restoring only the same-arm phase1 output head? What English loss cost accompanies this intervention?",
+  "seeds":[33000,33001,33002,33003,33004,33005,33006,33007,33008,33009],
+  "arms":["JA_TJA","JA_TEN"],
+  "stages":["first observed 3.0-nats-per-byte English target checkpoint","English update600 checkpoint"],
+  "intervention":"Copy only head.weight from the same seed/arm's saved phase1 Student into a copy of the later Student. Every other tensor must remain byte-identical. No mixing coefficient, calibration fit, gradient step, optimizer update, extra training corpus, or new seed.",
+  "measurement":"Original fixed R3 sentence-separated full Japanese and English evaluation. Compute before/after NLL and the exact ASCII / UTF8-continuation / leading-or-other byte-class decomposition. Any target not reached is reported as missing, not replaced by another checkpoint.",
+  "negative_control":"Restoring a head from the same state must reproduce identical tensors and predictions. Wrong keys/shapes and changed non-head tensors are errors.",
+  "interpretation":"Descriptive localization of a byte-level loss component, not percent of semantic knowledge recovered. A stored language-specific head and known language routing would be an additional mechanism, not the original single-head curriculum. English cost must be reported.",
+  "historical_and_R3_verdicts":"Never changed by this diagnostic. It adds zero independent seeds and does not rescue a failed retention gate.",
+  "stopping":"All available fixed endpoints in the ten listed seeds; exactly one head-only operation. No layer sweep, coefficient tuning, target/threshold change or rescue follow-up. Zero optimizer updates."
+}
