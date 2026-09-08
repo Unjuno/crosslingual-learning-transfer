@@ -1,6 +1,7 @@
 name: R3 PUD source acquisition
 on:
   pull_request:
+    types: [opened]
     paths:
       - '.github/workflows/r3-pud-acquire.yml'
 permissions:
