@@ -1,0 +1,13 @@
+{
+  "experiment":"r3_pud_byte_count_baselines",
+  "status":"POSTHOC_TASK_DIFFICULTY_DIAGNOSTIC_BEFORE_BASELINE_MEASUREMENTS",
+  "date_jst":"2026-09-09",
+  "motivation":"The completed first six neural seeds reached the fixed 3.0 English byte-NLL target within 14..24 updates. Test what this target says about basic byte predictability rather than interpreting it as English proficiency.",
+  "models":["byte unigram frequency estimator","first-order byte bigram conditional frequency estimator"],
+  "fixed_prior":"Laplace smoothing alpha=1 for all 256 byte categories, and all 256x256 bigram cells. No smoothing search or fitted vocabulary.",
+  "training":"Two descriptive views: (1) count the entire frozen English training stream once; (2) for each existing R3 seed, start from the symmetric prior and accumulate exactly the predicted targets and input-target pairs in the same successive 600 English minibatches used by the neural run. No Japanese pretraining, hidden teacher, test fitting, or model selection.",
+  "evaluation":"Same held-out R3 English sentences, every byte after the first scored once; natural logarithm, nats/byte. Record the dense count-estimator curves, first observed 3.0 crossing and final loss.",
+  "interpretation":"Task-difficulty and inductive-bias calibration, not a matched teacher/curriculum causal contrast. The full-stream estimator uses more unique English observations than an early neural prefix; sequential estimators use matched English minibatches but entirely different capacity and priors. No English comprehension or semantic metric claim.",
+  "counts":"Zero neural optimizer updates and zero new independent seeds; estimator count updates must not be added to neural optimizer totals.",
+  "stopping":"Both named estimators with the single stated smoothing rule; all ten already registered seeds and 600 updates. No n-gram order expansion, tuning, threshold change or rescue of R3."
+}
