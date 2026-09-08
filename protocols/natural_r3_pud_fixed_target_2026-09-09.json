@@ -1,0 +1,41 @@
+{
+  "experiment": "natural_r3_pud_fixed_target",
+  "date_jst": "2026-09-09",
+  "status": "LOCKED_BEFORE_R3_MODEL_OUTCOMES",
+  "parent_commit": "97d8f8269af7b92e50ad647949f0f20b3cd10612",
+  "historical_verdicts_unchanged": "R1 weight1 FAIL; R2 halfweight registered PASS with dense-measurement limitation",
+  "question": "Does the fixed halfweight target-aware Japanese-input intervention generalize to an independent news/wiki text corpus, using dense fixed-target English measurement and Japanese retention measured after English learning?",
+  "data": {
+    "source": "UD English/Japanese/Russian PUD r2.16; original texts only, not syntactic annotations",
+    "manifest_sha256": "a70abd42d4ca57a9f27a6a784388559dc7ebb4366ced28d4aef7285a08e41236",
+    "split": "Group parallel sentence IDs by original document. Unite documents with same-language normalized character-5gram Jaccard >=0.8. SHA256 of R3_PUD_2026_09_09: plus canonical document-cluster ID modulo 10: 0 evaluation, 1 unused reserve, 2..9 training.",
+    "observed_data_only_counts_per_language": {"train_sentences":785,"eval_sentences":93,"reserve_sentences":122,"train_documents":314,"eval_documents":35,"reserve_documents":48},
+    "normalization_for_model": "NFC exact # text = field; exclude Japanese text_en and Russian english_text companion comments and all annotations. Newline-separated training sentences.",
+    "evaluation": "Score each UTF-8 target byte except the first byte of each sentence exactly once, sentence-separated 128-position causal blocks, right padding masked from loss; full fixed evaluation split at every English update.",
+    "scope": "One prespecified group holdout conditional-seed study, not a 10-fold UD parsing benchmark. Parallel translated source texts and fixed article sample limit external validity. No claim of semantic decontamination."
+  },
+  "model": {"core_git_blob":"aab161824538e29f71f2a5f00fd44364f2de9bd4","architecture":"same 141056-parameter 2-layer width64 causal Transformer","vocab":256,"tokenizer":"fixed UTF-8 bytes, no corpus fitting","context":128,"batch":16,"optimizer":"AdamW","learning_rate":0.001,"weight_decay":0,"clip_norm":1,"dropout":0,"dtype":"float32","backend":"CPU, deterministic PyTorch algorithms, one PyTorch thread/job"},
+  "seeds": [33000,33001,33002,33003,33004,33005,33006,33007,33008,33009],
+  "schedule": {"base_JA_updates":400,"teacher_updates":400,"phase1_JA_updates":200,"phase2_EN_updates":600,"hidden_loss_weight":0.5},
+  "teachers": {"T_JA":"400 JA updates","T_EN":"alternating 200 JA and 200 EN updates","T_RU":"alternating 200 JA and 200 RU updates"},
+  "arms": ["REF_EN","JA_nat","JA_TJA","JA_TEN","JA_TRU"],
+  "common_batches": "Same JA phase1 batches for all four Student conditions; identical English phase2 batches for all five arms. Teacher JA slots match between T_EN and T_RU. Record hashes of actual model update inputs per stage/condition, not just regenerated schedules.",
+  "primary": {
+    "comparison":"JA_TEN versus JA_TJA",
+    "english_target_nats_per_byte":3.0,
+    "hitting_time":"First actually observed integer update at or below target; evaluate every update including 0, no interpolation. Crossing state saved and Japanese loss evaluated on that exact state.",
+    "saving":"Per seed 1 - TEN hitting updates / TJA hitting updates; tokens per update = 2048",
+    "efficacy_gates":["all ten seeds have finite positive TJA hitting times and TEN target attainment by update600","at least9/10 favorable paired times, one-sided sign test <=0.05","mean saving >=0.05","descriptive paired-seed percentile 95% bootstrap lower bound >=0.05; 10000 draws, numpy default_rng seed 98309"],
+    "retention_gates":["phase1 ratio of mean Japanese NLL TEN/TJA <=1.01","at the first English-target crossing for each arm, ratio of mean Japanese NLL TEN/TJA <=1.01","TEN mean Japanese NLL at its English-target crossing <=1.05 times TEN mean phase1 Japanese NLL"],
+    "joint_utility":"PASS requires all efficacy, retention and integrity gates. Fully observed failed gates imply FAIL; missing executions or invalid measurement imply UNCERTAIN. A missing crossing never becomes a favorable seed and is never silently omitted."
+  },
+  "secondary": {
+    "fixed_interval":"Integer first crossings of3.25 and3.00 nats/byte; valid for mechanistic interval analysis only if both arms start strictly above3.25 and both cross3.00. Report invalid/censored counts without clipping away starting differences.",
+    "comparisons":["TEN versus ordinary JA_nat","TEN versus Russian-target teacher JA_TRU"],
+    "other_outputs":["phase2 step0 English NLL","English and Japanese NLL after600 English updates","Japanese NLL at equal English target and at equal fixed training budget","full raw English curves, saved base/teacher/phase1/target/final states","paired-seed uncertainty and byte-class loss decomposition of endpoint models as descriptive diagnostics only"],
+    "no_metric_selection":"Secondary outcomes do not repair a failed primary or joint utility gate. The primary hitting-time effect can include knowledge prepositioning; it is not pure learning-rate change."
+  },
+  "integrity": ["verify exact source and prepared-data hashes","no original article or defined near duplicate crosses train/eval","no companion English comment enters JA input","finite losses and exact expected curve grids","actual batch hashes agree across paired arms","all ten seed identities unique and fixed; search prior published result seeds","save code/protocol/environment/checkpoint hashes","recompute decisions from raw curves and Japanese metrics from checkpoints"],
+  "stopping": "Exactly ten seeds and one already fixed hidden weight0.5. Finish all600 English updates per arm regardless of intermediate effects. No rescue seed, corpus substitution, threshold relaxation, loss-weight or model search. Infrastructure fixes must be recorded without suppressing prior outcomes. No work continues asynchronously after the reported session.",
+  "nonclaims": ["target-unaware Japanese-text-only teaching","zero English-derived information in hidden targets","semantic ability measured by byte NLL alone","total-compute savings including teacher preparation","human or large-LLM generality","population language universality"]
+}
