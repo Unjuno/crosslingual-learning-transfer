@@ -1,0 +1,15 @@
+{
+  "release": "r2.16",
+  "purpose": "Data acquisition only; no model outcomes",
+  "sources": {
+    "en/en_pud-ud-test.conllu": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_English-PUD/r2.16/en_pud-ud-test.conllu","bytes":1355907,"sha256":"8c23ea47522ca67cca7d1783e536aaa11e01a4b28465b9c40b7d222bf64863d2"},
+    "en/README.md": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_English-PUD/r2.16/README.md","bytes":6972,"sha256":"e31ad2b7a48596e9cf6a7b26264b69c7ecab2b610c852c60313ee3833c454d31"},
+    "en/LICENSE.txt": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_English-PUD/r2.16/LICENSE.txt","bytes":19556,"sha256":"b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89"},
+    "ja/ja_pud-ud-test.conllu": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.16/ja_pud-ud-test.conllu","bytes":6965290,"sha256":"a764cab064e087b7cbb4072a8fcf29a12a8dfc131a85858af67ef62078f3d5c4"},
+    "ja/README.md": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.16/README.md","bytes":5810,"sha256":"009f96ad582956671dc2d802920e0b51d0815ddff6e853707ab891493d9c193a"},
+    "ja/LICENSE.txt": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Japanese-PUD/r2.16/LICENSE.txt","bytes":19556,"sha256":"b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89"},
+    "ru/ru_pud-ud-test.conllu": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.16/ru_pud-ud-test.conllu","bytes":1868376,"sha256":"a37e076d24f0c3cfd5d48a11bbfec36026da5dc46180b7a12dc991dc372de1ea"},
+    "ru/README.md": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.16/README.md","bytes":5383,"sha256":"79a069abbbfd50f03f2363f1ebd5c857b0d65f446500148550474dfe5f82fdc4"},
+    "ru/LICENSE.txt": {"url":"https://raw.githubusercontent.com/UniversalDependencies/UD_Russian-PUD/r2.16/LICENSE.txt","bytes":19556,"sha256":"b278eb53fe50b8bb7fa0d90fb8536c35fdcaa80f9d63812cb51db539555d2a89"}
+  }
+}
