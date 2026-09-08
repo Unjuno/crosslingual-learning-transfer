@@ -1,0 +1,44 @@
+name: R3 PUD source acquisition
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/r3-pud-acquire.yml'
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Download versioned public sources and record hashes
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, urllib.request
+          root=pathlib.Path('pud_sources'); root.mkdir()
+          manifest={'release':'r2.16','purpose':'Data acquisition only; no model outcomes','sources':{}}
+          for lang,name in [('en','English'),('ja','Japanese'),('ru','Russian')]:
+              repo=f'UniversalDependencies/UD_{name}-PUD'
+              target=root/lang; target.mkdir()
+              for filename in [f'{lang}_pud-ud-test.conllu','README.md','LICENSE.txt']:
+                  url=f'https://raw.githubusercontent.com/{repo}/r2.16/{filename}'
+                  try:
+                      data=urllib.request.urlopen(url,timeout=90).read()
+                  except urllib.error.HTTPError as exc:
+                      if filename=='LICENSE.txt' and exc.code==404:
+                          filename='LICENSE'; url=f'https://raw.githubusercontent.com/{repo}/r2.16/{filename}'
+                          data=urllib.request.urlopen(url,timeout=90).read()
+                      else: raise
+                  (target/filename).write_bytes(data)
+                  manifest['sources'][f'{lang}/{filename}']={'url':url,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+          (root/'SOURCE_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r3-pud-v216-sources
+          path: pud_sources/
+          if-no-files-found: error
+          retention-days: 30
