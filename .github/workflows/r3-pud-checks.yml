@@ -1,0 +1,55 @@
+name: R3 PUD code checks
+on:
+  pull_request:
+    paths:
+      - 'experiments/*pud_r3*.py'
+      - 'protocols/*r3*pud*.json'
+      - 'protocols/natural_r3*.json'
+      - '.github/workflows/r3-pud-checks.yml'
+permissions:
+  contents: read
+concurrency:
+  group: r3-pud-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify locked hashes and compile experiment source
+        run: |
+          python - <<'PY'
+          import hashlib,json,pathlib,py_compile
+          lock=json.loads(pathlib.Path('protocols/r3_pud_implementation_lock_2026-09-09.json').read_text())
+          for name,expected in lock['files'].items():
+              p=pathlib.Path(name)
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected, name
+              py_compile.compile(str(p),doraise=True)
+          p=json.loads(pathlib.Path('protocols/natural_r3_pud_fixed_target_2026-09-09.json').read_text())
+          assert p['seeds']==list(range(33000,33010))
+          assert p['primary']['english_target_nats_per_byte']==3.0
+          assert p['schedule']['hidden_loss_weight']==0.5
+          print('Locked code and protocol checks passed. This is not a training replay.')
+          PY
+      - name: Package public sources without Git credentials or metadata
+        run: |
+          python - <<'PY'
+          import pathlib,zipfile
+          with zipfile.ZipFile('r3_public_code_snapshot.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for root in ['experiments','protocols','results','docs']:
+                  for p in pathlib.Path(root).rglob('*'):
+                      if p.is_file() and '__pycache__' not in p.parts:
+                          z.write(p,p.as_posix())
+              for name in ['README.md','LICENSE','requirements.txt']:
+                  z.write(name,name)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r3-public-code-snapshot
+          path: r3_public_code_snapshot.zip
+          retention-days: 30
+          if-no-files-found: error
