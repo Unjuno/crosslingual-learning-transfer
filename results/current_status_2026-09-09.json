@@ -1,0 +1,49 @@
+{
+  "date_jst": "2026-09-09",
+  "synthetic_phase": "FROZEN",
+  "natural_R1_weight1_registered_verdict": "FAIL_UNCHANGED",
+  "natural_R2_halfweight": {
+    "registered_verdict": "PASS_UNCHANGED",
+    "fresh_seed_count": 10,
+    "registered_mean_saving": 0.05188078665296712,
+    "registered_favorable_seeds": 10,
+    "registered_JA_phase1_penalty": 0.006292635449885786,
+    "dense_diagnostic_mean_saving": 0.04569166589291429,
+    "robust_at_least_five_percent_claim": "NOT_ESTABLISHED"
+  },
+  "archived_adaptation_locus_2026_09_09": {
+    "status": "EXPLORATORY_ARCHIVED_DIAGNOSTIC",
+    "independent_new_seeds": 0,
+    "archived_seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+    "optimizer_updates": 20000,
+    "trained_branches": 80,
+    "update_locus": {
+      "FULL_mean_TEN_minus_TJA_EN_final250_nats_per_byte": -0.005264622197489466,
+      "FULL_favorable_seeds": 9,
+      "HEAD_ONLY_mean_TEN_minus_TJA_EN_final250_nats_per_byte": -0.020400582271940325,
+      "HEAD_ONLY_favorable_seeds": 10,
+      "BODY_ONLY_mean_TEN_minus_TJA_EN_final250_nats_per_byte": -0.007960508772550057,
+      "BODY_ONLY_favorable_seeds": 10
+    },
+    "body_head_substitution": {
+      "mean_endpoint_body_origin_effect_nats_per_byte": -0.020382513949840208,
+      "endpoint_body_effect_negative_seeds": 10,
+      "mean_endpoint_initial_head_origin_effect_nats_per_byte": -0.000018068322100117663,
+      "initial_head_effect_bootstrap_crosses_zero": true,
+      "body_main_gain_difference_mean_nats_per_byte": -0.008538154974553657,
+      "body_main_gain_difference_bootstrap_crosses_zero": true
+    },
+    "checkpoint_reverification": {
+      "saved_states": 80,
+      "evaluations": 240,
+      "maximum_NLL_error_nats_per_byte": 1.2210906508158814e-08,
+      "verdict": "PASS"
+    },
+    "interpretation": "The endpoint English advantage is not explained solely by the initial output head in this archived cohort; useful differences remain in the frozen model body. This does not establish pure learning-rate improvement, semantics, fresh replication or independent-corpus generality."
+  },
+  "external_independent_corpus_trial": "NOT_RUN",
+  "target_unaware_Japanese_text_only": "NOT_ESTABLISHED",
+  "human_or_large_LLM_generality": "NOT_ESTABLISHED",
+  "historical_registered_decisions_changed_by_Sep9_diagnostic": false,
+  "next_validity_question": "Independent corpus with data fixed before outcomes, prespecified dense or fixed-threshold measurement, and retention measured after English adaptation as well as before."
+}
