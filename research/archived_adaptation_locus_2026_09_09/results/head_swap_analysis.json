@@ -1,0 +1,23 @@
+{
+  "experiment": "posthoc_factorial_head_swap",
+  "verdict": "PASS_EXPLORATORY",
+  "new_independent_seeds": 0,
+  "new_optimizer_updates": 5000,
+  "new_offdiagonal_branches": 20,
+  "reused_diagonal_branches": 20,
+  "all_audits_pass": true,
+  "statistics": {
+    "EN_initial_body_under_JA_head": {"mean": -0.02239347570749488,"median": -0.024019278267089605,"range": [-0.05828804922957165,0.006909183805472008],"n_negative": 8,"seed_bootstrap95": [-0.03456476209480852,-0.010363524241368677]},
+    "EN_initial_body_under_EN_head": {"mean": -0.03544786214129285,"median": -0.03541593070495641,"range": [-0.06412889130270205,-0.010847884599815671],"n_negative": 10,"seed_bootstrap95": [-0.04606214136910545,-0.024966751905772362]},
+    "EN_initial_body_main": {"mean": -0.028920668924393867,"median": -0.029717604486023008,"range": [-0.06120847026613685,-0.0037828165044415663],"n_negative": 10,"seed_bootstrap95": [-0.040364560355417065,-0.017708141217598502]},
+    "EN_initial_head_main": {"mean": -0.024084549414918242,"median": -0.025165887064754644,"range": [-0.049370131262247874,-0.00477501234651978],"n_negative": 10,"seed_bootstrap95": [-0.03378552743209315,-0.015191065049033932]},
+    "EN_initial_interaction": {"mean": -0.013054386433797971,"median": -0.012325264362841759,"range": [-0.021384000619827148,-0.005840842073130403],"n_negative": 10,"seed_bootstrap95": [-0.0158816056393871,-0.01038101656233304]},
+    "EN_final250_body_under_JA_head": {"mean": -0.02019257251747506,"median": -0.01960241119320405,"range": [-0.0307296758707869,-0.015854094107108363],"n_negative": 10,"seed_bootstrap95": [-0.022838345088837794,-0.018301235648167283]},
+    "EN_final250_body_under_EN_head": {"mean": -0.020572455382205358,"median": -0.019940958704982803,"range": [-0.030893857297966232,-0.016344036913837012],"n_negative": 10,"seed_bootstrap95": [-0.023161001318717945,-0.018733373260739466]},
+    "EN_final250_body_main": {"mean": -0.020382513949840208,"median": -0.019771684949093427,"range": [-0.030811766584376565,-0.016099065510472688],"n_negative": 10,"seed_bootstrap95": [-0.02299645066533483,-0.018518928088392023]},
+    "EN_final250_head_main": {"mean": -1.8068322100117663e-05,"median": -2.236510856257201e-05,"range": [-0.0006779651423820532,0.0003413922684056825],"n_negative": 6,"seed_bootstrap95": [-0.0002158825233261169,0.00015956139886865727]},
+    "EN_final250_interaction": {"mean": -0.00037988286473029654,"median": -0.00042160459175133447,"range": [-0.0005443862851732817,-0.00016418142717933293],"n_negative": 10,"seed_bootstrap95": [-0.00045795209569138404,-0.00029752985608300417]},
+    "body_main_gain_difference": {"mean": -0.008538154974553657,"median": -0.009754675149575842,"range": [-0.030396703681760284,0.014434130324399774],"n_negative": 7,"seed_bootstrap95": [-0.018096162886538834,0.0014470289937900409]}
+  },
+  "interpretation_scope": "Frozen-body causal substitution conditional on either archived starting head; not fresh confirmation, not novel semantics, not sample-efficiency or population guarantee."
+}

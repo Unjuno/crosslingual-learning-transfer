@@ -1,0 +1,44 @@
+{
+  "files": {
+    "inputs/raw/checkpoints/seed32008_phase1.pt": "45ccbb0b14c21d560df40125fc65045480b1c2c806c20a1aba83b27871790e34",
+    "inputs/raw/checkpoints/seed32002_phase1.pt": "2b613bd8ccf291d8d7bfe3ac4967ea88bb0c717fe31fba4bd28c8ebcfee2a554",
+    "inputs/raw/checkpoints/seed32007_phase1.pt": "c523d7f970b46eec46b12cc9940ed5cb8d780df6572a25fa301e5dafde5fc273",
+    "inputs/raw/checkpoints/seed32003_phase1.pt": "827d51cc5e1bbfae21b39aa77fe6b3627e7de2abe529877eb721cc74bfcdc1fe",
+    "inputs/raw/checkpoints/seed32005_phase1.pt": "d7a092d91a024635dae11d800f078c45ee0bd8650e0c50e39b5d6e95bdabdb0d",
+    "inputs/raw/checkpoints/seed32009_phase1.pt": "19e57dbe37767ac072921d4e0fdaf5d3b297f224032aa7e2d119d8e33b2c6ebc",
+    "inputs/raw/checkpoints/seed32006_phase1.pt": "e2a5b4c57a06ea363fd5b11896082f09e56a337ac3ed937617681772e35b7d10",
+    "inputs/raw/checkpoints/seed32000_phase1.pt": "39b59a6e75f54166f3be74484e24e175f291b867983d76042ad7f382c8c25845",
+    "inputs/raw/checkpoints/seed32001_phase1.pt": "71cce41fd6654a2d461959156c9ef6e066213a8d8bf79f3b22fa25642456d935",
+    "inputs/raw/checkpoints/seed32004_phase1.pt": "a868bd020d354e0efe5c6093cd912417c688ab835e233f92bfe7d88139c4cfac",
+    "experiments/natural_ja_en_s2_hidden_teacher.py": "2e68b1f47d2828e9c30ee9541af63f911f43890feb9f7af8e6302a0cecaab77c",
+    "experiments/run_locus.py": "ef0694a71e6e453e7571978c848647ab86df543518241102347ea8443be183d4",
+    "experiments/locus_utils.py": "4a6318547faab67c6d1184fcb471824d234f46a4aa89953b4c132ef2c40985cf",
+    "experiments/prepare_natural_r1_system_translations.py": "6c956af8430aa3b7d80eb976189ffa6de14d509895764c93f5671c0095d68dc4",
+    "experiments/test_locus.py": "84a2189636458c13e990b9dd0ebdaba05472176837d796a20e35195fdce766e9",
+    "historical/all_seed_summaries.csv": "d2577f8568dc0d7ff6bc5dbab6a019af1c5e6fdf651037f456760e0d7ca3a243",
+    "historical/all_curves.csv": "87d04a0746b46a2b6326003e6f1a1c45d5283b80b440f0fbdd02fb2cd011aefc",
+    "protocols/ADAPTATION_LOCUS_PLAN.json": "2f1feb45b2c4713de786c5664b91139eed2804ec384e9f0bdca77b814eb44322"
+  },
+  "corpus_manifest": {
+    "claim_boundary": "Domain-limited software UI/help translation strings; not a broad natural-language corpus.",
+    "dataset_label": "system_translation_strings_vim_texlive_ja_en_ru",
+    "minimum_bytes": {"eval": 8000,"train": 80000},
+    "normalization": "NUL/newline to space; collapse whitespace; decimal digit runs -> 0.",
+    "outputs": {
+      "en_eval": {"bytes": 10110,"lines": 296,"sha256": "15221408b2c4c2fffee8a5f16feb651f2de5947e85906867f119fdf7210797da"},
+      "en_train": {"bytes": 100843,"lines": 3041,"sha256": "74f59db34b5b8334cf463cf0bcf5f355e54cc7de98cc4eb35ef379ecb42e8258"},
+      "ja_eval": {"bytes": 14919,"lines": 296,"sha256": "5a44582a08d6e3c48c610d663b22642c8b8612dc19f25a326b2ce906a504e7e4"},
+      "ja_train": {"bytes": 150451,"lines": 3041,"sha256": "5a0d86cebeb5e9f71c86ea1bcf619c8a42bb21d04ed2d37ce35f5aee58bffd58"},
+      "ru_eval": {"bytes": 26681,"lines": 296,"sha256": "52a1cd50a20645577e988f6023dcf1853e856f5babd180a0e1d620029c689800"},
+      "ru_train": {"bytes": 252142,"lines": 3039,"sha256": "12a53e456480b56977c548021231c9adf9b4cee97902f6d1acb67e6cbb0d46ed"}
+    },
+    "parallel_key_counts": {"tex_common_ja_ru": 396,"vim_common_ja_ru": 2941,"vim_eval": 296,"vim_train": 2645},
+    "sources": {
+      "/usr/share/texlive/tlpkg/translations/ja.po": {"bytes": 63056,"sha256": "08dc379149bf04c26eeeffb16b5f08fd05ee18894c7bd38ae5a4e427f6e999f1"},
+      "/usr/share/texlive/tlpkg/translations/ru.po": {"bytes": 108443,"sha256": "9626a8ad34ff8b43226257b638dd5d19b8330762dab965a8de3278ec74c2c7b6"},
+      "/usr/share/vim/vim91/lang/ja/LC_MESSAGES/vim.mo": {"bytes": 326845,"sha256": "6f7c0728cce56e438f06fbf5c5ed756fc7e9572d17de4143636240d0c94e987a"},
+      "/usr/share/vim/vim91/lang/ru/LC_MESSAGES/vim.mo": {"bytes": 440015,"sha256": "e8a272553161515cfbaaf67a0051ddce724c2b8d14ffeeb8df4a4fb31158d3fd"}
+    },
+    "split_rule": "Vim msgid md5 first32bits % 10 == 0 -> eval; other Vim + all common TeX -> train."
+  }
+}

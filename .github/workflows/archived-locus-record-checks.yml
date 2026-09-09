@@ -1,0 +1,19 @@
+name: Archived locus record checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify record arithmetic and finite coverage
+        run: |
+          python research/archived_adaptation_locus_2026_09_09/experiments/verify_records.py
+          python -m unittest discover -s research/archived_adaptation_locus_2026_09_09/experiments -p 'test_public_records.py' -v
