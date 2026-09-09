@@ -4,7 +4,7 @@
 
 This repository is an experimental research record, not a finished curriculum product, a universal language-distance law, or evidence about human learning. Successes, failed criteria, measurement limitations and unresolved reproducibility problems are retained together.
 
-## Latest result — 2026-09-08
+## Latest independent result — 2026-09-08
 
 **A previously locked lower-strength hidden-teaching configuration passed its registered criterion, but its “at least 5%” margin is sensitive to measurement resolution.**
 
@@ -20,6 +20,16 @@ The registered halfweight mean is computed from the original **10-update evaluat
 The new configuration used the **already published weight-0.5 protocol**, not a retrospective relaxation of R1. Different weight studies use different seed cohorts, so their difference is not a paired causal dose-response estimate. Replayed checkpoints do not enlarge the independent seed count.
 
 Read [the registered halfweight report](docs/NATURAL_R2_HALFWEIGHT_2026-09-08.md), [all measurement diagnostics](docs/R2_DIAGNOSTICS_2026-09-08.md), [the locked halfweight protocol](protocols/natural_ja_en_s2_halfweight_tradeoff_2026-09-06.json), and [the original R1 FAIL](docs/NATURAL_R1_STATUS_2026-09-06.md).
+
+## Latest mechanism diagnostic — 2026-09-09
+
+A bounded archived-checkpoint diagnostic used the **already completed 32000–32009 seeds**, so it adds **zero new independent seeds**. It trained 80 adaptation branches for 20,000 optimizer updates to separate where the later-English advantage remains.
+
+With a **common initial output head**, an English-aware-teacher-derived frozen model body still had lower English NLL after 250 head-only English updates in **10/10 archived seeds**. The mean endpoint body-origin effect was **−0.020383 nats/byte**. The corresponding mean endpoint effect of initial output-head origin was approximately **−0.000018 nats/byte**, with its descriptive seed-bootstrap interval crossing zero.
+
+This makes an explanation based only on the initially more English-favorable output head insufficient for this endpoint effect. It does **not** establish a fresh replication, pure learning-rate improvement, semantic/grammatical transfer, independent-corpus generality, target-unaware Japanese-text-only transfer, or a human/large-LLM result. The frozen “body” includes embeddings and LayerNorm as well as Transformer blocks, and the English-aware Student was already advantaged before English adaptation.
+
+See the [Sep-9 archived diagnostic snapshot](research/archived_adaptation_locus_2026_09_09/README_JA.md) and its [execution report](research/archived_adaptation_locus_2026_09_09/docs/EXECUTION_REPORT_JA.md). The R1 registered FAIL, R2 registered-grid PASS and R2 measurement-resolution caveat remain unchanged.
 
 ## What “Japanese-only” means here
 
@@ -39,6 +49,8 @@ Exact-line-filtered document evaluation still showed a favorable transfer patter
 
 On archival weight-1.0 checkpoints, restoring **only the phase1 output head** recovered about 70% of the later Japanese byte-NLL increase while worsening English NLL. An exact loss decomposition attributed about 86% of the Japanese increase to changes in probability assigned to byte classes. These are not percentages of semantic knowledge forgotten or recovered. Full scope and numerical details are in the diagnostic report.
 
+The Sep-9 locus diagnostic further shows a retention/performance tradeoff across update locations. With the English-aware starting Student and 250 English updates, full-model adaptation reached the best English endpoint of the three tested update rules, while head-only adaptation can exactly recover the original Japanese function if the saved Japanese head is explicitly routed back in. That identity is by construction and requires task/language routing plus an extra saved head; it is not evidence of free retention.
+
 ## Synthetic phase — frozen
 
 The synthetic mechanism-search phase was frozen on 2026-09-03. Within the documented setups:
@@ -50,7 +62,7 @@ The synthetic mechanism-search phase was frozen on 2026-09-03. Within the docume
 
 Tested simple distance, width-boundary and effective-rank-predictor hypotheses failed. This does not prove that every scalar description is impossible or that a particular alternative mechanism has been identified. The state–signal binding confirmation at seed18500 remains **BLOCKED / NOT COUNTED**, pending exact helper snapshots; a reconstructed implementation would be a separate study.
 
-See the [synthetic closure report](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md), [historical evidence ledger](results/evidence_summary.csv), and [claim/evidence matrix](docs/CLAIM_EVIDENCE_MATRIX.md). Historical documents retain their stated snapshot dates; Sep-8 reports add results without rewriting prior adjudications.
+See the [synthetic closure report](docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md), [historical evidence ledger](results/evidence_summary.csv), and [claim/evidence matrix](docs/CLAIM_EVIDENCE_MATRIX.md). Historical documents retain their stated snapshot dates; later reports add results without rewriting prior adjudications.
 
 ## Public verification
 
@@ -59,19 +71,21 @@ python experiments/verify_halfweight_public_2026_09_08.py
 python -m unittest discover -s experiments -p 'test_halfweight_public_2026_09_08.py' -v
 python experiments/verify_final_synthetic_closure.py
 python experiments/verify_natural_r1_confirmatory.py
+python research/archived_adaptation_locus_2026_09_09/experiments/verify_records.py
+python -m unittest discover -s research/archived_adaptation_locus_2026_09_09/experiments -p 'test_public_records.py' -v
 ```
 
-These standard-library commands verify **committed record arithmetic**, not end-to-end training. In the Sep-8 halfweight execution, independent raw-curve recomputation and reevaluation of all 40 phase1 checkpoints had zero discrepancy. Full execution traces/checkpoints are separate artifacts; compact verification must not be confused with those stronger checks.
+These standard-library commands verify **committed record arithmetic**, not end-to-end training. In the Sep-8 halfweight execution, independent raw-curve recomputation and reevaluation of all 40 phase1 checkpoints had zero discrepancy. In the Sep-9 archived diagnostic, 80 saved endpoint states were separately reevaluated 240 times with maximum NLL discrepancy about 1.22e-8 nats/byte in the execution archive. Full execution traces/checkpoints are separate artifacts; compact verification must not be confused with those stronger checks.
 
 Fresh-seed guards intentionally reject reuse of registered outcomes as new trials. Future same-seed replays must be labeled reproduction and do not add independent evidence.
 
 ## Repository and implementation boundaries
 
-`protocols/` contains locked definitions and labeled exploratory plans. `experiments/` contains execution snapshots, runners and verifiers. `results/` contains compact seed summaries, audits and decisions. `docs/REPRODUCIBILITY.md` explains omitted artifacts and data boundaries.
+`protocols/` contains locked definitions and labeled exploratory plans. `experiments/` contains execution snapshots, runners and verifiers. `results/` contains compact seed summaries, audits and decisions. `docs/REPRODUCIBILITY.md` explains omitted artifacts and data boundaries. Later archived diagnostics with zero new independent seeds live under `research/` so they are not confused with registered primary cohorts.
 
-The Sep-8 environment was Python 3.13.5, PyTorch 2.10.0+cpu, NumPy 2.3.5 and pandas 2.2.3; float32, deterministic algorithms, one PyTorch thread/job. Model: 141,056 parameters, two width-64 causal Transformer layers, four heads, context 128 bytes, batch 16. CPU clocks were not fixed. Cross-platform bitwise identity and hardware-speed gains are not claimed.
+The Sep-8 primary environment was Python 3.13.5, PyTorch 2.10.0+cpu, NumPy 2.3.5 and pandas 2.2.3; float32, deterministic algorithms, one PyTorch thread/job. Model: 141,056 parameters, two width-64 causal Transformer layers, four heads, context 128 bytes, batch 16. CPU clocks were not fixed. Cross-platform bitwise identity and hardware-speed gains are not claimed. The Sep-9 archived replay used the same software/model specification on an Intel Xeon Platinum 8573C and explicitly does not claim bitwise identity to the earlier CPU execution.
 
-Source corpus versions must match the frozen SHA256 manifest. Another corpus is a new experiment. Some older scripts retain original execution paths. No additional loss-weight or midpoint-coefficient search is part of this completed sequence; independent data and preregistered dense/fixed-threshold measurements are the next validity questions.
+Source corpus versions must match the frozen SHA256 manifest. Another corpus is a new experiment. The Sep-9 snapshot contains a pinned Universal Dependencies preparation utility for a possible independent-corpus phase, but **no UD training result has been run or claimed**. Some older scripts retain original execution paths. No additional loss-weight or midpoint-coefficient search is part of this completed sequence; independent data and preregistered dense/fixed-threshold measurements remain the next validity questions.
 
 ## Licensing
 
