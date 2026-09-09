@@ -1,0 +1,8 @@
+{
+  "verdict": "PASS",
+  "saved_states": 80,
+  "evaluations": 240,
+  "maximum_nll_error": 1.2210906508158814e-08,
+  "tolerance_nats_per_byte": 2e-06,
+  "method": "separate float64 log-softmax evaluator, exact tensor freeze audits; fixed original corpus"
+}

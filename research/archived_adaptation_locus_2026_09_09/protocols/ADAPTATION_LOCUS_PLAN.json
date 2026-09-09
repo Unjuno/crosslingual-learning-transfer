@@ -1,0 +1,19 @@
+{
+  "experiment": "archived_halfweight_adaptation_locus",
+  "date_jst": "2026-09-09",
+  "created_utc": "2026-09-08T16:46:54.218840+00:00",
+  "status": "LOCAL_PLAN_FIXED_BEFORE_NEW_LOCUS_OUTCOMES_NOT_PUBLIC_PREREGISTRATION",
+  "upstream_commit": "97d8f8269af7b92e50ad647949f0f20b3cd10612",
+  "prior_context": "R2 registered PASS with dense-measurement caveat remains unchanged. Further hidden-loss weights/midpoints are not searched.",
+  "external_corpus_status": "UD source metadata located, but full files could not be acquired into this runtime. GitHub mutation endpoints returned Resource not found twice after rediscovery. This trial is NOT independent-corpus validation.",
+  "seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+  "new_independent_seeds": 0,
+  "input_states": ["JA_TJA","JA_TEN"],
+  "weight_history": 0.5,
+  "H": {"main": "The TEN starting-state advantage remains after 250 English updates even when only the English output head is trainable.","mechanistic_scope": "A positive head-only result demonstrates usable frozen features in this setup; it does not prove semantics or exclude optimization-dependent transfer in other setups."},
+  "T": {"modes": ["FULL","HEAD_ONLY","BODY_ONLY"],"updates_per_branch": 250,"total_branches": 60,"optimizer_updates": 15000,"model": "Unchanged archived 141056-parameter two-layer byte Transformer, d64, ctx128, batch16, AdamW lr0.001 wd0 clip1.","stream": "Identical historical English minibatches per seed/step across all six branches. Only trainable parameter set changes; new AdamW each branch.","readouts": "Shared learned head for English and Japanese. Separately evaluate Japanese using the same-condition phase1 head (explicit language routing, extra 16384 parameters). No head interpolation or refitting.","metrics": "Fixed update endpoints 0,1,5,10,25,50,100,150,200,250; no hitting-time interpolation. All unique exact-line-clean eval documents, no cross-document context, score byte positions1..end once in 128-position blocks."},
+  "D": {"main_exploratory_gate": "All audits valid; HEAD_ONLY EN_final250(TEN)-EN_final250(TJA) < 0 in at least9/10 archived seeds; mean difference <= -0.01 nats/byte. PASS means only this locally fixed archived-state diagnostic gate, not fresh confirmatory evidence.","incomplete_or_audit_failure": "UNCERTAIN; never treat invalid runs as scientific failures.","retention": "Report shared-head and routed-head Japanese loss before/after English training for every mode. Head-only routing identity is an implementation invariant, not an empirical semantic-retention finding.","secondary": "FULL/BODY_ONLY contrasts; TEN-TJA starting difference; paired difference of English gains; endpoint Japanese loss tradeoff; trainable parameter counts."},
+  "C": ["Initial knowledge advantage, not pure learning-rate change.","Freezing changes capacity and optimization path; identical updates do not imply equal FLOPs.","Routed Japanese requires an explicit known-language readout choice.","English test is ASCII-only software strings; no general language claim."],
+  "U": {"bootstrap": "Paired seed percentile 95% intervals,10000 draws,analysis RNG 99009; conditional on archived cohort and fixed corpus. Do not count tokens/documents/branches as independent seed samples.","cross_platform": "Record discrepancies of FULL against historical grid. Current CPU is different; same-environment control comparison is primary. No claim of bitwise historical reproduction unless measured."},
+  "stopping": "Exactly ten archived seeds and three update-locus modes. No rescue seeds, extra trainable subsets, more weights, longer training or chosen post-hoc endpoints. Complete all branches irrespective of sign."
+}

@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-09",
+  "upstream_main_at_start": "97d8f8269af7b92e50ad647949f0f20b3cd10612",
+  "local_execution": "COMPLETE",
+  "locus_optimizer_updates": 15000,
+  "swap_optimizer_updates": 5000,
+  "unique_trained_branches": 80,
+  "english_curve_rows": 800,
+  "independent_new_seeds": 0,
+  "locus_gate": "PASS_EXPLORATORY",
+  "swap_gate": "PASS_EXPLORATORY",
+  "checkpoint_verification": {"verdict": "PASS","saved_states": 80,"evaluations": 240,"maximum_nll_error": 1.2210906508158814e-08,"tolerance_nats_per_byte": 2e-06,"method": "separate float64 log-softmax evaluator, exact tensor freeze audits; fixed original corpus"},
+  "tests_passed": 33,
+  "external_corpus_training": "NOT_RUN_DATA_TRANSFER_UNAVAILABLE",
+  "github_write_at_execution_time": "UNAVAILABLE; repository integration occurred after execution",
+  "public_preregistration": false,
+  "local_protocol_commits": ["369a03e03fd721c7437a861a49a80aa0f7d55a0c","8cf85961d8e25be8221a9d53086a19b11f9bbe51"]
+}

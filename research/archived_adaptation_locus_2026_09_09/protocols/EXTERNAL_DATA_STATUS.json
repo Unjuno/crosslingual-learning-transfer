@@ -1,0 +1,10 @@
+{
+  "status": "NOT_ACQUIRED_NO_EXTERNAL_CORPUS_OUTCOME",
+  "sources": {
+    "ja": "UniversalDependencies/UD_Japanese-GSD@8e5794fae6d25796437a64a08c497a5c870b7b09",
+    "en": "UniversalDependencies/UD_English-EWT@4c89b5833a70aa5ed3a00bad2f23f57992cc7df8",
+    "ru": "UniversalDependencies/UD_Russian-GSD@27975702bf9507f0a244007f47345239a2d39c2f"
+  },
+  "blockers": ["Runtime DNS resolution of raw.githubusercontent.com failed","container.download did not acquire the viewed raw files","GitHub create_branch unavailable after rediscovery, and create_file unavailable"],
+  "preparation_code_tests": "synthetic fixtures only; no UD trial has run"
+}

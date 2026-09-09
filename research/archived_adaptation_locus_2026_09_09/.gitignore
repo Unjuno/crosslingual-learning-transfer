@@ -1,0 +1,6 @@
+data/
+inputs/
+__pycache__/
+*.pt
+results/raw/
+logs/

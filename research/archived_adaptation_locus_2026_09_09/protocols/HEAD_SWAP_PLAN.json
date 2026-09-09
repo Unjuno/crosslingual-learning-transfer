@@ -1,0 +1,16 @@
+{
+  "experiment": "posthoc_factorial_head_swap",
+  "created_utc": "2026-09-08T16:54:45.436322+00:00",
+  "status": "LOCAL_PLAN_BEFORE_SWAP_OUTCOMES_POSTHOC_RELATIVE_TO_LOCUS",
+  "motivation": "The diagonal HEAD_ONLY comparison confounds frozen-body differences with initial readout differences. First six completed locus seeds had been inspected when this confound was identified. This is a fixed attribution control, not a rescue of the prior gate.",
+  "seeds": [32000,32001,32002,32003,32004,32005,32006,32007,32008,32009],
+  "new_independent_seeds": 0,
+  "design": "2x2 factorial of body origin TJA/TEN and initial head origin TJA/TEN. Reuse diagonal HEAD_ONLY runs of original locus experiment; train only two off-diagonal conditions, 250 identical English updates each. No extra head choices or interpolation.",
+  "conditions_to_train": [{"body": "JA_TJA","head": "JA_TEN"},{"body": "JA_TEN","head": "JA_TJA"}],
+  "training": "Same core, data hashes, hidden weight history0.5, HEAD_ONLY requires_grad mask, AdamW0.001, batch16, context128, exact historical English minibatch seeds.",
+  "evaluation": "Same exact-line-clean document endpoints and checkpoints 0,1,5,10,25,50,100,150,200,250. All choices inherited from locus plan.",
+  "primary": "At update250 compute TEN-body minus TJA-body English NLL separately under each common initial head, then average the two within each seed. Exploratory attribution gate requires negative body effect for >=9/10 seeds and mean <=-0.01 nats/byte, with audits passing. Report conditional effects for each head even if they disagree.",
+  "secondary": "Head main effect and factorial interaction at step0 and step250; initial advantage versus differential loss reduction; Japanese scores with swapped head and saved body-native Japanese head.",
+  "uncertainty": "Paired-seed bootstrap10000 draws RNG99019. Existing cohorts only; no independent replication claim.",
+  "stopping": "Exactly20 off-diagonal branches and5000 optimizer updates. No additional layer swapping, heads, coefficients or budgets after outcomes. Original locus gate remains unchanged."
+}
