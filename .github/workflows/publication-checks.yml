@@ -1,30 +1,39 @@
 name: Publication checks
 
 on:
-  push:
-    branches: [publication/final-freeze-2026-09-10]
   pull_request:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: publication-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  audit:
+  verify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.13']
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-      - name: Capture tracked source only for publication audit
-        run: |
-          mkdir -p /tmp/publication-audit
-          git archive --format=zip HEAD -o /tmp/publication-audit/tracked-source.zip
-          git ls-files > /tmp/publication-audit/tracked-paths.txt
-          git rev-parse HEAD > /tmp/publication-audit/source-commit.txt
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify records and publication boundaries without training
+        run: python scripts/verify_publication.py
+      - name: Build and verify compact publication archive
+        run: python scripts/build_release.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: publication-audit-source
-          path: /tmp/publication-audit/
-          retention-days: 7
+          name: publication-verified-python-${{ matrix.python }}
+          path: dist/
+          retention-days: 14
           if-no-files-found: error

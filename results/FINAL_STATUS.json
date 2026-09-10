@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "date_jst": "2026-09-10",
+  "project_status": "FROZEN_RESEARCH_SNAPSHOT",
+  "release_version": "v1.0.0-research",
+  "evidence_base_commit": "63a6a056f9575d027dde09d3d19be172e821cd95",
+  "new_training_runs_in_publication_cleanup": 0,
+  "peer_reviewed": false,
+  "historical_decisions": {
+    "synthetic_phase": "FROZEN",
+    "natural_R1_weight1": "FAIL",
+    "natural_R2_weight_half": "PASS_REGISTERED_GRID",
+    "midpoint": "FAIL_EXPLORATORY",
+    "state_signal_seed18500": "BLOCKED_NOT_COUNTED"
+  },
+  "natural_R2": {
+    "registered_verdict": "PASS_UNCHANGED",
+    "fresh_seed_count": 10,
+    "registered_mean_saving": 0.05188078665296712,
+    "registered_favorable_seeds": 10,
+    "registered_JA_phase1_penalty": 0.006292635449885786,
+    "dense_diagnostic_mean_saving": 0.04569166589291429,
+    "robust_at_least_five_percent_claim": "NOT_ESTABLISHED"
+  },
+  "archived_body_head": {
+    "status": "EXPLORATORY_ARCHIVED_DIAGNOSTIC",
+    "independent_new_seeds": 0,
+    "body_origin_effect_nats_per_byte": -0.020382513949840208,
+    "favorable_seeds": 10,
+    "trained_branches": 80
+  },
+  "not_established": [
+    "target_unaware_Japanese_text_only",
+    "robust_population_saving_at_least_five_percent",
+    "pure_learning_rate_improvement",
+    "independent_corpus_generalization",
+    "post_English_Japanese_retention_guarantee",
+    "total_compute_saving",
+    "human_learning",
+    "large_LLM_generalization",
+    "universal_language_distance"
+  ],
+  "public_verification": "COMPACT_RECORD_ARITHMETIC_AND_PUBLICATION_INTEGRITY_NOT_TRAINING",
+  "continuation_policy": "Corrections and reproducibility fixes only in this frozen sequence. New experiments require a separate scope and prospective protocol.",
+  "canonical_report": "docs/FINAL_STATUS_2026-09-10.md"
+}

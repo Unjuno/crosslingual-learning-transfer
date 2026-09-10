@@ -1,0 +1,25 @@
+name: Reproduction or record error
+description: Report a compact-check failure or documented reproduction issue.
+title: "[Reproduction] "
+body:
+  - type: markdown
+    attributes:
+      value: "Do not attach credentials, private data, corpus text or model weights. Scientific FAIL is not a software failure."
+  - type: input
+    id: version
+    attributes:
+      label: Release tag and commit
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Exact command and non-sensitive error output
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Python / OS / backend and expected versus observed result
+    validations:
+      required: true

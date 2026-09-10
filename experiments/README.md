@@ -1,117 +1,28 @@
-# Representative experiment snapshots
+# Execution snapshots and public checks
 
-These files are representative snapshots from the executed research sequence. They are intentionally kept close to the executed implementations rather than rewritten as a polished library.
-
-## Structural surrogate phase
-
-- `study2_direction_fixed6_bigram_surrogate.py` — six-language character-level Transformer with original, exact-bigram-preserving, and unigram/degree-margin control corpora.
-
-## Controlled curriculum phase
-
-- `gru_aligned_transfer_confirmatory.py` — independent-architecture A-only curriculum existence test.
-- `matched_wrong_map25_gru.py` — signed transfer with source-distance/entropy/margin-matched wrong controls.
-
-## Performance and representation mechanism
-
-- `performance_aligned_learning_minimal_gru.py` — same-B-performance-interval sample-efficiency test.
-- `decoder_alignment_threshold_gru.py` — decoder cosine-alignment dose response.
-- `embedding_rotation_ablation_rho025_gru.py` — geometry-preserving B-state coordinate rotation.
-- `random_rank_state_alignment_gru.py` — shared latent-coordinate rank intervention.
-
-### Final learner-conditioning closure
-
-- `run_random_rank_hidden_width.py` — hidden-width wrapper that reuses the GRU random-rank implementation while varying learner width and seed.
-- `analyze_random_rank_hidden_width.py` — recomputes the locked 80–20 performance-aligned span and family rank slopes from width-run curves.
-- `prestate_random_rank_features.py` — constrained pre-phase1 scalar feature extractor used for the four-candidate screen and effective-rank confirmation.
-- `analyze_prestate_state_rank_predictor.py` — applies the locked within-seed×width centering and Spearman adjudication for the effective-rank predictor.
-- `random_rank_state_alignment_transformer.py` — one-layer causal Transformer port of the random-rank shared-coordinate experiment.
-- `analyze_random_rank_transformer.py` — computes Transformer family rank slopes and exact one-sided sign summaries.
-- `verify_final_synthetic_closure.py` — dependency-free public adjudication verifier for the final synthetic width/predictor/Transformer closure tests.
-
-Final protocols/results:
-
-- `protocols/random_rank_hidden_width_confirmatory_2026-09-02.json` — H32 vs H48 boundary confirmation; **FAIL**.
-- `protocols/prestate_state_rank_predictor_confirmatory_2026-09-03.json` — simple pre-state effective-rank predictor; **FAIL**.
-- `protocols/random_rank_transformer_replication_2026-09-03.json` — independent causal-Transformer replication; **PASS** in two fresh cohorts.
-- `docs/FINAL_SYNTHETIC_STATUS_2026-09-03.md` — final synthetic-phase adjudication and stopping decision.
-
-Example width run:
+The research sequence is frozen. From the repository root, use:
 
 ```bash
-HIDDEN_WIDTH=48 SEED=20000 FAMILY_ONLY=0 OUTDIR=/tmp/random_rank_width \
-python experiments/run_random_rank_hidden_width.py
+python scripts/verify_publication.py
 ```
 
-Example Transformer run:
+This runs record verification, not learning. Do not mass-import or mass-execute these files: some historical scripts train at import and some require unavailable paths or corpus versions. Read [reproduction boundaries](../docs/REPRODUCIBILITY.md) first.
 
-```bash
-SEED=22000 FAMILY_ONLY=0 OUTDIR=/tmp/random_rank_transformer \
-python experiments/random_rank_state_alignment_transformer.py
-```
+## Compact verification
 
-## Hidden-teacher / state-binding phase
+| Script | Scope |
+|---|---|
+| `verify_final_synthetic_closure.py` | Width FAIL, selected pre-state predictor FAIL, small Transformer rank result |
+| `verify_natural_r1_confirmatory.py` | R1 registered FAIL including its Japanese-retention gate |
+| `verify_halfweight_public_2026_09_08.py` | R2 registered-grid PASS |
+| `verify_halfweight_dense_2026_09_08.py` | Adverse dense-timing diagnostic below five percent |
 
-- `state_signal_cycle_adjudication.py` — L=1 Transformer intervention that preserves Bsub signal norm while cycle-averaging state-to-signal-direction assignment. The default execution is the locked seed18500 follow-up; use explicit environment variables to reproduce the earlier seed18400 pilot.
-- `run_state_signal_cycle_confirmatory.py` — locked 5-family × 6-source seed18500 launcher. It forces all six targets, validates resumable 12-row source outputs, and runs the confirmatory adjudicator after all jobs finish.
-- `state_signal_cycle_confirmatory_adjudicator.py` — standard-library-only implementation of every locked seed18500 PASS/audit gate. Complete negative outcomes return `FAIL`; incomplete or malformed data return `UNCERTAIN` rather than being interpreted scientifically.
+The archived body/head verifier is under [its research directory](../research/archived_adaptation_locus_2026_09_09/README_JA.md). The unified command includes it and all standard-library record tests.
 
-### Reproducibility blocker for seed18500
+## Preserved research code
 
-The public snapshot does not contain three exact archived helper modules required for a faithful rerun:
+GRU/Transformer aligned curricula, shared-coordinate rotations/rank, pre-state features and natural Japanese-window pilot scripts retain their original paths. Natural S2 scripts include corpus preparation, the weight1.0 runner and the halfweight wrapper/adjudicator. Their scientific sources are hash-frozen, not silently modernized for publication.
 
-- `teacher_hidden_entropy_matched_distance_transformer.py`
-- `teacher_hidden_geometry_intervention.py`
-- `support_stationary_matrix.py`
+State-signal seed18500 remains **BLOCKED / NOT COUNTED**: its strict runner requires three exact missing historical helpers. Do not bypass the guard or substitute reconstructed code and label it a historical rerun.
 
-The confirmatory runner fails before launching jobs when these files are absent. This is deliberate: reconstructed or behaviorally similar replacements must not be substituted into a locked confirmatory rerun. Restore the exact executed helper snapshots first; until then seed18500 is **BLOCKED / NOT COUNTED**.
-
-The broader hidden-teacher and distance-recovery sequence contains many execution variants; rather than publish every near-duplicate script, the repository keeps representative implementations plus compact protocols/results and a chronological log in `docs/EXPERIMENT_LOG.md`.
-
-## Natural-language phase
-
-### Earlier target-aware Japanese curriculum pilot
-
-- `natural_ja_en_blended5_curriculum.py` — Japanese-sourced 95/5 curriculum pilot with English-target and Russian-target offline motif selectors. The Student phase-1 examples are Japanese, but the selector is target-aware. Its preregistered primary against ordinary Japanese **failed**.
-
-### R1 S2 Japanese-input hidden-teacher test
-
-Status: **design locked / implementation validated / confirmatory not started**.
-
-- `prepare_natural_r1_system_translations.py` — deterministic local preparation of the frozen ja/en/ru Vim+TeX translation-string corpus. Corpus content is not committed; exact source/output SHA256 values are frozen in `protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json`.
-- `natural_ja_en_s2_hidden_teacher.py` — fixed-byte 2-layer causal Transformer experiment. Student phase-0 and phase-1 update sources are Japanese only; T_EN may know English and supplies hidden targets on the same Japanese batches. Scientific runs accept only seeds 31000–31009 and the exact frozen corpus hashes.
-- `run_natural_ja_en_s2_confirmatory.py` — fixed ten-seed cohort runner. It resumes only complete audited seed outputs and does not run intermediate adjudication.
-- `adjudicate_natural_ja_en_s2_hidden_teacher.py` — independent fixed-seed adjudicator. Missing seeds return `UNCERTAIN`; a PASS requires the prespecified sign, >=5% mean saving, corpus/information audits, no primary censoring, and Japanese safety gate.
-
-Prepare the corpus locally:
-
-```bash
-python experiments/prepare_natural_r1_system_translations.py \
-  --outdir /tmp/natural_r1_data
-```
-
-Optional non-scientific implementation validation uses seed30999 only:
-
-```bash
-python experiments/natural_ja_en_s2_hidden_teacher.py \
-  --seed 30999 \
-  --data-dir /tmp/natural_r1_data \
-  --outdir /tmp/natural_r1_validation \
-  --validation-natural
-```
-
-Run the locked confirmatory cohort only when the full fixed-seed execution is intended:
-
-```bash
-python experiments/run_natural_ja_en_s2_confirmatory.py \
-  --data-dir /tmp/natural_r1_data \
-  --outdir /tmp/natural_r1_confirmatory
-```
-
-Protocol and current readiness note:
-
-- `protocols/natural_ja_en_s2_hidden_teacher_r1_2026-09-06.json`
-- `docs/NATURAL_R1_STATUS_2026-09-06.md`
-
-The R1 test is S2, not S0: an English-aware teacher is explicitly allowed. See `docs/INFORMATION_BOUNDARIES.md` before interpreting any future result.
-
-Some older snapshots retain `/mnt/data/...` roots from the original execution environment. See `docs/REPRODUCIBILITY.md` before rerunning them. Large checkpoints, raw logs, and third-party corpora are intentionally excluded.
+The [evidence map](../docs/CLAIM_EVIDENCE_MATRIX.md) indexes results and [repository map](../docs/REPOSITORY_MAP.md) indexes reports. Training dependencies and absent raw/checkpoint artifacts are not needed for record-only verification.
