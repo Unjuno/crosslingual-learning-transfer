@@ -1,12 +1,30 @@
+# Local execution products and environments (never part of the compact release)
 __pycache__/
 *.py[cod]
+.pytest_cache/
 .venv/
 venv/
 .env
+.env.*
+!.env.example
 .DS_Store
-runs/
+dist/
+build/
+*.egg-info/
+# Corpus text, raw traces, checkpoints and handoffs stay outside git.
+data/
 checkpoints/
-raw/
+results/raw*/
 *.pt
 *.pth
 *.ckpt
+*.safetensors
+*.pkl
+*.pickle
+*.zip
+*.tar
+*.gz
+*.bundle
+*.log
+*.pem
+*.key

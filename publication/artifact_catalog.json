@@ -1,0 +1,11 @@
+{
+  "scope": "Archive identity only; not evidence of public availability or independent execution. Contents not redistributed by this release.",
+  "archives": [
+    {"name":"natural_r1_reproduction_2026-09-08.zip","bytes":180133,"sha256":"9ef96b1b20949b872892ac20de6429443c227b89f0f8a4092feaa70207e601bd","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"},
+    {"name":"natural_r1_checkpoints_2026-09-08.zip","bytes":42115426,"sha256":"eb5cb0a1ca1a65e11b626bb9c44b36dbb31394b60c2db6aa6fb91d37ca4ad236","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"},
+    {"name":"natural_r2_execution_2026-09-08.zip","bytes":6542880,"sha256":"dabb69e3b8defa26acc667ce29d1739858a0c7b02a04f8c5edd55c10bee028dc","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"},
+    {"name":"natural_r2_checkpoints_2026-09-08.zip","bytes":136992807,"sha256":"6681f5564e5016b3f74f2a9e08386feb60802acde1f3f8f23ec1da88ed5f35af","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"},
+    {"name":"archived_adaptation_locus_execution_2026-09-09.zip","bytes":9944138,"sha256":"b9af664f4b6fc201178a3fc27db7ed02efa273fc3ad4afd0d8d976b3381572f5","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"},
+    {"name":"archived_adaptation_locus_checkpoints_2026-09-09.zip","bytes":63234326,"sha256":"58cc1cf12d69c487414770257140dfdcfeb7dbb06631ae8d9e23c7324dd05ab5","public_download_url":null,"included_in_release":false,"availability":"conversation_artifact_not_publicly_hosted_by_this_release"}
+  ]
+}

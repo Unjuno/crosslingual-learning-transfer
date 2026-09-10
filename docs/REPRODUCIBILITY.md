@@ -1,93 +1,47 @@
-# Reproducibility
+# Reproducibility and public availability
 
-## Scope
+[Final scope](FINAL_STATUS_2026-09-10.md). Publication is separated into **record verification**, **training rerun**, and **historical provenance**. None implies the others.
 
-This repository is a compact research snapshot: representative executed scripts, locked protocol JSON files, family/cell-level data for the final closure tests, and compact summary CSVs. It intentionally excludes large checkpoints, many raw per-step outputs, and third-party corpora.
+## 1. Fully available: compact-record verification
 
-The repository therefore distinguishes **training reproduction** from **adjudication reproduction**. The final three synthetic closure verdicts can be recomputed from committed family/cell-level CSVs, but not every historical training run can be recreated bit-for-bit from the public snapshot.
-
-See also:
-
-- `docs/CLAIM_EVIDENCE_MATRIX.md` — claim-by-claim evidence level.
-- `docs/INFORMATION_BOUNDARIES.md` — target-information pathways and the meaning of “A-only”.
-
-## Final synthetic closure environment
-
-The executed final closure runs were recorded as:
-
-- PyTorch `2.10.0+cpu`
-- NumPy `2.3.5`
-- pandas `2.2.3`
-- CPU execution
-- `torch.use_deterministic_algorithms(True)`
-- one PyTorch thread per job (`THREADS=1`)
-
-The exact Python minor version of the executed closure host was not archived in the public record, so this repository does not invent one retroactively. GitHub Actions currently uses Python 3.11 for syntax/protocol/adjudication checks; that is a CI environment, not a claim about the historical training host.
-
-For the closest installable package match to the final closure sequence:
+Unpack the research release or check out its tag. From the repository root:
 
 ```bash
-python -m pip install -r requirements-final-synthetic.txt
+python scripts/verify_publication.py
 ```
 
-`requirements-final-synthetic.txt` records `torch==2.10.0`; the executed build reported the CPU local tag `2.10.0+cpu`, so select the appropriate CPU wheel/index for the platform when an exact backend match matters.
+Use Python **3.11–3.13**. No pip packages, GPU, corpus, model download or network access is required. The command runs five existing verifier families: final synthetic closure, natural R1, registered R2 halfweight, dense R2 timing and archived body/head records. It also runs standard-library record tests plus publication guards. Detailed subprocess results are stored in `dist/publication-verification.json` (ignored by git).
 
-The broader `requirements.txt` remains intentionally loose because the repository spans many historical snapshots and not all old dependency versions were preserved.
+A successful exit means the committed quantities/coverage agree with their registered or descriptive definitions, final status is consistent, scientific snapshot hashes are unchanged, relative Markdown file links resolve, and the bounded exposure scan passes. Historical experiment FAIL/BLOCKED statuses **must remain** in a successful package. It does not validate all historical claims or raw learning.
 
-## One-command public adjudication check
+To run one family directly, use the commands indexed in [the repository map](REPOSITORY_MAP.md). `--static-only` on the unified checker skips verifier/test execution and is **not** the full release gate. Invalid/missing records fail closed; no successful scientific result is synthesized from absent data.
 
-Run:
+## 2. Available code, conditional training reproduction
 
-```bash
-python experiments/verify_final_synthetic_closure.py
-```
+`experiments/` contains original execution snapshots. Do not import or execute every script indiscriminately: some train on import, some depend on system corpus files, and some retain historical `/mnt/data/` paths. Compilation is not a runtime test. Read the individual protocol and script before launching an expensive run.
 
-This standard-library verifier recomputes the three final closure adjudications from committed family/cell-level data:
+The final synthetic package record is `requirements-final-synthetic.txt`. The natural reference environment reported Python3.13.5, PyTorch2.10.0+cpu, NumPy2.3.5, pandas2.2.3, float32, deterministic algorithms and one thread/job. `requirements.txt` is an unpinned convenience list, **not a lockfile**. The recorded versions are not a complete transitive wheel/OS/ABI lock. CPU wheel selection and BLAS kernels are platform dependent; no cross-platform bitwise guarantee is made. No quantization or zero-point is used in the natural float32 trials; older quantized-signal studies have their own definitions.
 
-1. H32-vs-H48 hidden-width boundary — expected **FAIL**;
-2. pre-state state-effective-rank predictor — expected **FAIL**;
-3. causal-Transformer random-rank replication — expected **PASS**.
+Natural R1/R2 scripts require the exact corpus outputs in `protocols/natural_ja_en_s2_corpus_manifest_2026-09-06.json`. The preparation script expects particular Vim/TeX source files. Another package version can change the resulting hashes. Do not relax a hash check to call changed data an exact rerun. Fresh-seed guards reject seeds already in committed results; a replay must be explicitly labeled reproduction, not counted as fresh evidence.
 
-It also checks that:
+The archived Sep-9 public subdirectory supplies compact record verification, not every training/replay implementation. Complete execution code and weights existed in separately delivered execution archives; their public download locations are **not provided by this release**. Do not describe this git checkout as a full self-contained training archive.
 
-- fresh-seed lists and `LOCKED_BEFORE_FRESH_OUTCOMES` status match the committed protocols;
-- recomputed statistics match the committed summary CSVs;
-- the final verdicts match `results/current_status_2026-09-03.json`.
+## 3. Explicitly blocked or unavailable
 
-This command **does not rerun training**, **does not regenerate omitted checkpoints**, and **does not reconstruct raw audit logs that were not committed**.
+Seed18500 depends on the exact historical files `teacher_hidden_entropy_matched_distance_transformer.py`, `teacher_hidden_geometry_intervention.py`, and `support_stationary_matrix.py`, which are absent. Its runner must fail rather than substitute reconstructed code. Status: **BLOCKED / NOT COUNTED**.
 
-## Determinism
+Third-party corpus text, raw minibatch/per-checkpoint traces, full calibration matrices, large checkpoints and local handoff archives are not shipped here. [Artifact catalog](../publication/artifact_catalog.json) records hashes/sizes of available conversation archives for provenance, with public availability set to false. A hash identifies a file but does not make it downloadable or prove its creation history.
 
-Experiment scripts explicitly seed Python, NumPy, and PyTorch generators. Confirmatory experiments use fixed fresh seed ranges recorded in their protocol JSON files. Statistical tests are paired exact sign/sign-flip style tests where specified by the protocol and small family counts permit exact enumeration.
+Independent UD-corpus training was not run. A pinned preparation script is a future feasibility asset, not a result.
 
-For historical reruns, do not change model/data/protocol parameters while still calling the run an exact replication. A changed implementation, restored approximation, or alternative dependency stack should be labeled a new replication.
+## 4. Units, statistics and interpretation
 
-## Important path note
+Natural byte NLL uses natural logarithms (nats per predicted byte; SI dimensionless). Update count is a count. Equal context and batch make update count proportional to sampled target-byte count within a run; different tokenizers and corpora are not directly comparable. Timing interpolation estimates fractional crossings; it is not an executed fractional update.
 
-The files under `experiments/` are **execution snapshots**, preserved close to the versions used in the original run environment. Some older scripts contain `/mnt/data/...` output paths. Set supported environment variables such as `OUTDIR`, or adapt only the output root before local execution.
+Keep seed as the paired unit for seed uncertainty; documents add a separate evaluation-sampling dimension. Do not count checkpoints/tokens/replays as independent training seeds. Registered point-estimate gates differ from confidence bounds and from later diagnostics. Retention timing (before versus after English) must be stated.
 
-## Natural-language corpus
+## 5. Package and CI scope
 
-The Japanese/English experiment depends on a previously prepared six-language corpus environment. The corpus itself is not redistributed here because third-party data retain their original licenses. The natural-language script is included for methodological transparency, not as a standalone data bundle.
+`publication/files.sha256.json` is the release inventory; `publication/scientific-snapshot.json` fixes existing protocols, records and experiment sources from the evidence-base commit. New metadata does not retroactively preregister a study. Release bundles contain only manifest-listed tracked text files and checksums. They exclude git internals, credentials, corpus data and weights.
 
-The next natural-language phase must also report target-information boundaries explicitly; “Japanese-only” is insufficient by itself because a curriculum designer or teacher can still use English-derived information. See `docs/INFORMATION_BOUNDARIES.md`.
-
-## Surrogate experiment conventions
-
-The structural-surrogate phase used six languages and a character-level toy Transformer. Exact-bigram surrogates preserve the directed character-bigram multiset; UNI controls preserve unigram counts/endpoints and, consequently, directed bigram in/out degree margins.
-
-## Interpreting p-values
-
-Many confirmatory mechanism tests use five kernel families. If all 5/5 family means have the preregistered sign, a one-sided exact sign test yields p=.03125. This is a small-sample exact test, not evidence that the synthetic family sample represents all possible languages/tasks.
-
-## Raw artifacts omitted
-
-Not committed in general:
-
-- model checkpoints,
-- many raw minibatch/per-step logs,
-- large corpus files,
-- duplicated intermediate CSVs,
-- local handoff ZIP files.
-
-For the **final closure tests**, family/cell-level adjudication data are committed and machine-verifiable. For several earlier research phases, only compact summaries and representative scripts are available. The exact boundary for each public claim is recorded in `docs/CLAIM_EVIDENCE_MATRIX.md`.
+The exposure check is a heuristic on this snapshot, **not a comprehensive security audit, secret-history scan or branch-protection policy**. Existing public history is not rewritten. CI checks do not cryptographically prove that historical training was run. Release tags are never deliberately moved by the publishing workflow; repository-wide immutable-release settings are not configured here.

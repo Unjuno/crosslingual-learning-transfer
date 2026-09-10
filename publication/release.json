@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "version": "v1.0.0-research",
+  "date": "2026-09-10",
+  "title": "Frozen research snapshot — 2026-09-10",
+  "prerelease": true,
+  "evidence_base_commit": "63a6a056f9575d027dde09d3d19be172e821cd95",
+  "frozen": true
+}

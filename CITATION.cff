@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Cite this software/research snapshot using its version and exact commit; no paper or DOI is claimed."
+type: software
+title: "Crosslingual Learning Transfer: Frozen Experimental Research Record"
+authors:
+  - name: "Unjuno"
+version: "v1.0.0-research"
+date-released: "2026-09-10"
+repository-code: "https://github.com/Unjuno/crosslingual-learning-transfer"
+url: "https://github.com/Unjuno/crosslingual-learning-transfer"
+license: Apache-2.0
+abstract: "Controlled synthetic and small-model natural-text transfer experiments, including registered failures, a qualified registered success, archived diagnostics and explicit reproduction boundaries. Not a peer-reviewed paper or validated human-learning method."
