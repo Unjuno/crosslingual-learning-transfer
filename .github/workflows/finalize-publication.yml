@@ -9,8 +9,6 @@ jobs:
     if: github.repository == 'Unjuno/crosslingual-learning-transfer' && github.ref == 'refs/heads/publication/final-freeze-2026-09-10'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -24,19 +22,15 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import subprocess,json,hashlib
-          root=Path('.')
           base='63a6a056f9575d027dde09d3d19be172e821cd95'
           paths=subprocess.check_output(['git','ls-tree','-r','--name-only',base],text=True).splitlines()
           files={}
           for name in sorted(paths):
               p=Path(name)
               science=(name.startswith('protocols/') or name.startswith('results/') or name.startswith('experiments/') or name.startswith('research/')) and p.suffix in {'.py','.csv','.json'}
-              if science:
-                  data=subprocess.check_output(['git','show',base+':'+name])
-                  files[name]=hashlib.sha256(data).hexdigest()
+              if science:files[name]=hashlib.sha256(subprocess.check_output(['git','show',base+':'+name])).hexdigest()
           obj={'source_commit':base,'scope':'Existing scientific protocol/result/source files; publication adds no new learning outcomes. Hashes copied from the tracked baseline.','files':files}
-          dest=Path('publication/scientific-snapshot.json')
-          dest.write_text(json.dumps(obj,indent=2)+'\n',encoding='utf-8')
+          dest=Path('publication/scientific-snapshot.json');dest.write_text(json.dumps(obj,indent=2)+'\n',encoding='utf-8')
           assert hashlib.sha256(dest.read_bytes()).hexdigest()=='df43c7b4b3283118760f8c8a8d67ce496fe58a499ff0feeb90e1a8c9535db9cc'
           Path('.github/workflows/finalize-publication.yml').unlink()
           for p in Path('.github/workflows').glob('*.yml'):
@@ -50,29 +44,26 @@ jobs:
           python scripts/refresh_inventory.py
           git add publication/files.sha256.json
           python scripts/verify_publication.py
-      - name: Commit only verified inventory and workflow hardening to this branch
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Export verified source and changed files for connector review
         run: |
           python - <<'PY'
-          import json,os,subprocess
+          import json,subprocess,zipfile
           from pathlib import Path
-          repo=os.environ['GITHUB_REPOSITORY'];head=os.environ['GITHUB_SHA']
-          branch='publication/final-freeze-2026-09-10'
-          def api(path,obj=None,method='POST'):
-              args=['gh','api',path]
-              if obj is not None:args+=['--method',method,'--input','-']
-              p=subprocess.run(args,input=None if obj is None else json.dumps(obj),text=True,capture_output=True,check=True)
-              return json.loads(p.stdout)
-          current=api(f'repos/{repo}/git/ref/heads/{branch}')['object']['sha']
-          if current!=head:raise SystemExit('branch moved; refusing overwrite')
+          out=Path('/tmp/publication-ready');out.mkdir()
+          names=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          with zipfile.ZipFile(out/'verified-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for name in names:z.write(name,name)
           entries=[]
           for name in subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines():
               p=Path(name)
-              if p.exists():entries.append({'path':name,'mode':'100644','type':'blob','content':p.read_text(encoding='utf-8')})
-              else:entries.append({'path':name,'mode':'100644','type':'blob','sha':None})
-          tree=api(f'repos/{repo}/git/trees',{'base_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),'tree':entries})['sha']
-          commit=api(f'repos/{repo}/git/commits',{'message':'Freeze verified publication inventory; remove one-time preparation workflow','tree':tree,'parents':[head]})['sha']
-          api(f'repos/{repo}/git/refs/heads/{branch}',{'sha':commit,'force':False},'PATCH')
-          print('FINAL_PUBLICATION_HEAD='+commit)
+              entries.append({'path':name,'mode':'100644','type':'blob',**({'content':p.read_text(encoding='utf-8')} if p.exists() else {'sha':None})})
+          (out/'tree-changes.json').write_text(json.dumps(entries,indent=2)+'\n')
+          (out/'verification.json').write_bytes(Path('dist/publication-verification.json').read_bytes())
+          print('Ready files:',len(names),'Changed entries:',len(entries))
           PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: reviewed-publication-source
+          path: /tmp/publication-ready/
+          retention-days: 7
+          if-no-files-found: error
